@@ -1,0 +1,83 @@
+{
+  "cancellationsByMonth": [
+    {
+      "month": "2021-09-01T00:00:00.000000+0000",
+      "n_data_points": 250,
+      "p_cancelled": 0.04,
+      "n_cancelled": 10
+    }
+  ],
+  "cancellationsByNetworkMonth": [
+    {
+      "month": "2021-09-01T00:00:00.000000+0000",
+      "n_data_points": 250,
+      "p_cancelled": 0.04,
+      "n_cancelled": 10,
+      "netz": "Testnetz"
+    }
+  ],
+  "cancellationsByNetworkLineMonth": [
+    {
+      "month": "2021-09-01T00:00:00.000000+0000",
+      "n_data_points": 250,
+      "p_cancelled": 0.04,
+      "n_cancelled": 10,
+      "netz": "Testnetz",
+      "line": "S1",
+      "line_id": "de.test.s1"
+    }
+  ],
+  "delaysByMonth": [
+    {
+      "month": "2021-09-01T00:00:00.000000+0000",
+      "n_data_points": 100,
+      "p_on_time_2": 0.8,
+      "n_on_time_2": 80,
+      "p_on_time_5": 0.9,
+      "n_on_time_5": 90,
+      "p_on_time_10": 0.95,
+      "n_on_time_10": 95,
+      "p_on_time_20": 0.99,
+      "n_on_time_20": 99,
+      "p_on_time_40": 1,
+      "n_on_time_40": 100
+    }
+  ],
+  "delaysByNetworkMonth": [
+    {
+      "month": "2021-09-01T00:00:00.000000+0000",
+      "n_data_points": 100,
+      "p_on_time_2": 0.8,
+      "n_on_time_2": 80,
+      "p_on_time_5": 0.9,
+      "n_on_time_5": 90,
+      "p_on_time_10": 0.95,
+      "n_on_time_10": 95,
+      "p_on_time_20": 0.99,
+      "n_on_time_20": 99,
+      "p_on_time_40": 1,
+      "n_on_time_40": 100,
+      "netz": "Testnetz"
+    }
+  ],
+  "delaysByNetworkLineMonth": [
+    {
+      "month": "2021-09-01T00:00:00.000000+0000",
+      "n_data_points": 100,
+      "p_on_time_2": 0.8,
+      "n_on_time_2": 80,
+      "p_on_time_5": 0.9,
+      "n_on_time_5": 90,
+      "p_on_time_10": 0.95,
+      "n_on_time_10": 95,
+      "p_on_time_20": 0.99,
+      "n_on_time_20": 99,
+      "p_on_time_40": 1,
+      "n_on_time_40": 100,
+      "netz": "Testnetz",
+      "line": "S1",
+      "line_id": "de.test.s1"
+    }
+  ],
+  "mostCancelledStops": []
+}

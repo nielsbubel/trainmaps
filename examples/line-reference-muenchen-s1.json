@@ -1,0 +1,22 @@
+{
+  "revision": 2,
+  "network_id": "de.muenchen",
+  "display_name": "S1 München",
+  "source_aliases": [
+    {
+      "netz": "München",
+      "line": "S1"
+    }
+  ],
+  "geometry": {
+    "source": "basemap.de",
+    "source_layer": "Verkehrslinie",
+    "source_class": "S-Bahn",
+    "fallback_classes": ["Eisenbahn", "Gleis"],
+    "status": "verified",
+    "reference": "trainmaps:geometry:de.muenchen.s1@1",
+    "version": "basemap.de 2026-08-18 / MVV GTFS 06/2026"
+  },
+  "active": true,
+  "notes": "Fahrweg aus basemap.de-Gleisen; MVV GTFS 06/2026 referenziert Linie, Haltefolge und Stationen. München/1 bleibt getrennt."
+}

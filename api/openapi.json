@@ -1,0 +1,2791 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "trainmaps Development API",
+    "description": "[Vollständige Dokumentation](/dokumentation) · [Schnellstart](/dokumentation/schnellstart) · [API-Anleitung](/dokumentation/api)\n\nVersioned data imports and a separately managed line-reference catalog. Use frontend-2 for stable trainmaps line IDs and basemap.de geometry mappings.",
+    "version": "0.4.0"
+  },
+  "paths": {
+    "/api/v1/map/config": {
+      "get": {
+        "tags": [
+          "Karte"
+        ],
+        "summary": "Map Config",
+        "operationId": "map_config_api_v1_map_config_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/map/lines.geojson": {
+      "get": {
+        "tags": [
+          "Karte"
+        ],
+        "summary": "Map Geometry",
+        "operationId": "map_geometry_api_v1_map_lines_geojson_get",
+        "parameters": [
+          {
+            "name": "line_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-z0-9]+(?:[._-][a-z0-9]+)*$",
+              "title": "Line Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/map/monthly": {
+      "get": {
+        "tags": [
+          "Karte"
+        ],
+        "summary": "Map Monthly",
+        "operationId": "map_monthly_api_v1_map_monthly_get",
+        "parameters": [
+          {
+            "name": "line_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-z0-9]+(?:[._-][a-z0-9]+)*$",
+              "title": "Line Id"
+            }
+          },
+          {
+            "name": "month",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])$",
+              "title": "Month"
+            }
+          },
+          {
+            "name": "metric",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "punctuality",
+                "cancellations"
+              ],
+              "type": "string",
+              "default": "punctuality",
+              "title": "Metric"
+            }
+          },
+          {
+            "name": "threshold_minutes",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 5,
+              "title": "Threshold Minutes"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/health": {
+      "get": {
+        "tags": [
+          "Status"
+        ],
+        "summary": "Health",
+        "operationId": "health_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/reference/lines": {
+      "get": {
+        "tags": [
+          "Linienreferenzen"
+        ],
+        "summary": "List Line References",
+        "description": "Catalog of stable line IDs. Data suppliers use these IDs in frontend-2.",
+        "operationId": "list_line_references_api_v1_reference_lines_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "netz",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Netz"
+            }
+          },
+          {
+            "name": "line",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Line"
+            }
+          },
+          {
+            "name": "network_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Network Id"
+            }
+          },
+          {
+            "name": "geometry_status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "pending",
+                    "mapped",
+                    "verified"
+                  ],
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Geometry Status"
+            }
+          },
+          {
+            "name": "active",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Active"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0,
+              "title": "Offset"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 5000,
+              "minimum": 1,
+              "default": 1000,
+              "title": "Limit"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LineList"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/reference/lines/{line_id}": {
+      "get": {
+        "tags": [
+          "Linienreferenzen"
+        ],
+        "summary": "Get Line Reference",
+        "operationId": "get_line_reference_api_v1_reference_lines__line_id__get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "line_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-z0-9]+(?:[._-][a-z0-9]+)*$",
+              "title": "Line Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LineRecord"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Linienreferenzen"
+        ],
+        "summary": "Put Line Reference",
+        "description": "Create or revise a line mapping. Only the dedicated mapping token is accepted.",
+        "operationId": "put_line_reference_api_v1_reference_lines__line_id__put",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "line_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-z0-9]+(?:[._-][a-z0-9]+)*$",
+              "title": "Line Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LineDefinition"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LineRecord"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Linienreferenz angelegt"
+          },
+          "409": {
+            "description": "Revision oder Quellalias kollidiert"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/imports/frontend": {
+      "post": {
+        "tags": [
+          "Import"
+        ],
+        "summary": "Ingest V1",
+        "description": "Legacy import without stable line IDs. It remains readable but never map-ready.",
+        "operationId": "ingest_v1_api_v1_imports_frontend_post",
+        "deprecated": true,
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "validate_only",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false,
+              "title": "Validate Only"
+            }
+          },
+          {
+            "name": "idempotency-key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Idempotency-Key"
+            }
+          },
+          {
+            "name": "x-dataset-revision",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "maximum": 2147483647,
+              "minimum": 1,
+              "title": "X-Dataset-Revision"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "200": {
+            "description": "Dry run or identical replay"
+          },
+          "400": {
+            "description": "Malformed JSON or gzip"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Wrong token role"
+          },
+          "409": {
+            "description": "Idempotency or revision conflict"
+          },
+          "413": {
+            "description": "Body exceeds 32 MiB"
+          },
+          "415": {
+            "description": "Unsupported media type/encoding"
+          },
+          "422": {
+            "description": "Invalid data or line reference"
+          },
+          "429": {
+            "description": "Rate limit or another import in progress"
+          },
+          "507": {
+            "description": "Development storage quota reached"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FrontendExportV1"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v2/imports/frontend": {
+      "post": {
+        "tags": [
+          "Import"
+        ],
+        "summary": "Ingest V2",
+        "description": "Preferred import. Every source line must resolve to a catalog line_id.",
+        "operationId": "ingest_v2_api_v2_imports_frontend_post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "validate_only",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false,
+              "title": "Validate Only"
+            }
+          },
+          {
+            "name": "idempotency-key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Idempotency-Key"
+            }
+          },
+          {
+            "name": "x-dataset-revision",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "maximum": 2147483647,
+              "minimum": 1,
+              "title": "X-Dataset-Revision"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "200": {
+            "description": "Dry run or identical replay"
+          },
+          "400": {
+            "description": "Malformed JSON or gzip"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Wrong token role"
+          },
+          "409": {
+            "description": "Idempotency or revision conflict"
+          },
+          "413": {
+            "description": "Body exceeds 32 MiB"
+          },
+          "415": {
+            "description": "Unsupported media type/encoding"
+          },
+          "422": {
+            "description": "Invalid data or line reference"
+          },
+          "429": {
+            "description": "Rate limit or another import in progress"
+          },
+          "507": {
+            "description": "Development storage quota reached"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FrontendExportV2"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/imports/{import_id}": {
+      "get": {
+        "tags": [
+          "Import"
+        ],
+        "summary": "Receipt",
+        "operationId": "receipt_api_v1_imports__import_id__get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "import_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Import Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/data/frontend": {
+      "get": {
+        "tags": [
+          "Daten"
+        ],
+        "summary": "Frontend",
+        "description": "Retrieve exact original JSON bytes, latest revision or a pinned import ID.",
+        "operationId": "frontend_api_v1_data_frontend_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "import_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Import Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/data/monthly": {
+      "get": {
+        "tags": [
+          "Daten"
+        ],
+        "summary": "Monthly",
+        "description": "Return monthly source rows and current line-reference status for line scope.",
+        "operationId": "monthly_api_v1_data_monthly_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "metric",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "enum": [
+                "punctuality",
+                "cancellations"
+              ],
+              "type": "string",
+              "title": "Metric"
+            }
+          },
+          {
+            "name": "month",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])$",
+              "title": "Month"
+            }
+          },
+          {
+            "name": "scope",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "all",
+                "network",
+                "line"
+              ],
+              "type": "string",
+              "default": "line",
+              "title": "Scope"
+            }
+          },
+          {
+            "name": "netz",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Netz"
+            }
+          },
+          {
+            "name": "line",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Line"
+            }
+          },
+          {
+            "name": "line_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^[a-z0-9]+(?:[._-][a-z0-9]+)*$"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Line Id"
+            }
+          },
+          {
+            "name": "import_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Import Id"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0,
+              "title": "Offset"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 5000,
+              "minimum": 1,
+              "default": 1000,
+              "title": "Limit"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "GeometryReference": {
+        "properties": {
+          "source": {
+            "type": "string",
+            "const": "basemap.de",
+            "title": "Source",
+            "default": "basemap.de"
+          },
+          "source_layer": {
+            "type": "string",
+            "const": "Verkehrslinie",
+            "title": "Source Layer",
+            "default": "Verkehrslinie"
+          },
+          "source_class": {
+            "type": "string",
+            "const": "S-Bahn",
+            "title": "Source Class",
+            "default": "S-Bahn"
+          },
+          "fallback_classes": {
+            "items": {
+              "type": "string",
+              "enum": [
+                "Eisenbahn",
+                "Gleis"
+              ]
+            },
+            "type": "array",
+            "maxItems": 2,
+            "title": "Fallback Classes"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "pending",
+              "mapped",
+              "verified"
+            ],
+            "title": "Status",
+            "default": "pending"
+          },
+          "reference": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 300,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reference"
+          },
+          "version": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 100,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Version"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "GeometryReference"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "LineDefinition": {
+        "properties": {
+          "revision": {
+            "type": "integer",
+            "maximum": 2147483647.0,
+            "minimum": 1.0,
+            "title": "Revision"
+          },
+          "network_id": {
+            "type": "string",
+            "maxLength": 100,
+            "minLength": 1,
+            "pattern": "^[a-z0-9]+(?:[._-][a-z0-9]+)*$",
+            "title": "Network Id"
+          },
+          "display_name": {
+            "type": "string",
+            "maxLength": 100,
+            "minLength": 1,
+            "title": "Display Name"
+          },
+          "source_aliases": {
+            "items": {
+              "$ref": "#/components/schemas/SourceAlias"
+            },
+            "type": "array",
+            "maxItems": 100,
+            "minItems": 1,
+            "title": "Source Aliases"
+          },
+          "geometry": {
+            "$ref": "#/components/schemas/GeometryReference"
+          },
+          "active": {
+            "type": "boolean",
+            "title": "Active",
+            "default": true
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 1000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notes"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "revision",
+          "network_id",
+          "display_name",
+          "source_aliases"
+        ],
+        "title": "LineDefinition"
+      },
+      "LineList": {
+        "properties": {
+          "total": {
+            "type": "integer",
+            "title": "Total"
+          },
+          "offset": {
+            "type": "integer",
+            "title": "Offset"
+          },
+          "next_offset": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Next Offset"
+          },
+          "values": {
+            "items": {
+              "$ref": "#/components/schemas/LineRecord"
+            },
+            "type": "array",
+            "title": "Values"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "total",
+          "offset",
+          "next_offset",
+          "values"
+        ],
+        "title": "LineList"
+      },
+      "LineRecord": {
+        "properties": {
+          "revision": {
+            "type": "integer",
+            "maximum": 2147483647.0,
+            "minimum": 1.0,
+            "title": "Revision"
+          },
+          "network_id": {
+            "type": "string",
+            "maxLength": 100,
+            "minLength": 1,
+            "pattern": "^[a-z0-9]+(?:[._-][a-z0-9]+)*$",
+            "title": "Network Id"
+          },
+          "display_name": {
+            "type": "string",
+            "maxLength": 100,
+            "minLength": 1,
+            "title": "Display Name"
+          },
+          "source_aliases": {
+            "items": {
+              "$ref": "#/components/schemas/SourceAlias"
+            },
+            "type": "array",
+            "maxItems": 100,
+            "minItems": 1,
+            "title": "Source Aliases"
+          },
+          "geometry": {
+            "$ref": "#/components/schemas/GeometryReference"
+          },
+          "active": {
+            "type": "boolean",
+            "title": "Active",
+            "default": true
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 1000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notes"
+          },
+          "line_id": {
+            "type": "string",
+            "maxLength": 120,
+            "minLength": 1,
+            "pattern": "^[a-z0-9]+(?:[._-][a-z0-9]+)*$",
+            "title": "Line Id"
+          },
+          "updated_at": {
+            "type": "string",
+            "title": "Updated At"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "revision",
+          "network_id",
+          "display_name",
+          "source_aliases",
+          "line_id",
+          "updated_at"
+        ],
+        "title": "LineRecord"
+      },
+      "SourceAlias": {
+        "properties": {
+          "netz": {
+            "type": "string",
+            "maxLength": 200,
+            "minLength": 1,
+            "title": "Netz"
+          },
+          "line": {
+            "type": "string",
+            "maxLength": 200,
+            "minLength": 1,
+            "title": "Line"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "netz",
+          "line"
+        ],
+        "title": "SourceAlias"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      },
+      "FrontendExport": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "cancellationsByMonth",
+          "cancellationsByNetworkMonth",
+          "cancellationsByNetworkLineMonth",
+          "delaysByMonth",
+          "delaysByNetworkMonth",
+          "delaysByNetworkLineMonth",
+          "mostCancelledStops"
+        ],
+        "properties": {
+          "cancellationsByMonth": {
+            "type": "array",
+            "maxItems": 100000,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "month",
+                "n_data_points",
+                "n_cancelled",
+                "p_cancelled"
+              ],
+              "properties": {
+                "month": {
+                  "type": "string",
+                  "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])-01T00:00:00(?:\\.[0-9]{1,6})?(?:Z|\\+00:?00)$",
+                  "description": "Original UTC month label; +0000 is supported."
+                },
+                "n_data_points": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "n_cancelled": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "p_cancelled": {
+                  "type": [
+                    "number",
+                    "null"
+                  ],
+                  "minimum": 0,
+                  "maximum": 1
+                }
+              }
+            }
+          },
+          "cancellationsByNetworkMonth": {
+            "type": "array",
+            "maxItems": 100000,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "month",
+                "netz",
+                "n_data_points",
+                "n_cancelled",
+                "p_cancelled"
+              ],
+              "properties": {
+                "month": {
+                  "type": "string",
+                  "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])-01T00:00:00(?:\\.[0-9]{1,6})?(?:Z|\\+00:?00)$",
+                  "description": "Original UTC month label; +0000 is supported."
+                },
+                "netz": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 200
+                },
+                "n_data_points": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "n_cancelled": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "p_cancelled": {
+                  "type": [
+                    "number",
+                    "null"
+                  ],
+                  "minimum": 0,
+                  "maximum": 1
+                }
+              }
+            }
+          },
+          "cancellationsByNetworkLineMonth": {
+            "type": "array",
+            "maxItems": 100000,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "month",
+                "netz",
+                "line",
+                "n_data_points",
+                "n_cancelled",
+                "p_cancelled"
+              ],
+              "properties": {
+                "month": {
+                  "type": "string",
+                  "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])-01T00:00:00(?:\\.[0-9]{1,6})?(?:Z|\\+00:?00)$",
+                  "description": "Original UTC month label; +0000 is supported."
+                },
+                "netz": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 200
+                },
+                "line": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 200
+                },
+                "n_data_points": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "n_cancelled": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "p_cancelled": {
+                  "type": [
+                    "number",
+                    "null"
+                  ],
+                  "minimum": 0,
+                  "maximum": 1
+                }
+              }
+            }
+          },
+          "delaysByMonth": {
+            "type": "array",
+            "maxItems": 100000,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "month",
+                "n_data_points",
+                "n_on_time_2",
+                "p_on_time_2",
+                "n_on_time_5",
+                "p_on_time_5",
+                "n_on_time_10",
+                "p_on_time_10",
+                "n_on_time_20",
+                "p_on_time_20",
+                "n_on_time_40",
+                "p_on_time_40"
+              ],
+              "properties": {
+                "month": {
+                  "type": "string",
+                  "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])-01T00:00:00(?:\\.[0-9]{1,6})?(?:Z|\\+00:?00)$",
+                  "description": "Original UTC month label; +0000 is supported."
+                },
+                "n_data_points": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "n_on_time_2": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "p_on_time_2": {
+                  "type": [
+                    "number",
+                    "null"
+                  ],
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                "n_on_time_5": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "p_on_time_5": {
+                  "type": [
+                    "number",
+                    "null"
+                  ],
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                "n_on_time_10": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "p_on_time_10": {
+                  "type": [
+                    "number",
+                    "null"
+                  ],
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                "n_on_time_20": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "p_on_time_20": {
+                  "type": [
+                    "number",
+                    "null"
+                  ],
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                "n_on_time_40": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "p_on_time_40": {
+                  "type": [
+                    "number",
+                    "null"
+                  ],
+                  "minimum": 0,
+                  "maximum": 1
+                }
+              }
+            }
+          },
+          "delaysByNetworkMonth": {
+            "type": "array",
+            "maxItems": 100000,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "month",
+                "netz",
+                "n_data_points",
+                "n_on_time_2",
+                "p_on_time_2",
+                "n_on_time_5",
+                "p_on_time_5",
+                "n_on_time_10",
+                "p_on_time_10",
+                "n_on_time_20",
+                "p_on_time_20",
+                "n_on_time_40",
+                "p_on_time_40"
+              ],
+              "properties": {
+                "month": {
+                  "type": "string",
+                  "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])-01T00:00:00(?:\\.[0-9]{1,6})?(?:Z|\\+00:?00)$",
+                  "description": "Original UTC month label; +0000 is supported."
+                },
+                "netz": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 200
+                },
+                "n_data_points": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "n_on_time_2": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "p_on_time_2": {
+                  "type": [
+                    "number",
+                    "null"
+                  ],
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                "n_on_time_5": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "p_on_time_5": {
+                  "type": [
+                    "number",
+                    "null"
+                  ],
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                "n_on_time_10": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "p_on_time_10": {
+                  "type": [
+                    "number",
+                    "null"
+                  ],
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                "n_on_time_20": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "p_on_time_20": {
+                  "type": [
+                    "number",
+                    "null"
+                  ],
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                "n_on_time_40": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "p_on_time_40": {
+                  "type": [
+                    "number",
+                    "null"
+                  ],
+                  "minimum": 0,
+                  "maximum": 1
+                }
+              }
+            }
+          },
+          "delaysByNetworkLineMonth": {
+            "type": "array",
+            "maxItems": 100000,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "month",
+                "netz",
+                "line",
+                "n_data_points",
+                "n_on_time_2",
+                "p_on_time_2",
+                "n_on_time_5",
+                "p_on_time_5",
+                "n_on_time_10",
+                "p_on_time_10",
+                "n_on_time_20",
+                "p_on_time_20",
+                "n_on_time_40",
+                "p_on_time_40"
+              ],
+              "properties": {
+                "month": {
+                  "type": "string",
+                  "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])-01T00:00:00(?:\\.[0-9]{1,6})?(?:Z|\\+00:?00)$",
+                  "description": "Original UTC month label; +0000 is supported."
+                },
+                "netz": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 200
+                },
+                "line": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 200
+                },
+                "n_data_points": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "n_on_time_2": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "p_on_time_2": {
+                  "type": [
+                    "number",
+                    "null"
+                  ],
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                "n_on_time_5": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "p_on_time_5": {
+                  "type": [
+                    "number",
+                    "null"
+                  ],
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                "n_on_time_10": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "p_on_time_10": {
+                  "type": [
+                    "number",
+                    "null"
+                  ],
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                "n_on_time_20": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "p_on_time_20": {
+                  "type": [
+                    "number",
+                    "null"
+                  ],
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                "n_on_time_40": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "p_on_time_40": {
+                  "type": [
+                    "number",
+                    "null"
+                  ],
+                  "minimum": 0,
+                  "maximum": 1
+                }
+              }
+            }
+          },
+          "mostCancelledStops": {
+            "type": "array",
+            "maxItems": 100000,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "stop_id",
+                "netz",
+                "line",
+                "n_data_points",
+                "n_cancelled",
+                "p_cancelled"
+              ],
+              "properties": {
+                "stop_id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 200
+                },
+                "netz": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 200
+                },
+                "line": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 200
+                },
+                "n_data_points": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "n_cancelled": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "p_cancelled": {
+                  "type": [
+                    "number",
+                    "null"
+                  ],
+                  "minimum": 0,
+                  "maximum": 1
+                }
+              }
+            }
+          }
+        },
+        "description": "Complete frontend export. At most 100000 total rows and 32 MiB decompressed. Counts, ratios, duplicates and aggregate sums are additionally checked by the server."
+      },
+      "FrontendExportV1": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "cancellationsByMonth",
+          "cancellationsByNetworkMonth",
+          "cancellationsByNetworkLineMonth",
+          "delaysByMonth",
+          "delaysByNetworkMonth",
+          "delaysByNetworkLineMonth",
+          "mostCancelledStops"
+        ],
+        "properties": {
+          "cancellationsByMonth": {
+            "type": "array",
+            "maxItems": 100000,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "month",
+                "n_data_points",
+                "n_cancelled",
+                "p_cancelled"
+              ],
+              "properties": {
+                "month": {
+                  "type": "string",
+                  "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])-01T00:00:00(?:\\.[0-9]{1,6})?(?:Z|\\+00:?00)$",
+                  "description": "Original UTC month label; +0000 is supported."
+                },
+                "n_data_points": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "n_cancelled": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "p_cancelled": {
+                  "type": [
+                    "number",
+                    "null"
+                  ],
+                  "minimum": 0,
+                  "maximum": 1
+                }
+              }
+            }
+          },
+          "cancellationsByNetworkMonth": {
+            "type": "array",
+            "maxItems": 100000,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "month",
+                "netz",
+                "n_data_points",
+                "n_cancelled",
+                "p_cancelled"
+              ],
+              "properties": {
+                "month": {
+                  "type": "string",
+                  "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])-01T00:00:00(?:\\.[0-9]{1,6})?(?:Z|\\+00:?00)$",
+                  "description": "Original UTC month label; +0000 is supported."
+                },
+                "netz": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 200
+                },
+                "n_data_points": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "n_cancelled": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "p_cancelled": {
+                  "type": [
+                    "number",
+                    "null"
+                  ],
+                  "minimum": 0,
+                  "maximum": 1
+                }
+              }
+            }
+          },
+          "cancellationsByNetworkLineMonth": {
+            "type": "array",
+            "maxItems": 100000,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "month",
+                "netz",
+                "line",
+                "n_data_points",
+                "n_cancelled",
+                "p_cancelled"
+              ],
+              "properties": {
+                "month": {
+                  "type": "string",
+                  "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])-01T00:00:00(?:\\.[0-9]{1,6})?(?:Z|\\+00:?00)$",
+                  "description": "Original UTC month label; +0000 is supported."
+                },
+                "netz": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 200
+                },
+                "line": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 200
+                },
+                "n_data_points": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "n_cancelled": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "p_cancelled": {
+                  "type": [
+                    "number",
+                    "null"
+                  ],
+                  "minimum": 0,
+                  "maximum": 1
+                }
+              }
+            }
+          },
+          "delaysByMonth": {
+            "type": "array",
+            "maxItems": 100000,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "month",
+                "n_data_points",
+                "n_on_time_2",
+                "p_on_time_2",
+                "n_on_time_5",
+                "p_on_time_5",
+                "n_on_time_10",
+                "p_on_time_10",
+                "n_on_time_20",
+                "p_on_time_20",
+                "n_on_time_40",
+                "p_on_time_40"
+              ],
+              "properties": {
+                "month": {
+                  "type": "string",
+                  "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])-01T00:00:00(?:\\.[0-9]{1,6})?(?:Z|\\+00:?00)$",
+                  "description": "Original UTC month label; +0000 is supported."
+                },
+                "n_data_points": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "n_on_time_2": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "p_on_time_2": {
+                  "type": [
+                    "number",
+                    "null"
+                  ],
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                "n_on_time_5": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "p_on_time_5": {
+                  "type": [
+                    "number",
+                    "null"
+                  ],
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                "n_on_time_10": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "p_on_time_10": {
+                  "type": [
+                    "number",
+                    "null"
+                  ],
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                "n_on_time_20": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "p_on_time_20": {
+                  "type": [
+                    "number",
+                    "null"
+                  ],
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                "n_on_time_40": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "p_on_time_40": {
+                  "type": [
+                    "number",
+                    "null"
+                  ],
+                  "minimum": 0,
+                  "maximum": 1
+                }
+              }
+            }
+          },
+          "delaysByNetworkMonth": {
+            "type": "array",
+            "maxItems": 100000,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "month",
+                "netz",
+                "n_data_points",
+                "n_on_time_2",
+                "p_on_time_2",
+                "n_on_time_5",
+                "p_on_time_5",
+                "n_on_time_10",
+                "p_on_time_10",
+                "n_on_time_20",
+                "p_on_time_20",
+                "n_on_time_40",
+                "p_on_time_40"
+              ],
+              "properties": {
+                "month": {
+                  "type": "string",
+                  "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])-01T00:00:00(?:\\.[0-9]{1,6})?(?:Z|\\+00:?00)$",
+                  "description": "Original UTC month label; +0000 is supported."
+                },
+                "netz": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 200
+                },
+                "n_data_points": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "n_on_time_2": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "p_on_time_2": {
+                  "type": [
+                    "number",
+                    "null"
+                  ],
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                "n_on_time_5": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "p_on_time_5": {
+                  "type": [
+                    "number",
+                    "null"
+                  ],
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                "n_on_time_10": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "p_on_time_10": {
+                  "type": [
+                    "number",
+                    "null"
+                  ],
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                "n_on_time_20": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "p_on_time_20": {
+                  "type": [
+                    "number",
+                    "null"
+                  ],
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                "n_on_time_40": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "p_on_time_40": {
+                  "type": [
+                    "number",
+                    "null"
+                  ],
+                  "minimum": 0,
+                  "maximum": 1
+                }
+              }
+            }
+          },
+          "delaysByNetworkLineMonth": {
+            "type": "array",
+            "maxItems": 100000,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "month",
+                "netz",
+                "line",
+                "n_data_points",
+                "n_on_time_2",
+                "p_on_time_2",
+                "n_on_time_5",
+                "p_on_time_5",
+                "n_on_time_10",
+                "p_on_time_10",
+                "n_on_time_20",
+                "p_on_time_20",
+                "n_on_time_40",
+                "p_on_time_40"
+              ],
+              "properties": {
+                "month": {
+                  "type": "string",
+                  "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])-01T00:00:00(?:\\.[0-9]{1,6})?(?:Z|\\+00:?00)$",
+                  "description": "Original UTC month label; +0000 is supported."
+                },
+                "netz": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 200
+                },
+                "line": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 200
+                },
+                "n_data_points": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "n_on_time_2": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "p_on_time_2": {
+                  "type": [
+                    "number",
+                    "null"
+                  ],
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                "n_on_time_5": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "p_on_time_5": {
+                  "type": [
+                    "number",
+                    "null"
+                  ],
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                "n_on_time_10": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "p_on_time_10": {
+                  "type": [
+                    "number",
+                    "null"
+                  ],
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                "n_on_time_20": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "p_on_time_20": {
+                  "type": [
+                    "number",
+                    "null"
+                  ],
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                "n_on_time_40": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "p_on_time_40": {
+                  "type": [
+                    "number",
+                    "null"
+                  ],
+                  "minimum": 0,
+                  "maximum": 1
+                }
+              }
+            }
+          },
+          "mostCancelledStops": {
+            "type": "array",
+            "maxItems": 100000,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "stop_id",
+                "netz",
+                "line",
+                "n_data_points",
+                "n_cancelled",
+                "p_cancelled"
+              ],
+              "properties": {
+                "stop_id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 200
+                },
+                "netz": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 200
+                },
+                "line": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 200
+                },
+                "n_data_points": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "n_cancelled": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "p_cancelled": {
+                  "type": [
+                    "number",
+                    "null"
+                  ],
+                  "minimum": 0,
+                  "maximum": 1
+                }
+              }
+            }
+          }
+        },
+        "description": "Complete frontend export. At most 100000 total rows and 32 MiB decompressed. Counts, ratios, duplicates and aggregate sums are additionally checked by the server."
+      },
+      "FrontendExportV2": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "cancellationsByMonth",
+          "cancellationsByNetworkMonth",
+          "cancellationsByNetworkLineMonth",
+          "delaysByMonth",
+          "delaysByNetworkMonth",
+          "delaysByNetworkLineMonth",
+          "mostCancelledStops"
+        ],
+        "properties": {
+          "cancellationsByMonth": {
+            "type": "array",
+            "maxItems": 100000,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "month",
+                "n_data_points",
+                "n_cancelled",
+                "p_cancelled"
+              ],
+              "properties": {
+                "month": {
+                  "type": "string",
+                  "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])-01T00:00:00(?:\\.[0-9]{1,6})?(?:Z|\\+00:?00)$",
+                  "description": "Original UTC month label; +0000 is supported."
+                },
+                "n_data_points": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "n_cancelled": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "p_cancelled": {
+                  "type": [
+                    "number",
+                    "null"
+                  ],
+                  "minimum": 0,
+                  "maximum": 1
+                }
+              }
+            }
+          },
+          "cancellationsByNetworkMonth": {
+            "type": "array",
+            "maxItems": 100000,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "month",
+                "netz",
+                "n_data_points",
+                "n_cancelled",
+                "p_cancelled"
+              ],
+              "properties": {
+                "month": {
+                  "type": "string",
+                  "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])-01T00:00:00(?:\\.[0-9]{1,6})?(?:Z|\\+00:?00)$",
+                  "description": "Original UTC month label; +0000 is supported."
+                },
+                "netz": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 200
+                },
+                "n_data_points": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "n_cancelled": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "p_cancelled": {
+                  "type": [
+                    "number",
+                    "null"
+                  ],
+                  "minimum": 0,
+                  "maximum": 1
+                }
+              }
+            }
+          },
+          "cancellationsByNetworkLineMonth": {
+            "type": "array",
+            "maxItems": 100000,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "month",
+                "netz",
+                "line",
+                "line_id",
+                "n_data_points",
+                "n_cancelled",
+                "p_cancelled"
+              ],
+              "properties": {
+                "month": {
+                  "type": "string",
+                  "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])-01T00:00:00(?:\\.[0-9]{1,6})?(?:Z|\\+00:?00)$",
+                  "description": "Original UTC month label; +0000 is supported."
+                },
+                "netz": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 200
+                },
+                "line": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 200
+                },
+                "line_id": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9]+(?:[._-][a-z0-9]+)*$",
+                  "minLength": 1,
+                  "maxLength": 120,
+                  "description": "Stable trainmaps line identifier from the reference catalog."
+                },
+                "n_data_points": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "n_cancelled": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "p_cancelled": {
+                  "type": [
+                    "number",
+                    "null"
+                  ],
+                  "minimum": 0,
+                  "maximum": 1
+                }
+              }
+            }
+          },
+          "delaysByMonth": {
+            "type": "array",
+            "maxItems": 100000,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "month",
+                "n_data_points",
+                "n_on_time_2",
+                "p_on_time_2",
+                "n_on_time_5",
+                "p_on_time_5",
+                "n_on_time_10",
+                "p_on_time_10",
+                "n_on_time_20",
+                "p_on_time_20",
+                "n_on_time_40",
+                "p_on_time_40"
+              ],
+              "properties": {
+                "month": {
+                  "type": "string",
+                  "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])-01T00:00:00(?:\\.[0-9]{1,6})?(?:Z|\\+00:?00)$",
+                  "description": "Original UTC month label; +0000 is supported."
+                },
+                "n_data_points": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "n_on_time_2": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "p_on_time_2": {
+                  "type": [
+                    "number",
+                    "null"
+                  ],
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                "n_on_time_5": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "p_on_time_5": {
+                  "type": [
+                    "number",
+                    "null"
+                  ],
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                "n_on_time_10": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "p_on_time_10": {
+                  "type": [
+                    "number",
+                    "null"
+                  ],
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                "n_on_time_20": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "p_on_time_20": {
+                  "type": [
+                    "number",
+                    "null"
+                  ],
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                "n_on_time_40": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "p_on_time_40": {
+                  "type": [
+                    "number",
+                    "null"
+                  ],
+                  "minimum": 0,
+                  "maximum": 1
+                }
+              }
+            }
+          },
+          "delaysByNetworkMonth": {
+            "type": "array",
+            "maxItems": 100000,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "month",
+                "netz",
+                "n_data_points",
+                "n_on_time_2",
+                "p_on_time_2",
+                "n_on_time_5",
+                "p_on_time_5",
+                "n_on_time_10",
+                "p_on_time_10",
+                "n_on_time_20",
+                "p_on_time_20",
+                "n_on_time_40",
+                "p_on_time_40"
+              ],
+              "properties": {
+                "month": {
+                  "type": "string",
+                  "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])-01T00:00:00(?:\\.[0-9]{1,6})?(?:Z|\\+00:?00)$",
+                  "description": "Original UTC month label; +0000 is supported."
+                },
+                "netz": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 200
+                },
+                "n_data_points": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "n_on_time_2": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "p_on_time_2": {
+                  "type": [
+                    "number",
+                    "null"
+                  ],
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                "n_on_time_5": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "p_on_time_5": {
+                  "type": [
+                    "number",
+                    "null"
+                  ],
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                "n_on_time_10": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "p_on_time_10": {
+                  "type": [
+                    "number",
+                    "null"
+                  ],
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                "n_on_time_20": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "p_on_time_20": {
+                  "type": [
+                    "number",
+                    "null"
+                  ],
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                "n_on_time_40": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "p_on_time_40": {
+                  "type": [
+                    "number",
+                    "null"
+                  ],
+                  "minimum": 0,
+                  "maximum": 1
+                }
+              }
+            }
+          },
+          "delaysByNetworkLineMonth": {
+            "type": "array",
+            "maxItems": 100000,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "month",
+                "netz",
+                "line",
+                "line_id",
+                "n_data_points",
+                "n_on_time_2",
+                "p_on_time_2",
+                "n_on_time_5",
+                "p_on_time_5",
+                "n_on_time_10",
+                "p_on_time_10",
+                "n_on_time_20",
+                "p_on_time_20",
+                "n_on_time_40",
+                "p_on_time_40"
+              ],
+              "properties": {
+                "month": {
+                  "type": "string",
+                  "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])-01T00:00:00(?:\\.[0-9]{1,6})?(?:Z|\\+00:?00)$",
+                  "description": "Original UTC month label; +0000 is supported."
+                },
+                "netz": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 200
+                },
+                "line": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 200
+                },
+                "line_id": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9]+(?:[._-][a-z0-9]+)*$",
+                  "minLength": 1,
+                  "maxLength": 120,
+                  "description": "Stable trainmaps line identifier from the reference catalog."
+                },
+                "n_data_points": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "n_on_time_2": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "p_on_time_2": {
+                  "type": [
+                    "number",
+                    "null"
+                  ],
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                "n_on_time_5": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "p_on_time_5": {
+                  "type": [
+                    "number",
+                    "null"
+                  ],
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                "n_on_time_10": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "p_on_time_10": {
+                  "type": [
+                    "number",
+                    "null"
+                  ],
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                "n_on_time_20": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "p_on_time_20": {
+                  "type": [
+                    "number",
+                    "null"
+                  ],
+                  "minimum": 0,
+                  "maximum": 1
+                },
+                "n_on_time_40": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "p_on_time_40": {
+                  "type": [
+                    "number",
+                    "null"
+                  ],
+                  "minimum": 0,
+                  "maximum": 1
+                }
+              }
+            }
+          },
+          "mostCancelledStops": {
+            "type": "array",
+            "maxItems": 100000,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "stop_id",
+                "netz",
+                "line",
+                "line_id",
+                "n_data_points",
+                "n_cancelled",
+                "p_cancelled"
+              ],
+              "properties": {
+                "stop_id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 200
+                },
+                "netz": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 200
+                },
+                "line": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 200
+                },
+                "line_id": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9]+(?:[._-][a-z0-9]+)*$",
+                  "minLength": 1,
+                  "maxLength": 120,
+                  "description": "Stable trainmaps line identifier from the reference catalog."
+                },
+                "n_data_points": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "n_cancelled": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "p_cancelled": {
+                  "type": [
+                    "number",
+                    "null"
+                  ],
+                  "minimum": 0,
+                  "maximum": 1
+                }
+              }
+            }
+          }
+        },
+        "description": "Complete frontend export. At most 100000 total rows and 32 MiB decompressed. Counts, ratios, duplicates and aggregate sums are additionally checked by the server. Every row with a source line requires a registered line_id."
+      }
+    },
+    "securitySchemes": {
+      "HTTPBearer": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    }
+  }
+}

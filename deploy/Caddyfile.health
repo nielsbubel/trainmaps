@@ -1,0 +1,17 @@
+{
+	admin off
+	auto_https off
+}
+
+http://34.7.91.18 {
+	@health {
+		method GET HEAD
+		path /health
+	}
+	handle @health {
+		reverse_proxy 127.0.0.1:8787
+	}
+	handle {
+		respond "HTTPS is not configured yet. Only GET /health is available over HTTP." 426
+	}
+}

@@ -1,0 +1,36 @@
+{
+	admin off
+	skip_install_trust
+	default_sni 34.7.91.18
+	auto_https disable_redirects
+	storage file_system {
+		root {$TRAINMAPS_CADDY_DATA}
+	}
+	servers {
+		protocols h1 h2
+	}
+}
+
+http://34.7.91.18 {
+	@health {
+		method GET HEAD
+		path /health
+	}
+	handle @health {
+		reverse_proxy 127.0.0.1:8787
+	}
+	handle {
+		redir https://34.7.91.18{uri} 308
+	}
+}
+
+https://34.7.91.18 {
+	tls {
+		issuer acme {
+			dir {$TRAINMAPS_ACME_DIRECTORY:https://acme-v02.api.letsencrypt.org/directory}
+			profile shortlived
+			disable_tlsalpn_challenge
+		}
+	}
+	reverse_proxy 127.0.0.1:8787
+}

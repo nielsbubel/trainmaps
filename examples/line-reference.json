@@ -1,0 +1,21 @@
+{
+  "revision": 1,
+  "network_id": "de.test",
+  "display_name": "S1 Testnetz",
+  "source_aliases": [
+    {
+      "netz": "Testnetz",
+      "line": "S1"
+    }
+  ],
+  "geometry": {
+    "source": "basemap.de",
+    "source_layer": "Verkehrslinie",
+    "source_class": "S-Bahn",
+    "status": "pending",
+    "reference": null,
+    "version": null
+  },
+  "active": true,
+  "notes": "Synthetisches Dokumentationsbeispiel; keine echte Linie."
+}

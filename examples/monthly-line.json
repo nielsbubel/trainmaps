@@ -1,0 +1,36 @@
+{
+  "schema_version": "1.0",
+  "batch_id": "aab03c52-48a2-4e38-81a9-013dfe702d05",
+  "source_id": "beispielquelle",
+  "dataset_id": "monthly-v1",
+  "reference_version": "demo-2021-09",
+  "definition": {
+    "threshold_operator": "unknown",
+    "observation_unit": "unknown",
+    "event_type": "unknown",
+    "cancellation_handling": "excluded",
+    "month_timezone": "unknown",
+    "population_description": ""
+  },
+  "records": [
+    {
+      "scope": "line",
+      "month": "2021-09",
+      "netz": "Berlin",
+      "line": "1",
+      "direction_id": null,
+      "revision": 1,
+      "n_data_points": 10303,
+      "n_on_time_2": 9795,
+      "n_on_time_5": 10186,
+      "n_on_time_10": 10269,
+      "n_on_time_20": 10301,
+      "n_on_time_40": 10303,
+      "p_on_time_2": 0.9506939726293313,
+      "p_on_time_5": 0.9886440842473067,
+      "p_on_time_10": 0.9966999902940891,
+      "p_on_time_20": 0.9998058817820052,
+      "p_on_time_40": 1
+    }
+  ]
+}
