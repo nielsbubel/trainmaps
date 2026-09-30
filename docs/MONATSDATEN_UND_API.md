@@ -1,6 +1,6 @@
 # trainmaps: monatliche Pünktlichkeitskarte und API
 
-Stand 0.4.0, 30. September 2026. Entwicklungs-API und erste Webkarte sind
+Stand 0.5.0, 30. September 2026. Entwicklungs-API und erste Webkarte sind
 implementiert. Die Karte zeigt die Münchner S1; Bedienung und Kartenendpunkte
 stehen unter [Webkarte](KARTE.md). Verbindliche Anleitung der API-Endpunkte:
 [API.md](API.md). Die vollstaendige Datei `daten/frontend.json` wurde geprueft

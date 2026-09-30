@@ -11,7 +11,7 @@
 </head>
 <body>
   <main class="app-shell">
-    <div id="map" aria-label="Karte des Münchner S-Bahn-Netzes"></div>
+    <div id="map" aria-label="Karte mit auswählbaren S-Bahnlinien"></div>
 
     <header class="topbar">
       <a class="brand" href="/karte" aria-label="trainmaps Startseite">
@@ -19,57 +19,71 @@
         <span>trainmaps</span>
       </a>
       <div class="line-heading">
-        <span id="line-badge" class="line-badge">S1</span>
-        <div><strong id="line-title">München</strong><small>Monatlicher Linienwert</small></div>
+        <span id="line-badge" class="line-badge" hidden>S1</span>
+        <div><strong id="line-title">Linie auswählen</strong><small id="line-subtitle">S-Bahn direkt in der Karte anklicken</small></div>
       </div>
-      <button id="panel-toggle" class="mobile-button" type="button" aria-controls="control-panel" aria-expanded="true">Einstellungen</button>
+      <button id="panel-toggle" class="mobile-button" type="button" aria-controls="context-panel" aria-expanded="false" hidden>Auswertung</button>
     </header>
 
-    <aside id="control-panel" class="control-panel" aria-label="Karteneinstellungen">
+    <div id="selection-hint" class="selection-hint">
+      <span aria-hidden="true">↖</span>
+      <div><strong>S-Bahn auswählen</strong><small>Klicke eine farbige Linie an.</small></div>
+    </div>
+
+    <aside id="context-panel" class="context-panel" aria-label="Auswertung der ausgewählten S-Bahn" hidden>
+      <button id="panel-close" class="panel-close" type="button" aria-label="Auswertung schließen">×</button>
       <div class="panel-intro">
-        <p class="eyebrow">S-Bahn im Fokus</p>
-        <h1>Wie lief die S1?</h1>
-        <p>Wähle Monat und Kennzahl. Der Farbwert gilt für die gesamte Linie; Stationswerte liegen noch nicht vor.</p>
+        <p class="eyebrow">Zeitreihe · gesamte Linie</p>
+        <h1 id="panel-title">S-Bahn</h1>
+        <p id="period-label">Monatswerte über den gesamten verfügbaren Zeitraum</p>
       </div>
 
-      <div class="form-grid">
-        <label>Monat<select id="month-select"></select></label>
-        <label>Kennzahl<select id="metric-select"></select></label>
-        <label id="threshold-field">Verspätungsgrenze<select id="threshold-select"></select></label>
+      <div class="metric-tabs" role="tablist" aria-label="Kennzahl auswählen">
+        <button id="delay-tab" type="button" role="tab" aria-selected="true" data-metric="delay">Verspätung</button>
+        <button id="cancellation-tab" type="button" role="tab" aria-selected="false" data-metric="cancellations">Ausfälle</button>
       </div>
 
-      <section class="value-card" aria-live="polite">
-        <span id="value-swatch" class="value-swatch"></span>
-        <div>
-          <p id="value-label">Daten werden geladen</p>
-          <strong id="value-number">–</strong>
-          <small id="value-count">Bitte warten …</small>
-        </div>
+      <section class="series-summary" aria-live="polite">
+        <span id="summary-swatch"></span>
+        <div><small id="summary-label">Mittel über alle Monate</small><strong id="summary-value">–</strong></div>
       </section>
+
+      <section class="chart-card" aria-label="Monatliche Zeitreihe">
+        <svg id="series-chart" viewBox="0 0 720 300" role="img" aria-labelledby="chart-title chart-description">
+          <title id="chart-title">Monatliche Zeitreihe</title>
+          <desc id="chart-description">Nach Auswahl einer Linie werden alle Monatswerte angezeigt.</desc>
+        </svg>
+        <div id="chart-tooltip" class="chart-tooltip" hidden></div>
+      </section>
+
+      <div class="chart-stats">
+        <div><small>Niedrigster Wert</small><strong id="minimum-value">–</strong></div>
+        <div><small>Höchster Wert</small><strong id="maximum-value">–</strong></div>
+        <div><small>Letzter Monat</small><strong id="latest-value">–</strong></div>
+      </div>
+
+      <details class="info-box">
+        <summary>Berechnung und Datenquelle</summary>
+        <p id="value-definition"></p>
+        <p id="source-note"></p>
+      </details>
 
       <details class="layer-box">
         <summary>Kartenebenen</summary>
         <div id="layer-list" class="layer-list"></div>
       </details>
 
-      <details class="info-box">
-        <summary>Was bedeutet der Wert?</summary>
-        <p id="value-definition"></p>
-        <p id="source-note"></p>
-      </details>
-
       <footer>
-        <a href="/dokumentation">API &amp; Dokumentation</a>
+        <a href="/dokumentation/karte">Dokumentation</a>
         <span id="revision-label"></span>
       </footer>
     </aside>
 
-    <section class="legend" aria-label="Farblegende">
-      <strong>Anteil</strong>
-      <span><i class="c-good"></i>0–2 %</span>
-      <span><i class="c-ok"></i>&gt;2–5 %</span>
-      <span><i class="c-warn"></i>&gt;5–10 %</span>
-      <span><i class="c-bad"></i>&gt;10 %</span>
+    <section class="legend" aria-label="Farblegende der Linien">
+      <strong>Mittlere Verspätung</strong>
+      <small>Mittel über alle Monate</small>
+      <div class="legend-gradient" aria-hidden="true"></div>
+      <div class="legend-scale"><span>&lt;2 Min.</span><span>10</span><span>20</span><span>&gt;40 Min.</span></div>
     </section>
 
     <div id="loading" class="loading" role="status"><span></span><p>Karte wird vorbereitet …</p></div>

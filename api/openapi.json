@@ -3,7 +3,7 @@
   "info": {
     "title": "trainmaps Development API",
     "description": "[Vollständige Dokumentation](/dokumentation) · [Schnellstart](/dokumentation/schnellstart) · [API-Anleitung](/dokumentation/api)\n\nVersioned data imports and a separately managed line-reference catalog. Use frontend-2 for stable trainmaps line IDs and basemap.de geometry mappings.",
-    "version": "0.4.0"
+    "version": "0.5.0"
   },
   "paths": {
     "/api/v1/map/config": {
@@ -32,6 +32,47 @@
         ],
         "summary": "Map Geometry",
         "operationId": "map_geometry_api_v1_map_lines_geojson_get",
+        "parameters": [
+          {
+            "name": "line_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-z0-9]+(?:[._-][a-z0-9]+)*$",
+              "title": "Line Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/map/series": {
+      "get": {
+        "tags": [
+          "Karte"
+        ],
+        "summary": "Map Series",
+        "operationId": "map_series_api_v1_map_series_get",
         "parameters": [
           {
             "name": "line_id",

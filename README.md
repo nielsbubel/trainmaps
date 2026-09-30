@@ -11,10 +11,11 @@ Für die erste Kartenversion stehen Linienstatistiken im Mittelpunkt. Der Export
 `daten/frontend.json` enthält 33.108 Zeilen mit Monatswerten und einer separaten
 Stations-Ausfallrangliste; Stationsnamen, Koordinaten und deren Zeitraum fehlen.
 
-Stand 0.4.0: Import, Prüfmodus, Tokenzugriff, dauerhafte Entwicklungs-Snapshots,
+Stand 0.5.0: Import, Prüfmodus, Tokenzugriff, dauerhafte Entwicklungs-Snapshots,
 Leseendpunkte, Linienkatalog und die erste responsive Webkarte sind implementiert
 und getestet. Die Münchner S1 wird auf basemap.de-Gleisen mit 57 Monatswerten
-dargestellt.
+dargestellt. Die Linie wird direkt in der Karte ausgewählt; erst danach erscheint
+ihre vollständige Monatszeitreihe als Liniendiagramm.
 Der Entwicklungsserver ist über **https://34.7.91.18** erreichbar; lokal läuft
 die API auf http://127.0.0.1:8787. Caddy übernimmt HTTPS mit einem automatisch
 erneuerten Let's-Encrypt-Zertifikat für die IP-Adresse. Der Rechner und beide

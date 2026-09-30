@@ -70,6 +70,9 @@ def test_map_page_is_public_and_uses_restrictive_csp(tmp_path):
         page = client.get("/karte")
         assert page.status_code == 200
         assert "trainmaps · S-Bahn-Pünktlichkeit" in page.text
+        assert 'id="context-panel"' in page.text
+        assert 'id="month-select"' not in page.text
+        assert 'id="metric-select"' not in page.text
         assert "default-src 'none'" in page.headers["content-security-policy"]
         assert client.get("/karte/assets/map.js").status_code == 200
         assert client.get("/karte/assets/basemap-style.json").status_code == 200
@@ -82,6 +85,8 @@ def test_public_map_config_geometry_and_monthly_values(tmp_path):
         body = config.json()
         assert body["default_line_id"] == LINE_ID
         assert body["default_month"] == "2026-05"
+        assert body["selection_mode"] == "map"
+        assert body["lines"][0]["mean_estimated_delay_minutes"] == 2.425
         assert body["lines"][0]["geometry_version"].startswith("basemap.de")
         assert next(layer for layer in body["layers"] if layer["id"] == "roads")["default"] is False
 
@@ -104,6 +109,20 @@ def test_public_map_config_geometry_and_monthly_values(tmp_path):
         })
         assert cancelled.json()["ratio"] == .04
         assert cancelled.json()["threshold_minutes"] is None
+
+        series = client.get("/api/v1/map/series", params={"line_id": LINE_ID})
+        assert series.status_code == 200
+        result = series.json()
+        assert result["summary"] == {
+            "mean_estimated_delay_minutes": 2.425,
+            "mean_cancellation_percentage": 4.0,
+            "delay_months": 1,
+            "cancellation_months": 1,
+        }
+        assert result["values"][0]["estimated_delay_minutes"] == 2.425
+        assert result["values"][0]["cancellation_percentage"] == 4.0
+        assert result["delay_estimation"]["cumulative_thresholds_minutes"] == [2, 5, 10, 20, 40]
+        assert result["delay_estimation"]["over_40_assumption_minutes"] == 50.0
 
 
 def test_map_hides_unverified_geometry(tmp_path):
