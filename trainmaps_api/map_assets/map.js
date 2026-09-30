@@ -107,6 +107,7 @@ function addLine(entry, index) {
   const source = layerId('source', index);
   const shadow = layerId('shadow', index);
   const route = layerId('route', index);
+  const lineLabels = layerId('line-labels', index);
   const hit = layerId('hit', index);
   const stationHalo = layerId('station-halo', index);
   const stations = layerId('stations', index);
@@ -120,6 +121,10 @@ function addLine(entry, index) {
     paint: {'line-color': '#fff', 'line-width': ['interpolate', ['linear'], ['zoom'], 7, 6, 13, 10], 'line-opacity': .92}});
   state.map.addLayer({id: route, type: 'line', source, filter: lineFilter,
     paint: {'line-color': color, 'line-width': ['interpolate', ['linear'], ['zoom'], 7, 3.5, 13, 6], 'line-opacity': .96}});
+  state.map.addLayer({id: lineLabels, type: 'symbol', source, filter: lineFilter, minzoom: 7,
+    layout: {'symbol-placement': 'line', 'symbol-spacing': 280, 'text-field': entry.line.display_name.split(' ')[0],
+      'text-font': ['Roboto Condensed Regular'], 'text-size': 12, 'text-keep-upright': true},
+    paint: {'text-color': '#173f31', 'text-halo-color': '#fff', 'text-halo-width': 2.5}});
   state.map.addLayer({id: hit, type: 'line', source, filter: lineFilter,
     paint: {'line-color': '#000', 'line-width': 22, 'line-opacity': 0}});
   state.map.addLayer({id: stationHalo, type: 'circle', source, filter: stationFilter,
@@ -130,7 +135,7 @@ function addLine(entry, index) {
     layout: {'text-field': ['get', 'name'], 'text-font': ['Roboto Condensed Regular'], 'text-size': 11, 'text-offset': [0, 1.15], 'text-anchor': 'top', 'text-optional': true},
     paint: {'text-color': '#20342c', 'text-halo-color': '#fff', 'text-halo-width': 1.5}});
 
-  entry.ids = {source, shadow, route, hit, stationHalo, stations, stationLabels};
+  entry.ids = {source, shadow, route, lineLabels, hit, stationHalo, stations, stationLabels};
   [hit, stations].forEach(id => {
     state.map.on('mouseenter', id, () => { state.map.getCanvas().style.cursor = 'pointer'; });
     state.map.on('mouseleave', id, () => { state.map.getCanvas().style.cursor = ''; });
@@ -159,7 +164,7 @@ function setLayerVisibility(category, visible) {
   const ids = [];
   if (category === 'lines' || category === 'stations') {
     state.entries.forEach(entry => ids.push(...(category === 'lines'
-      ? [entry.ids.shadow, entry.ids.route, entry.ids.hit]
+      ? [entry.ids.shadow, entry.ids.route, entry.ids.lineLabels, entry.ids.hit]
       : [entry.ids.stationHalo, entry.ids.stations, entry.ids.stationLabels])));
   } else {
     ids.push(...state.map.getStyle().layers
@@ -174,6 +179,7 @@ function setSelectionStyles() {
     const selected = state.selected?.line.line_id === entry.line.line_id;
     state.map.setPaintProperty(entry.ids.route, 'line-width', ['interpolate', ['linear'], ['zoom'], 7, selected ? 5 : 3.5, 13, selected ? 8 : 6]);
     state.map.setPaintProperty(entry.ids.route, 'line-opacity', state.selected && !selected ? .48 : .96);
+    state.map.setPaintProperty(entry.ids.lineLabels, 'text-opacity', state.selected && !selected ? .42 : 1);
     state.map.setPaintProperty(entry.ids.shadow, 'line-opacity', state.selected && !selected ? .45 : .92);
   });
 }
@@ -386,6 +392,10 @@ async function start() {
     updateLineColors();
     state.map.fitBounds(allBounds(), {padding: {top: 100, right: 80, bottom: 70, left: 80}, maxZoom: 11, duration: 0});
     $('loading').classList.add('ready');
+    const requestedLine = new URLSearchParams(location.search).get('line');
+    if (requestedLine && state.entries.has(requestedLine)) {
+      selectLine(state.entries.get(requestedLine)).catch(showError);
+    }
   });
   state.map.on('error', event => { if (event.error) console.warn('Kartenressource:', event.error.message); });
   document.querySelectorAll('.metric-tabs button').forEach(button => button.addEventListener('click', () => {

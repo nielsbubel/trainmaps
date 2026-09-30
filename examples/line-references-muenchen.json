@@ -1,0 +1,164 @@
+[
+  {
+    "line_id": "de.muenchen.s1",
+    "revision": 2,
+    "network_id": "de.muenchen",
+    "display_name": "S1 München",
+    "source_aliases": [{"netz": "München", "line": "S1"}],
+    "geometry": {
+      "source": "basemap.de",
+      "source_layer": "Verkehrslinie",
+      "source_class": "S-Bahn",
+      "fallback_classes": ["Eisenbahn", "Gleis"],
+      "status": "verified",
+      "reference": "trainmaps:geometry:de.muenchen.s1@1",
+      "version": "basemap.de 2026-08-18 / MVV GTFS 06/2026"
+    },
+    "active": true,
+    "notes": "Freising und Flughafen München bis Leuchtenbergring."
+  },
+  {
+    "line_id": "de.muenchen.s2",
+    "revision": 1,
+    "network_id": "de.muenchen",
+    "display_name": "S2 München",
+    "source_aliases": [{"netz": "München", "line": "S2"}],
+    "geometry": {
+      "source": "basemap.de",
+      "source_layer": "Verkehrslinie",
+      "source_class": "S-Bahn",
+      "fallback_classes": ["Eisenbahn", "Gleis"],
+      "status": "verified",
+      "reference": "trainmaps:geometry:de.muenchen.s2@1",
+      "version": "basemap.de 2026-08-18 / MVV GTFS 06/2026"
+    },
+    "active": true,
+    "notes": "Petershausen und Altomünster bis Erding."
+  },
+  {
+    "line_id": "de.muenchen.s3",
+    "revision": 1,
+    "network_id": "de.muenchen",
+    "display_name": "S3 München",
+    "source_aliases": [{"netz": "München", "line": "S3"}],
+    "geometry": {
+      "source": "basemap.de",
+      "source_layer": "Verkehrslinie",
+      "source_class": "S-Bahn",
+      "fallback_classes": ["Eisenbahn", "Gleis"],
+      "status": "verified",
+      "reference": "trainmaps:geometry:de.muenchen.s3@1",
+      "version": "basemap.de 2026-08-18 / MVV GTFS 06/2026"
+    },
+    "active": true,
+    "notes": "Mammendorf bis Holzkirchen."
+  },
+  {
+    "line_id": "de.muenchen.s4",
+    "revision": 1,
+    "network_id": "de.muenchen",
+    "display_name": "S4 München",
+    "source_aliases": [{"netz": "München", "line": "S4"}],
+    "geometry": {
+      "source": "basemap.de",
+      "source_layer": "Verkehrslinie",
+      "source_class": "S-Bahn",
+      "fallback_classes": ["Eisenbahn", "Gleis"],
+      "status": "verified",
+      "reference": "trainmaps:geometry:de.muenchen.s4@1",
+      "version": "basemap.de 2026-08-18 / MVV GTFS 06/2026"
+    },
+    "active": true,
+    "notes": "Geltendorf bis Zorneding gemäß längstem regulären GTFS-Laufweg."
+  },
+  {
+    "line_id": "de.muenchen.s5",
+    "revision": 1,
+    "network_id": "de.muenchen",
+    "display_name": "S5 München",
+    "source_aliases": [{"netz": "München", "line": "S5"}],
+    "geometry": {
+      "source": "basemap.de",
+      "source_layer": "Verkehrslinie",
+      "source_class": "S-Bahn",
+      "fallback_classes": ["Eisenbahn", "Gleis"],
+      "status": "verified",
+      "reference": "trainmaps:geometry:de.muenchen.s5@1",
+      "version": "basemap.de 2026-08-18 / MVV GTFS 06/2026"
+    },
+    "active": true,
+    "notes": "Weßling bis Kreuzstraße."
+  },
+  {
+    "line_id": "de.muenchen.s6",
+    "revision": 1,
+    "network_id": "de.muenchen",
+    "display_name": "S6 München",
+    "source_aliases": [{"netz": "München", "line": "S6"}],
+    "geometry": {
+      "source": "basemap.de",
+      "source_layer": "Verkehrslinie",
+      "source_class": "S-Bahn",
+      "fallback_classes": ["Eisenbahn", "Gleis"],
+      "status": "verified",
+      "reference": "trainmaps:geometry:de.muenchen.s6@1",
+      "version": "basemap.de 2026-08-18 / MVV GTFS 06/2026"
+    },
+    "active": true,
+    "notes": "Tutzing bis Ebersberg."
+  },
+  {
+    "line_id": "de.muenchen.s7",
+    "revision": 1,
+    "network_id": "de.muenchen",
+    "display_name": "S7 München",
+    "source_aliases": [{"netz": "München", "line": "S7"}],
+    "geometry": {
+      "source": "basemap.de",
+      "source_layer": "Verkehrslinie",
+      "source_class": "S-Bahn",
+      "fallback_classes": ["Eisenbahn", "Gleis"],
+      "status": "verified",
+      "reference": "trainmaps:geometry:de.muenchen.s7@1",
+      "version": "basemap.de 2026-08-18 / MVV GTFS 06/2026"
+    },
+    "active": true,
+    "notes": "Wolfratshausen bis München Hbf."
+  },
+  {
+    "line_id": "de.muenchen.s8",
+    "revision": 1,
+    "network_id": "de.muenchen",
+    "display_name": "S8 München",
+    "source_aliases": [{"netz": "München", "line": "S8"}],
+    "geometry": {
+      "source": "basemap.de",
+      "source_layer": "Verkehrslinie",
+      "source_class": "S-Bahn",
+      "fallback_classes": ["Eisenbahn", "Gleis"],
+      "status": "verified",
+      "reference": "trainmaps:geometry:de.muenchen.s8@1",
+      "version": "basemap.de 2026-08-18 / MVV GTFS 06/2026"
+    },
+    "active": true,
+    "notes": "Herrsching bis Flughafen München."
+  },
+  {
+    "line_id": "de.muenchen.s20",
+    "revision": 1,
+    "network_id": "de.muenchen",
+    "display_name": "S20 München",
+    "source_aliases": [{"netz": "München", "line": "S20"}],
+    "geometry": {
+      "source": "basemap.de",
+      "source_layer": "Verkehrslinie",
+      "source_class": "S-Bahn",
+      "fallback_classes": ["Eisenbahn", "Gleis"],
+      "status": "verified",
+      "reference": "trainmaps:geometry:de.muenchen.s20@1",
+      "version": "basemap.de 2026-08-18 / MVV GTFS 06/2026"
+    },
+    "active": true,
+    "notes": "Geltendorf bis Höllriegelskreuth einschließlich der planmäßigen Verlängerung."
+  }
+]

@@ -150,6 +150,46 @@ def test_map_hides_unverified_geometry(tmp_path):
         assert hidden.status_code == 404
 
 
+def test_map_config_exposes_all_munich_lines_when_catalogued(tmp_path):
+    app = create_app(data_dir=tmp_path, write_token=WRITE, read_token=READ,
+                     mapping_token=MAPPING)
+    definitions = json.loads((ROOT / "examples/line-references-muenchen.json")
+                             .read_text(encoding="utf-8"))
+    with TestClient(app) as client:
+        for definition in definitions:
+            line_id = definition["line_id"]
+            body = {key: value for key, value in definition.items() if key != "line_id"}
+            response = client.put(f"/api/v1/reference/lines/{line_id}", json=body,
+                                  headers=auth(MAPPING))
+            assert response.status_code == 201
+
+        data = payload()
+        delay = data["delaysByNetworkLineMonth"][0]
+        cancellation = data["cancellationsByNetworkLineMonth"][0]
+        aliases = [definition["source_aliases"][0] for definition in definitions]
+        data["delaysByNetworkLineMonth"] = [{**delay, **alias} for alias in aliases]
+        data["cancellationsByNetworkLineMonth"] = [
+            {**cancellation, **alias} for alias in aliases
+        ]
+        factor = len(aliases)
+        for collection in ("delaysByMonth", "delaysByNetworkMonth",
+                           "cancellationsByMonth", "cancellationsByNetworkMonth"):
+            for row in data[collection]:
+                for key in tuple(row):
+                    if key == "n_data_points" or key.startswith("n_on_time_") or key == "n_cancelled":
+                        row[key] *= factor
+        headers = {**auth(WRITE), "Idempotency-Key": str(uuid.uuid4()),
+                   "X-Dataset-Revision": "1"}
+        imported = client.post("/api/v1/imports/frontend", json=data, headers=headers)
+        assert imported.status_code == 201, imported.json()
+
+        config = client.get("/api/v1/map/config").json()
+        assert {line["line_id"] for line in config["lines"]} == {
+            definition["line_id"] for definition in definitions
+        }
+        assert all(line["months"] == ["2026-05"] for line in config["lines"])
+
+
 def test_committed_geometry_and_style_have_auditable_sources():
     geometry = json.loads((ROOT / "trainmaps_api/map_data/de.muenchen.s1.geojson")
                           .read_text(encoding="utf-8"))
@@ -171,3 +211,42 @@ def test_committed_geometry_and_style_have_auditable_sources():
     assert all(layer.get("layout", {}).get("visibility") == "none"
                for layer in style["layers"]
                if layer["metadata"]["trainmaps:category"] in hidden)
+
+
+def test_all_current_munich_lines_have_geometry_and_catalog_entries():
+    expected_stations = {
+        "de.muenchen.s1": 23,
+        "de.muenchen.s2": 39,
+        "de.muenchen.s3": 31,
+        "de.muenchen.s4": 29,
+        "de.muenchen.s5": 34,
+        "de.muenchen.s6": 35,
+        "de.muenchen.s7": 16,
+        "de.muenchen.s8": 32,
+        "de.muenchen.s20": 18,
+    }
+    references = json.loads((ROOT / "examples/line-references-muenchen.json")
+                            .read_text(encoding="utf-8"))
+    assert {reference["line_id"] for reference in references} == set(expected_stations)
+    assert all(reference["geometry"]["status"] == "verified" for reference in references)
+    assert all(reference["source_aliases"] == [{
+        "netz": "München",
+        "line": reference["display_name"].split()[0],
+    }] for reference in references)
+
+    for line_id, station_count in expected_stations.items():
+        geometry = json.loads((ROOT / "trainmaps_api/map_data" / f"{line_id}.geojson")
+                              .read_text(encoding="utf-8"))
+        metadata = geometry["metadata"]
+        line_feature = geometry["features"][0]
+        assert metadata["line_id"] == line_id
+        assert metadata["stations"] == station_count
+        assert metadata["basemap_layer"] == "Verkehrslinie"
+        assert metadata["basemap_fallback_classes"] == ["Eisenbahn", "Gleis"]
+        assert metadata["max_station_snap_distance_m"] <= 600
+        assert metadata["max_stitched_gap_m"] <= metadata.get(
+            "route_bridge_limit_m", metadata["stitch_tolerance_m"]
+        )
+        assert line_feature["properties"]["line_id"] == line_id
+        assert line_feature["geometry"]["type"] == "MultiLineString"
+        assert line_feature["geometry"]["coordinates"]

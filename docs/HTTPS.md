@@ -25,7 +25,7 @@ curl.exe --fail-with-body https://34.7.91.18/health
 ```
 
 Erwartet: HTTP 200 und
-`{"status":"ok","service":"trainmaps-development","version":"0.6.0"}`.
+`{"status":"ok","service":"trainmaps-development","version":"0.7.0"}`.
 Die Zertifikatsprüfung bleibt eingeschaltet; `--insecure` ist nicht nötig.
 Weitere HTTP-Pfade werden auf HTTPS umgeleitet. Tokens und JSON-Lieferungen
 immer direkt an die HTTPS-Adresse senden, nicht erst an die HTTP-Weiterleitung.

@@ -3,7 +3,7 @@
   "info": {
     "title": "trainmaps Development API",
     "description": "[Vollständige Dokumentation](/dokumentation) · [Schnellstart](/dokumentation/schnellstart) · [API-Anleitung](/dokumentation/api)\n\nVersioned data imports and a separately managed line-reference catalog. Use frontend-2 for stable trainmaps line IDs and basemap.de geometry mappings.",
-    "version": "0.6.0"
+    "version": "0.7.0"
   },
   "paths": {
     "/api/v1/map/config": {

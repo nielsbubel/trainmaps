@@ -106,11 +106,15 @@ mindestens eine Linien-ID verwendet wird und jede verwendete Geometrie aktiv und
 `verified` ist. Der Monatsendpunkt verwendet den aktuellen Katalogzustand und
 liefert pro Zeile `geometry_status`.
 
-Die erste reale Referenz ist `de.muenchen.s1` mit dem Quellalias `München/S1`.
-Revision 2 verweist auf `trainmaps:geometry:de.muenchen.s1@1` und ist nach der
-Desktop- und Mobilprüfung `verified`. Der numerische Quellwert `München/1`
-bleibt wegen abweichender Statistikwerte getrennt. Aufbau und Prüfdaten des
-Fahrwegs stehen unter [Webkarte](KARTE.md).
+Der produktive Münchner Katalog enthält `de.muenchen.s1` bis
+`de.muenchen.s8` sowie `de.muenchen.s20`. Die Quellaliase lauten entsprechend
+`München/S1` bis `München/S8` und `München/S20`; alle neun Fahrwege sind nach
+der Desktop- und Mobilprüfung `verified`. Die Definitionen stehen gesammelt in
+[`examples/line-references-muenchen.json`](../examples/line-references-muenchen.json).
+Die numerischen Quellwerte `München/1` bis `München/9` bleiben wegen abweichender
+Statistikwerte getrennt. `München/S9` besitzt nur einen historischen Monatswert
+und keine aktuelle Linie im verwendeten MVV-GTFS 06/2026. Aufbau und Prüfdaten
+der Fahrwege stehen unter [Webkarte](KARTE.md).
 
 ## Regeln für Änderungen
 

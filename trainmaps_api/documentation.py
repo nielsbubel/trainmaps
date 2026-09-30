@@ -28,7 +28,7 @@ class Document:
 
 DOCUMENTS = (
     Document("schnellstart", "docs/SCHNELLSTART.md", "Schnellstart", "Verbindung prüfen und die erste JSON-Lieferung testen."),
-    Document("karte", "docs/KARTE.md", "Webkarte", "Münchner S1 ansehen, Ebenen wählen und öffentliche Kartenendpunkte verwenden."),
+    Document("karte", "docs/KARTE.md", "Webkarte", "Alle Münchner S-Bahnlinien ansehen, Ebenen wählen und öffentliche Kartenendpunkte verwenden."),
     Document("api", "docs/API.md", "API & Datenlieferung", "Datenformat, Authentifizierung, Endpunkte und Fehlercodes."),
     Document("linienreferenzen", "docs/LINIENREFERENZEN.md", "Linienreferenzen", "Stabile Linien-IDs mit basemap.de-Fahrwegen verknüpfen."),
     Document("linienkandidaten", "docs/LINIENKANDIDATEN.md", "Linienkandidaten", "Rohwerte prüfen und schrittweise in den Katalog übernehmen."),
@@ -42,6 +42,7 @@ ATTACHMENTS = {
     "frontend-v2-minimal.json": "examples/frontend-v2-minimal.json",
     "line-reference.json": "examples/line-reference.json",
     "line-reference-muenchen-s1.json": "examples/line-reference-muenchen-s1.json",
+    "line-references-muenchen.json": "examples/line-references-muenchen.json",
     "line-candidates.json": "docs/line-candidates.json",
     "frontend-inspection.json": "docs/frontend-inspection.json",
     "monthly-line.json": "examples/monthly-line.json",
@@ -94,7 +95,7 @@ def render_markdown(text, source):
     return renderer.renderer.render(tokens, renderer.options, {}), headings
 
 
-def page(title, content, *, selected="", headings=(), version="0.6.0"):
+def page(title, content, *, selected="", headings=(), version="0.7.0"):
     links = ['<a href="/dokumentation"' + (' aria-current="page"' if not selected else '') + '>Übersicht</a>']
     for doc in DOCUMENTS:
         current = ' aria-current="page"' if doc.slug == selected else ''

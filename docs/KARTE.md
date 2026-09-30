@@ -1,9 +1,9 @@
 # Webkarte
 
 Die erste trainmaps-Karte ist unter **[https://34.7.91.18/karte](https://34.7.91.18/karte)**
-erreichbar. Sie zeigt die Münchner S1 und 57 Monatswerte von September 2021 bis
-Mai 2026. Die Kartenansicht und die vier dafür vorgesehenen Leseendpunkte sind
-öffentlich; ein API-Token wird dafür nicht im Browser gespeichert.
+erreichbar. Sie zeigt S1 bis S8 sowie S20 in München mit jeweils 57 Monatswerten
+von September 2021 bis Mai 2026. Die Kartenansicht und die vier dafür vorgesehenen
+Leseendpunkte sind öffentlich; ein API-Token wird dafür nicht im Browser gespeichert.
 
 ## Bedienung
 
@@ -12,6 +12,10 @@ ihrer über alle Monate gemittelten, geschätzten Verspätung eingefärbt. Die
 Farbskala reicht vom tatsächlich niedrigsten bis zum tatsächlich höchsten Wert
 aller verfügbaren S-Bahnlinien. Ein Klick auf die Linie oder eine ihrer Stationen
 wählt die S-Bahn aus und öffnet das Kontextfenster.
+
+Ein direkter Kartenlink kann die interne Linien-ID als Parameter angeben, zum
+Beispiel `/karte?line=de.muenchen.s8`. Die Karte öffnet dann sofort die gewählte
+Linie und ihre Zeitreihe.
 
 Das Liniendiagramm zeigt sofort alle verfügbaren Monatswerte. Zwei direkt
 sichtbare Schaltflächen wechseln zwischen:
@@ -119,30 +123,44 @@ Diese Werte sind Schätzwerte; Ausfälle sind ausgeschlossen und werden getrennt
 dargestellt. Für Ausfälle verwendet die Karte dieselbe relative Berechnung mit
 den Ausfallquoten in Prozent.
 
-## Fahrweg der Münchner S1
+## Fahrwege der Münchner S-Bahnlinien
 
-Die MVV-GTFS-Datei 06/2026 enthält für die S1 keine `shape_id`. Sie dient daher
-als offizielle Referenz für Linie, Haltereihenfolge und Stationskoordinaten. Der
-sichtbare Fahrweg stammt aus dem basemap.de-Vektorlayer `Verkehrslinie`.
+Die MVV-GTFS-Datei 06/2026 dient als offizielle Referenz für Linien,
+Haltereihenfolgen und Stationskoordinaten. Die sichtbaren Fahrwege stammen aus
+dem basemap.de-Vektorlayer `Verkehrslinie`. Enthalten sind:
 
-Der reproduzierbare Builder `scripts/build_s1_geometry.py` lädt die benötigten
-Kacheln auf Zoomstufe 14 und verwendet zuerst die Klasse `S-Bahn`. Wo dieselben
-Gleise allgemeiner klassifiziert sind, werden `Eisenbahn` und `Gleis` als
-dokumentierte Rückfallklassen berücksichtigt. Kurze technische Segmentlücken
-werden bis höchstens 100 Meter verbunden und je Stationspaar protokolliert.
+| Linie | abgebildeter Laufweg | Stationen |
+| --- | --- | ---: |
+| S1 | Freising/Flughafen München–Leuchtenbergring | 23 |
+| S2 | Petershausen/Altomünster–Erding | 39 |
+| S3 | Mammendorf–Holzkirchen | 31 |
+| S4 | Geltendorf–Zorneding | 29 |
+| S5 | Weßling–Kreuzstraße | 34 |
+| S6 | Tutzing–Ebersberg | 35 |
+| S7 | Wolfratshausen–München Hbf | 16 |
+| S8 | Herrsching–Flughafen München | 32 |
+| S20 | Geltendorf–Höllriegelskreuth | 18 |
 
-Das Ergebnis enthält:
+Der reproduzierbare Builder `scripts/build_munich_geometries.py` lädt die
+benötigten Kacheln auf Zoomstufe 14 und verwendet zuerst die Klasse `S-Bahn`.
+Wo dieselben Gleise allgemeiner klassifiziert sind, werden `Eisenbahn` und
+`Gleis` als dokumentierte Rückfallklassen berücksichtigt. Er wählt je Linie den
+vollständigen regulären GTFS-Laufweg; seltene Kurz- und Baustellenführungen
+werden nicht als zusätzliche Linienäste übernommen.
 
-- zwei Linienäste Freising–Leuchtenbergring und Flughafen–Leuchtenbergring;
-- 23 zusammengeführte Stationen anstelle einzelner Bahnsteighalte;
-- Quellversionen, GTFS-SHA-256, Kachelzahl, Klassen, Snap-Distanzen und alle
-  verwendeten Segmentverbindungen im GeoJSON-Metadatenblock;
-- eine größte tatsächlich verwendete Segmentlücke von 59,8 Metern.
+Technische Segmentlücken bis 250 Meter werden im Gleisgraph verbunden. Zwischen
+Feldkirchen und Heimstetten schließt der Builder eine zusätzlich protokollierte
+449,3-Meter-Lücke in der Basemap-Geometrie der S2. Jede GeoJSON-Datei enthält
+Quellversionen, GTFS-SHA-256, Kachelzahl, Klassen, Stationsabstände und sämtliche
+verwendeten Segmentverbindungen im Metadatenblock.
 
-Der maximale Abstand eines GTFS-Bahnsteigpunkts zum Basemap-Gleis beträgt am
-Flughafen 512,4 Meter. Die Stationsmarkierung verwendet weiterhin die offizielle
-GTFS-Stationskoordinate; dieser bekannte Unterschied wird nicht verschwiegen
-oder durch eine erfundene Gleisgeometrie ersetzt.
+Der größte Abstand eines verwendeten GTFS-Bahnsteigpunkts zum Basemap-Gleis
+beträgt bei der S8 am Flughafen 551,1 Meter. Die Stationsmarkierungen verwenden
+weiterhin die offiziellen GTFS-Stationskoordinaten; dieser bekannte Unterschied
+wird dokumentiert und nicht durch erfundene Gleisgeometrie ersetzt. Der aktuelle
+MVV-Umfang S1 bis S8 und S20 ist auch in den offiziellen
+[Fahrplanmedien 2026](https://www.mvv-muenchen.de/netz-plaene-medien/fahrplanmedien/download/s-bahn/)
+aufgeführt.
 
 ## Technische Umsetzung
 
@@ -159,7 +177,8 @@ der vollständige Linienkatalog werden dadurch nicht öffentlich.
 ## Prüfung
 
 Die Desktopansicht wurde mit 1440 × 1000 Pixeln, die Mobilansicht mit 390 × 844
-Pixeln in Microsoft Edge geprüft. Dabei wurden der geschlossene Anfangszustand,
-die Auswahl per Kartenklick, 57 Diagrammpunkte, der Wechsel zwischen Verspätung
-und Ausfällen, alle vier Vergleichsarten sowie die Ebenensteuerung kontrolliert.
-Die API-, Stil- und Geometrietests sind Bestandteil der automatisierten Testsuite.
+Pixeln in Microsoft Edge geprüft. Dabei wurden alle neun Linien und jeweils 57
+Diagrammpunkte, die Auswahl per Kartenlink und Kartenklick, der Wechsel zwischen
+Verspätung und Ausfällen, alle vier Vergleichsarten sowie die Ebenensteuerung
+kontrolliert. Die API-, Stil- und Geometrietests sind Bestandteil der
+automatisierten Testsuite.
