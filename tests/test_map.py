@@ -5,6 +5,7 @@ from pathlib import Path
 from fastapi.testclient import TestClient
 
 from trainmaps_api.app import create_app
+from trainmaps_api.map_page import _network_series
 
 
 WRITE = "map-writer-" + "w" * 32
@@ -89,8 +90,18 @@ def test_public_map_config_geometry_and_monthly_values(tmp_path):
         assert config.status_code == 200
         body = config.json()
         assert body["default_line_id"] == LINE_ID
+        assert body["default_network_id"] == "de.muenchen"
         assert body["default_month"] == "2026-05"
         assert body["selection_mode"] == "map"
+        assert body["line_zoom_threshold"] == 7.7
+        assert body["networks"][0]["network_id"] == "de.muenchen"
+        assert body["networks"][0]["display_name"] == "München"
+        assert body["networks"][0]["line_count"] == 1
+        assert body["networks"][0]["line_ids"] == [LINE_ID]
+        assert body["networks"][0]["latest_estimated_delay_minutes"] == 2.425
+        assert body["networks"][0]["latest_cancellation_percentage"] == 4.0
+        assert len(body["networks"][0]["center"]) == 2
+        assert len(body["networks"][0]["bounds"]) == 4
         assert body["lines"][0]["mean_estimated_delay_minutes"] == 2.425
         assert body["lines"][0]["minimum_estimated_delay_minutes"] == 2.425
         assert body["lines"][0]["maximum_estimated_delay_minutes"] == 2.425
@@ -141,6 +152,59 @@ def test_public_map_config_geometry_and_monthly_values(tmp_path):
         assert result["values"][0]["cancellation_percentage"] == 4.0
         assert result["delay_estimation"]["cumulative_thresholds_minutes"] == [2, 5, 10, 20, 40]
         assert result["delay_estimation"]["over_40_assumption_minutes"] == 50.0
+
+        networks = client.get("/api/v1/map/networks")
+        assert networks.status_code == 200
+        assert networks.json()["values"][0]["network_id"] == "de.muenchen"
+
+        network_series = client.get(
+            "/api/v1/map/network-series", params={"network_id": "de.muenchen"}
+        )
+        assert network_series.status_code == 200
+        network_result = network_series.json()
+        assert network_result["line_count"] == 1
+        assert network_result["aggregation"]["kind"] == "weighted_raw_counts"
+        assert network_result["values"][0]["estimated_delay_minutes"] == 2.425
+        assert network_result["values"][0]["cancellation_percentage"] == 4.0
+
+
+def test_network_series_weights_lines_by_monthly_data_points():
+    records = [
+        {"line_id": "de.test.a",
+         "source_aliases": [{"netz": "Testnetz", "line": "A"}]},
+        {"line_id": "de.test.b",
+         "source_aliases": [{"netz": "Testnetz", "line": "B"}]},
+    ]
+    month = "2026-05-01T00:00:00.000000+0000"
+    fast = {"month": month, "netz": "Testnetz", "line": "A",
+            "n_data_points": 100,
+            **{f"n_on_time_{threshold}": 100 for threshold in (2, 5, 10, 20, 40)}}
+    slow = {"month": month, "netz": "Testnetz", "line": "B",
+            "n_data_points": 300,
+            **{f"n_on_time_{threshold}": 0 for threshold in (2, 5, 10, 20, 40)}}
+    data = {
+        "delaysByNetworkLineMonth": [fast, slow],
+        "cancellationsByNetworkLineMonth": [
+            {"month": month, "netz": "Testnetz", "line": "A",
+             "n_data_points": 100, "n_cancelled": 10},
+            {"month": month, "netz": "Testnetz", "line": "B",
+             "n_data_points": 300, "n_cancelled": 60},
+        ],
+    }
+
+    values, summary = _network_series(data, records)
+
+    assert values == [{
+        "month": "2026-05",
+        "estimated_delay_minutes": 37.75,
+        "delay_data_points": 400,
+        "cancellation_ratio": 0.175,
+        "cancellation_percentage": 17.5,
+        "cancelled": 70,
+        "cancellation_data_points": 400,
+    }]
+    assert summary["latest_estimated_delay_minutes"] == 37.75
+    assert summary["latest_cancellation_percentage"] == 17.5
 
 
 def test_map_hides_unverified_geometry(tmp_path):

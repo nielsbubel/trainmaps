@@ -3,7 +3,7 @@
   "info": {
     "title": "trainmaps Development API",
     "description": "[Vollständige Dokumentation](/dokumentation) · [Schnellstart](/dokumentation/schnellstart) · [API-Anleitung](/dokumentation/api)\n\nVersioned data imports and a separately managed line-reference catalog. Use frontend-2 for stable trainmaps line IDs and basemap.de geometry mappings.",
-    "version": "0.8.0"
+    "version": "0.9.0"
   },
   "paths": {
     "/api/v1/map/config": {
@@ -19,6 +19,66 @@
             "content": {
               "application/json": {
                 "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/map/networks": {
+      "get": {
+        "tags": [
+          "Karte"
+        ],
+        "summary": "Map Networks",
+        "operationId": "map_networks_api_v1_map_networks_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/map/network-series": {
+      "get": {
+        "tags": [
+          "Karte"
+        ],
+        "summary": "Map Network Series",
+        "operationId": "map_network_series_api_v1_map_network_series_get",
+        "parameters": [
+          {
+            "name": "network_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-z0-9]+(?:[._-][a-z0-9]+)*$",
+              "title": "Network Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
               }
             }
           }

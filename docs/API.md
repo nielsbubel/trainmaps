@@ -1,6 +1,6 @@
 # trainmaps: Datenlieferung und Entwicklungs-API
 
-Version 0.8.0. Öffentliche Basisadresse: **https://34.7.91.18**. Lokal läuft
+Version 0.9.0. Öffentliche Basisadresse: **https://34.7.91.18**. Lokal läuft
 die Anwendung unter **http://127.0.0.1:8787**. Die interaktive Beschreibung
 steht unter **https://34.7.91.18/docs**, der maschinenlesbare Vertrag unter
 `/openapi.json` bzw. [api/openapi.json](../api/openapi.json).
@@ -35,7 +35,9 @@ Zuordnung verändern. Alle geschützten Anfragen senden
 | GET | `/docs`, `/openapi.json` | frei | Schnittstelle ansehen bzw. herunterladen. |
 | GET | `/dokumentation` | frei | Vollständige Projektdokumentation. |
 | GET | `/karte` | frei | Responsive Webkarte öffnen. |
-| GET | `/api/v1/map/config` | frei | Freigegebene Linien, Monate, Kennzahlen und Ebenen für die Karte. |
+| GET | `/api/v1/map/config` | frei | Freigegebene Verkehrsgebiete und Linien, Vergleichswerte, Kartengrenzen und Ebenen. |
+| GET | `/api/v1/map/networks` | frei | Zusammenfassung aller Verkehrsgebiete für die deutschlandweite Startansicht. |
+| GET | `/api/v1/map/network-series` | frei | Gewichtete Monatszeitreihe eines Verkehrsgebiets lesen. |
 | GET | `/api/v1/map/lines.geojson` | frei | Verifizierten Fahrweg und Stationen einer Linie lesen. |
 | GET | `/api/v1/map/series` | frei | Vollständige Monatszeitreihe und Vergleichswerte einer verifizierten Linie lesen. |
 | GET | `/api/v1/map/monthly` | frei | Einen darstellbaren Monatswert einer verifizierten Linie lesen. |
@@ -61,8 +63,12 @@ die 87 Linien des bundesweiten ersten Durchlaufs in
 [Prüfbericht](germany-first-pass-report.json) nennt die Auswahlregeln und die
 elf historischen oder aktuell nicht zugeordneten Quellkennungen.
 
-`GET /api/v1/map/series?line_id=de.muenchen.s1` ist der primäre Endpunkt der
-Webkarte. Er liefert alle Monate in chronologischer Reihenfolge, geschätzte
+`GET /api/v1/map/network-series?network_id=de.muenchen` liefert die Zeitreihe
+für ein ganzes Verkehrsgebiet. Die API summiert je Monat zuerst die Rohzähler
+aller veröffentlichten Linien. Verspätung und Ausfallquote sind damit nach
+`n_data_points` gewichtet. `GET /api/v1/map/series?line_id=de.muenchen.s1`
+liefert die entsprechende Auswertung für eine einzelne Linie. Beide liefern alle
+Monate in chronologischer Reihenfolge, geschätzte
 Verspätungsminuten, Ausfallquoten sowie Mittelwert, Minimum, Maximum und letzten
 Monatswert beider Kennzahlen.
 Die Antwort enthält die verwendeten Klassenmittelpunkte, damit die aus den

@@ -7,10 +7,15 @@ const state = {
   config: null,
   map: null,
   entries: new globalThis.Map(),
+  networkEntries: new globalThis.Map(),
   series: new globalThis.Map(),
+  loadingNetworks: new globalThis.Map(),
+  loadedNetworks: new Set(),
   selected: null,
   metric: 'delay',
-  basis: 'mean',
+  lineBasis: 'mean',
+  networkBasis: 'latest',
+  viewMode: 'networks',
 };
 const SVG_NS = 'http://www.w3.org/2000/svg';
 const comparisonStops = [
@@ -39,19 +44,25 @@ function paletteColor(position) {
   return comparisonStops.at(-1)[1];
 }
 
-function comparisonField(metric = state.metric, basis = state.basis) {
+function basisFor(scope) {
+  return scope === 'networks' ? state.networkBasis : state.lineBasis;
+}
+
+function comparisonField(metric = state.metric, basis = basisFor(state.viewMode)) {
   const suffix = metric === 'delay' ? 'estimated_delay_minutes' : 'cancellation_percentage';
   return `${basis}_${suffix}`;
 }
 
-function comparisonContext() {
-  const field = comparisonField();
-  const items = [...state.entries.values()].map(entry => ({entry, value: entry.line[field]}))
+function comparisonContext(scope = state.viewMode) {
+  const field = comparisonField(state.metric, basisFor(scope));
+  const records = scope === 'networks' ? state.config.networks : state.config.lines;
+  const items = records.map(record => ({record, value: record[field]}))
     .filter(item => item.value != null && Number.isFinite(item.value));
   const values = items.map(item => item.value);
   const minimum = values.length ? Math.min(...values) : null;
   const maximum = values.length ? Math.max(...values) : null;
-  return {field, items, minimum, maximum, neutral: items.length < 2 || minimum === maximum};
+  return {scope, field, items, minimum, maximum,
+    neutral: items.length < 2 || minimum === maximum};
 }
 
 function comparisonColor(value, context = comparisonContext()) {
@@ -90,13 +101,8 @@ function geometryBounds(collection) {
   return bounds;
 }
 
-function allBounds() {
-  const bounds = new LngLatBounds();
-  state.entries.forEach(entry => {
-    const item = geometryBounds(entry.geometry);
-    bounds.extend(item.getSouthWest()); bounds.extend(item.getNorthEast());
-  });
-  return bounds;
+function arrayBounds(values = state.config.map_bounds) {
+  return new LngLatBounds([values[0], values[1]], [values[2], values[3]]);
 }
 
 function layerId(prefix, index) {
@@ -115,19 +121,20 @@ function addLine(entry, index) {
   const lineFilter = ['==', ['get', 'feature_type'], 'line'];
   const stationFilter = ['==', ['get', 'feature_type'], 'station'];
   const color = '#718078';
+  const lineZoom = state.config.line_zoom_threshold;
 
   state.map.addSource(source, {type: 'geojson', data: entry.geometry});
-  state.map.addLayer({id: shadow, type: 'line', source, filter: lineFilter,
+  state.map.addLayer({id: shadow, type: 'line', source, filter: lineFilter, minzoom: lineZoom,
     paint: {'line-color': '#fff', 'line-width': ['interpolate', ['linear'], ['zoom'], 7, 6, 13, 10], 'line-opacity': .92}});
-  state.map.addLayer({id: route, type: 'line', source, filter: lineFilter,
+  state.map.addLayer({id: route, type: 'line', source, filter: lineFilter, minzoom: lineZoom,
     paint: {'line-color': color, 'line-width': ['interpolate', ['linear'], ['zoom'], 7, 3.5, 13, 6], 'line-opacity': .96}});
-  state.map.addLayer({id: lineLabels, type: 'symbol', source, filter: lineFilter, minzoom: 7,
+  state.map.addLayer({id: lineLabels, type: 'symbol', source, filter: lineFilter, minzoom: lineZoom,
     layout: {'symbol-placement': 'line', 'symbol-spacing': 280, 'text-field': entry.line.display_name.split(' ')[0],
       'text-font': ['Roboto Condensed Regular'], 'text-size': 12, 'text-keep-upright': true},
     paint: {'text-color': '#173f31', 'text-halo-color': '#fff', 'text-halo-width': 2.5}});
-  state.map.addLayer({id: hit, type: 'line', source, filter: lineFilter,
+  state.map.addLayer({id: hit, type: 'line', source, filter: lineFilter, minzoom: lineZoom,
     paint: {'line-color': '#000', 'line-width': 22, 'line-opacity': 0}});
-  state.map.addLayer({id: stationHalo, type: 'circle', source, filter: stationFilter,
+  state.map.addLayer({id: stationHalo, type: 'circle', source, filter: stationFilter, minzoom: 8.5,
     paint: {'circle-radius': ['interpolate', ['linear'], ['zoom'], 8, 3, 13, 6], 'circle-color': '#fff', 'circle-stroke-width': 1, 'circle-stroke-color': 'rgba(21,37,31,.16)'}});
   state.map.addLayer({id: stations, type: 'circle', source, filter: stationFilter, minzoom: 8.5,
     paint: {'circle-radius': ['interpolate', ['linear'], ['zoom'], 9, 2, 13, 3.5], 'circle-color': '#173f31'}});
@@ -142,6 +149,74 @@ function addLine(entry, index) {
     state.map.on('click', id, event => {
       event.originalEvent?.stopPropagation?.();
       selectLine(entry).catch(showError);
+    });
+  });
+  applyLayerPreferences();
+}
+
+function networkFeatures() {
+  const context = comparisonContext('networks');
+  return {
+    type: 'FeatureCollection',
+    features: state.config.networks.map(network => {
+      const value = network[context.field];
+      return {
+        type: 'Feature',
+        id: network.network_id,
+        properties: {
+          network_id: network.network_id,
+          display_name: network.display_name,
+          line_count: network.line_count,
+          color: comparisonColor(value, context),
+          value_label: value == null ? '–' : value.toLocaleString('de-DE', {
+            minimumFractionDigits: 1, maximumFractionDigits: 1,
+          }),
+        },
+        geometry: {type: 'Point', coordinates: network.center},
+      };
+    }),
+  };
+}
+
+function addNetworkBubbles() {
+  const maxzoom = state.config.line_zoom_threshold;
+  state.map.addSource('trainmaps-networks', {type: 'geojson', data: networkFeatures()});
+  state.map.addLayer({
+    id: 'trainmaps-network-shadow', type: 'circle', source: 'trainmaps-networks', maxzoom,
+    paint: {'circle-radius': ['interpolate', ['linear'], ['zoom'], 4, 25, 7, 32],
+      'circle-color': '#fff', 'circle-opacity': .96},
+  });
+  state.map.addLayer({
+    id: 'trainmaps-network-bubble', type: 'circle', source: 'trainmaps-networks', maxzoom,
+    paint: {'circle-radius': ['interpolate', ['linear'], ['zoom'], 4, 21, 7, 28],
+      'circle-color': ['get', 'color'], 'circle-stroke-color': 'rgba(21,37,31,.2)',
+      'circle-stroke-width': 1.5},
+  });
+  state.map.addLayer({
+    id: 'trainmaps-network-value', type: 'symbol', source: 'trainmaps-networks', maxzoom,
+    layout: {'text-field': ['get', 'value_label'], 'text-font': ['Roboto Condensed Regular'],
+      'text-size': 13, 'text-allow-overlap': true},
+    paint: {'text-color': '#fff', 'text-halo-color': 'rgba(21,37,31,.28)', 'text-halo-width': 1},
+  });
+  state.map.addLayer({
+    id: 'trainmaps-network-label', type: 'symbol', source: 'trainmaps-networks', maxzoom,
+    layout: {'text-field': ['concat', ['get', 'display_name'], ' · ', ['to-string', ['get', 'line_count']], ' Linien'],
+      'text-font': ['Roboto Condensed Regular'], 'text-size': 11, 'text-offset': [0, 3.1],
+      'text-anchor': 'top', 'text-allow-overlap': true},
+    paint: {'text-color': '#173f31', 'text-halo-color': '#fff', 'text-halo-width': 2},
+  });
+  state.map.addLayer({
+    id: 'trainmaps-network-hit', type: 'circle', source: 'trainmaps-networks', maxzoom,
+    paint: {'circle-radius': 36, 'circle-color': '#000', 'circle-opacity': 0},
+  });
+  ['trainmaps-network-hit'].forEach(id => {
+    state.map.on('mouseenter', id, () => { state.map.getCanvas().style.cursor = 'pointer'; });
+    state.map.on('mouseleave', id, () => { state.map.getCanvas().style.cursor = ''; });
+    state.map.on('click', id, event => {
+      event.originalEvent?.stopPropagation?.();
+      const networkId = event.features?.[0]?.properties?.network_id;
+      const entry = state.networkEntries.get(networkId);
+      if (entry) selectNetwork(entry.network).catch(showError);
     });
   });
 }
@@ -163,9 +238,15 @@ function setLayerVisibility(category, visible) {
   if (!state.map?.isStyleLoaded()) return;
   const ids = [];
   if (category === 'lines' || category === 'stations') {
-    state.entries.forEach(entry => ids.push(...(category === 'lines'
-      ? [entry.ids.shadow, entry.ids.route, entry.ids.lineLabels, entry.ids.hit]
-      : [entry.ids.stationHalo, entry.ids.stations, entry.ids.stationLabels])));
+    state.entries.forEach(entry => {
+      if (!entry.ids) return;
+      ids.push(...(category === 'lines'
+        ? [entry.ids.shadow, entry.ids.route, entry.ids.lineLabels, entry.ids.hit]
+        : [entry.ids.stationHalo, entry.ids.stations, entry.ids.stationLabels]));
+    });
+  } else if (category === 'networks') {
+    ids.push('trainmaps-network-shadow', 'trainmaps-network-bubble',
+      'trainmaps-network-value', 'trainmaps-network-label', 'trainmaps-network-hit');
   } else {
     ids.push(...state.map.getStyle().layers
       .filter(layer => layer.metadata?.['trainmaps:category'] === category)
@@ -174,41 +255,67 @@ function setLayerVisibility(category, visible) {
   ids.forEach(id => { if (state.map.getLayer(id)) state.map.setLayoutProperty(id, 'visibility', visible ? 'visible' : 'none'); });
 }
 
-function setSelectionStyles() {
-  state.entries.forEach(entry => {
-    const selected = state.selected?.line.line_id === entry.line.line_id;
-    state.map.setPaintProperty(entry.ids.route, 'line-width', ['interpolate', ['linear'], ['zoom'], 7, selected ? 5 : 3.5, 13, selected ? 8 : 6]);
-    state.map.setPaintProperty(entry.ids.route, 'line-opacity', state.selected && !selected ? .48 : .96);
-    state.map.setPaintProperty(entry.ids.lineLabels, 'text-opacity', state.selected && !selected ? .42 : 1);
-    state.map.setPaintProperty(entry.ids.shadow, 'line-opacity', state.selected && !selected ? .45 : .92);
+function applyLayerPreferences() {
+  document.querySelectorAll('#layer-list input').forEach(input => {
+    if (!input.checked) setLayerVisibility(input.dataset.layer, false);
   });
 }
 
-function comparisonTitle() {
+function setSelectionStyles() {
+  state.entries.forEach(entry => {
+    if (!entry.ids) return;
+    const selected = state.selected?.type === 'line'
+      && state.selected.record.line_id === entry.line.line_id;
+    state.map.setPaintProperty(entry.ids.route, 'line-width', ['interpolate', ['linear'], ['zoom'], 7, selected ? 5 : 3.5, 13, selected ? 8 : 6]);
+    const dim = state.selected?.type === 'line' && !selected;
+    state.map.setPaintProperty(entry.ids.route, 'line-opacity', dim ? .48 : .96);
+    state.map.setPaintProperty(entry.ids.lineLabels, 'text-opacity', dim ? .42 : 1);
+    state.map.setPaintProperty(entry.ids.shadow, 'line-opacity', dim ? .45 : .92);
+  });
+}
+
+function comparisonTitle(scope = state.viewMode) {
   const metric = state.metric === 'delay' ? 'Verspätung' : 'Ausfallquote';
   return {
     mean: `Mittlere ${metric}`,
     minimum: `Niedrigste ${metric}`,
     maximum: `Höchste ${metric}`,
     latest: `Letzter Monatswert · ${metric}`,
-  }[state.basis];
+  }[basisFor(scope)];
 }
 
-function updateLineColors() {
-  const context = comparisonContext();
+function updateColors() {
+  const lineContext = comparisonContext('lines');
   state.entries.forEach(entry => {
-    const value = entry.line[context.field];
-    const color = comparisonColor(value, context);
+    const value = entry.line[lineContext.field];
+    const color = comparisonColor(value, lineContext);
     entry.currentColor = color;
-    if (state.map.getLayer(entry.ids.route)) state.map.setPaintProperty(entry.ids.route, 'line-color', color);
+    if (entry.ids && state.map.getLayer(entry.ids.route)) {
+      state.map.setPaintProperty(entry.ids.route, 'line-color', color);
+    }
   });
-  if (state.selected) $('line-badge').style.background = state.selected.currentColor;
-  $('legend-title').textContent = comparisonTitle();
+  const networkContext = comparisonContext('networks');
+  state.config.networks.forEach(network => {
+    const entry = state.networkEntries.get(network.network_id);
+    entry.currentColor = comparisonColor(network[networkContext.field], networkContext);
+  });
+  const networkSource = state.map.getSource('trainmaps-networks');
+  if (networkSource) networkSource.setData(networkFeatures());
+  if (state.selected) {
+    const context = comparisonContext(state.selected.type === 'network' ? 'networks' : 'lines');
+    $('line-badge').style.background = comparisonColor(
+      state.selected.record[context.field], context
+    );
+  }
+  const context = comparisonContext(state.viewMode);
+  $('legend-title').textContent = comparisonTitle(state.viewMode);
   $('legend-note').textContent = context.items.length < 2
-    ? 'Nur eine S-Bahnlinie verfügbar'
+    ? (state.viewMode === 'networks'
+      ? 'Nur ein Verkehrsgebiet verfügbar'
+      : 'Nur eine S-Bahnlinie verfügbar')
     : context.neutral
-      ? `${context.items.length} S-Bahnlinien · gleiche Werte`
-      : `Spannweite aller ${context.items.length} S-Bahnlinien`;
+      ? `${context.items.length} ${state.viewMode === 'networks' ? 'Verkehrsgebiete' : 'S-Bahnlinien'} · gleiche Werte`
+      : `Spannweite aller ${context.items.length} ${state.viewMode === 'networks' ? 'Verkehrsgebiete' : 'S-Bahnlinien'}`;
   $('legend-gradient').style.background = context.neutral
     ? '#718078'
     : 'linear-gradient(90deg, #197a4b 0%, #d8b72c 50%, #eb8a2f 72%, #b7262f 100%)';
@@ -219,7 +326,7 @@ function updateLineColors() {
 }
 
 async function selectLine(entry) {
-  state.selected = entry;
+  state.selected = {type: 'line', record: entry.line, entry};
   setSelectionStyles();
   $('selection-hint').hidden = true;
   $('context-panel').hidden = false;
@@ -232,15 +339,19 @@ async function selectLine(entry) {
   $('line-badge').style.background = entry.currentColor || '#718078';
   $('line-title').textContent = entry.line.display_name;
   $('line-subtitle').textContent = 'Zeitreihe geöffnet';
+  $('panel-eyebrow').textContent = 'Zeitreihe · gesamte Linie';
   $('panel-title').textContent = entry.line.display_name;
   $('summary-value').textContent = '…';
   $('series-chart').replaceChildren();
 
-  let series = state.series.get(entry.line.line_id);
+  const seriesKey = `line:${entry.line.line_id}`;
+  let series = state.series.get(seriesKey);
   if (!series) {
     series = await getJson(`/api/v1/map/series?line_id=${encodeURIComponent(entry.line.line_id)}`);
-    state.series.set(entry.line.line_id, series);
+    state.series.set(seriesKey, series);
   }
+  if (state.selected?.record.line_id !== entry.line.line_id) return;
+  state.selected.seriesKey = seriesKey;
   const first = series.values[0].month; const last = series.values.at(-1).month;
   $('period-label').textContent = `${monthLabel(first)} bis ${monthLabel(last)} · ${series.values.length} Monate`;
   renderSeries(series);
@@ -253,6 +364,38 @@ async function selectLine(entry) {
   history.replaceState(null, '', `${location.pathname}?line=${encodeURIComponent(entry.line.line_id)}`);
 }
 
+async function selectNetwork(network) {
+  state.selected = {type: 'network', record: network};
+  setSelectionStyles();
+  $('selection-hint').hidden = true;
+  $('context-panel').hidden = false;
+  $('context-panel').classList.remove('collapsed');
+  $('panel-toggle').hidden = false;
+  $('panel-toggle').setAttribute('aria-expanded', 'true');
+  $('line-badge').hidden = false;
+  $('line-badge').textContent = `${network.line_count}×`;
+  $('line-badge').style.background = state.networkEntries.get(network.network_id).currentColor;
+  $('line-title').textContent = network.display_name;
+  $('line-subtitle').textContent = `${network.line_count} S-Bahnlinien · hineinzoomen für Linien`;
+  $('panel-eyebrow').textContent = 'Zeitreihe · gesamtes Verkehrsgebiet';
+  $('panel-title').textContent = `S-Bahn ${network.display_name}`;
+  $('summary-value').textContent = '…';
+  $('series-chart').replaceChildren();
+
+  const seriesKey = `network:${network.network_id}`;
+  let series = state.series.get(seriesKey);
+  if (!series) {
+    series = await getJson(`/api/v1/map/network-series?network_id=${encodeURIComponent(network.network_id)}`);
+    state.series.set(seriesKey, series);
+  }
+  if (state.selected?.record.network_id !== network.network_id) return;
+  state.selected.seriesKey = seriesKey;
+  const first = series.values[0].month; const last = series.values.at(-1).month;
+  $('period-label').textContent = `${monthLabel(first)} bis ${monthLabel(last)} · ${series.values.length} Monate · ${network.line_count} Linien`;
+  renderSeries(series);
+  history.replaceState(null, '', `${location.pathname}?network=${encodeURIComponent(network.network_id)}`);
+}
+
 function closePanel() {
   state.selected = null;
   setSelectionStyles();
@@ -261,9 +404,9 @@ function closePanel() {
   $('panel-toggle').hidden = true;
   $('panel-toggle').setAttribute('aria-expanded', 'false');
   $('line-badge').hidden = true;
-  $('line-title').textContent = 'Linie auswählen';
-  $('line-subtitle').textContent = 'S-Bahn direkt in der Karte anklicken';
-  state.map.fitBounds(allBounds(), {padding: {top: 100, right: 80, bottom: 70, left: 80}, maxZoom: 11, duration: 350});
+  $('line-title').textContent = 'Verkehrsgebiet auswählen';
+  $('line-subtitle').textContent = 'Bubble anklicken oder für Linien hineinzoomen';
+  state.map.fitBounds(arrayBounds(), {padding: {top: 100, right: 80, bottom: 70, left: 80}, maxZoom: 6.4, duration: 350});
   history.replaceState(null, '', location.pathname);
 }
 
@@ -281,14 +424,15 @@ function formatValue(value, metric) {
 
 function renderSeries(series) {
   const metric = state.metric;
+  const scope = state.selected?.type === 'network' ? 'networks' : 'lines';
   const field = metric === 'delay' ? 'estimated_delay_minutes' : 'cancellation_percentage';
   const values = series.values.map(item => item[field]);
   const present = values.filter(value => value != null);
   const mean = metric === 'delay'
     ? series.summary.mean_estimated_delay_minutes
     : series.summary.mean_cancellation_percentage;
-  const context = comparisonContext();
-  const activeValue = state.selected?.line[context.field];
+  const context = comparisonContext(scope);
+  const activeValue = state.selected?.record[context.field];
   const chartColor = comparisonColor(activeValue, context);
   const label = metric === 'delay' ? 'Geschätztes Monatsmittel' : 'Ausfallanteil';
   const yMax = metric === 'delay'
@@ -300,22 +444,26 @@ function renderSeries(series) {
     button.setAttribute('aria-selected', String(selected));
   });
   document.querySelectorAll('.comparison-card').forEach(button => {
-    button.setAttribute('aria-pressed', String(button.dataset.basis === state.basis));
+    button.setAttribute('aria-pressed', String(button.dataset.basis === basisFor(scope)));
   });
   $('summary-swatch').style.background = chartColor;
+  const weighted = state.selected?.type === 'network' ? 'Gewichtetes Mittel' : 'Mittelwert';
   $('summary-label').textContent = metric === 'delay'
-    ? `Mittelwert aus ${series.summary.delay_months} Monatswerten`
-    : `Mittelwert aus ${series.summary.cancellation_months} Monatswerten`;
+    ? `${weighted} aus ${series.summary.delay_months} Monatswerten`
+    : `${weighted} aus ${series.summary.cancellation_months} Monatswerten`;
   $('summary-value').textContent = formatValue(mean, metric);
   $('minimum-value').textContent = formatValue(Math.min(...present), metric);
   $('maximum-value').textContent = formatValue(Math.max(...present), metric);
   $('latest-value').textContent = formatValue(values.filter(value => value != null).at(-1), metric);
-  $('value-definition').textContent = metric === 'delay'
+  const definition = metric === 'delay'
     ? `${series.delay_estimation.description} Ausfälle zählen nicht mit.`
     : 'Monatlicher Anteil der im Quelldatensatz als ausgefallen gezählten Datenpunkte. Die Ausfallquote besitzt eine eigene Grundgesamtheit.';
+  $('value-definition').textContent = series.aggregation
+    ? `${series.aggregation.description} ${definition}`
+    : definition;
 
   const svg = $('series-chart');
-  const title = svgElement('title', {id: 'chart-title'}, `${label} von ${series.display_name}`);
+  const title = svgElement('title', {id: 'chart-title'}, `${label} von ${$('panel-title').textContent}`);
   const description = svgElement('desc', {id: 'chart-description'}, `Liniendiagramm mit ${present.length} Monatswerten.`);
   const width = 720; const height = 300;
   const margin = {left: 54, right: 18, top: 20, bottom: 40};
@@ -376,39 +524,116 @@ function showChartTooltip(event, month, value, metric) {
 
 function hideChartTooltip() { $('chart-tooltip').hidden = true; }
 
+function boundsIntersect(values, visible) {
+  return values && values[0] <= visible.getEast() && values[2] >= visible.getWest()
+    && values[1] <= visible.getNorth() && values[3] >= visible.getSouth();
+}
+
+async function loadNetwork(networkId) {
+  if (state.loadedNetworks.has(networkId)) return;
+  if (state.loadingNetworks.has(networkId)) return state.loadingNetworks.get(networkId);
+  const lines = state.config.lines.filter(line => line.network_id === networkId);
+  const pending = Promise.all(lines.map(async line => {
+    const entry = state.entries.get(line.line_id);
+    if (!entry.geometry) {
+      entry.geometry = await getJson(`/api/v1/map/lines.geojson?line_id=${encodeURIComponent(line.line_id)}`);
+    }
+    if (!entry.ids) addLine(entry, entry.index);
+  })).then(() => {
+    state.loadedNetworks.add(networkId);
+    state.loadingNetworks.delete(networkId);
+    updateColors();
+    setSelectionStyles();
+  }).catch(error => {
+    state.loadingNetworks.delete(networkId);
+    throw error;
+  });
+  state.loadingNetworks.set(networkId, pending);
+  return pending;
+}
+
+async function loadVisibleNetworks() {
+  if (state.viewMode !== 'lines') return;
+  const visible = state.map.getBounds();
+  const networks = state.config.networks.filter(network => boundsIntersect(network.bounds, visible));
+  await Promise.all(networks.map(network => loadNetwork(network.network_id)));
+}
+
+function updateSelectionHint() {
+  const lineMode = state.viewMode === 'lines';
+  $('hint-title').textContent = lineMode ? 'S-Bahn auswählen' : 'Verkehrsgebiet auswählen';
+  $('hint-subtitle').textContent = lineMode
+    ? 'Klicke eine farbige Linie an.'
+    : 'Klicke eine Bubble an oder zoome für einzelne Linien hinein.';
+  if (!state.selected) {
+    $('line-title').textContent = lineMode ? 'Linie auswählen' : 'Verkehrsgebiet auswählen';
+    $('line-subtitle').textContent = lineMode
+      ? 'S-Bahn direkt in der Karte anklicken'
+      : 'Bubble anklicken oder für Linien hineinzoomen';
+  }
+}
+
+function updateViewMode() {
+  const next = state.map.getZoom() >= state.config.line_zoom_threshold ? 'lines' : 'networks';
+  if (next !== state.viewMode) {
+    state.viewMode = next;
+    updateSelectionHint();
+    updateColors();
+    const series = state.selected?.seriesKey && state.series.get(state.selected.seriesKey);
+    if (series) renderSeries(series);
+  }
+  if (state.viewMode === 'lines') loadVisibleNetworks().catch(showError);
+}
+
 async function start() {
   state.config = await getJson('/api/v1/map/config');
-  if (!state.config.lines.length) throw new Error('Noch keine freigegebene Linie mit Monatsdaten verfügbar.');
+  if (!state.config.networks.length) throw new Error('Noch kein freigegebenes Verkehrsgebiet mit Monatsdaten verfügbar.');
   populateLayerControls();
-  const [style, geometries] = await Promise.all([
-    getJson('/karte/assets/basemap-style.json'),
-    Promise.all(state.config.lines.map(line => getJson(`/api/v1/map/lines.geojson?line_id=${encodeURIComponent(line.line_id)}`))),
-  ]);
-  state.config.lines.forEach((line, index) => state.entries.set(line.line_id, {line, geometry: geometries[index], ids: null}));
-  state.map = new MapLibreMap({container: 'map', style, center: [11.58, 48.18], zoom: 9.3, attributionControl: true});
+  const style = await getJson('/karte/assets/basemap-style.json');
+  state.config.lines.forEach((line, index) => state.entries.set(line.line_id, {
+    line, index, geometry: null, ids: null, currentColor: '#718078',
+  }));
+  state.config.networks.forEach(network => state.networkEntries.set(network.network_id, {
+    network, currentColor: '#718078',
+  }));
+  state.map = new MapLibreMap({container: 'map', style, center: [10.45, 51.15], zoom: 5.2,
+    attributionControl: true});
   state.map.addControl(new NavigationControl({showCompass: false}), 'top-right');
   state.map.once('load', () => {
-    [...state.entries.values()].forEach(addLine);
-    updateLineColors();
-    state.map.fitBounds(allBounds(), {padding: {top: 100, right: 80, bottom: 70, left: 80}, maxZoom: 11, duration: 0});
+    addNetworkBubbles();
+    updateColors();
+    state.map.fitBounds(arrayBounds(), {padding: {top: 100, right: 80, bottom: 70, left: 80}, maxZoom: 6.4, duration: 0});
+    updateViewMode();
     $('loading').classList.add('ready');
-    const requestedLine = new URLSearchParams(location.search).get('line');
-    if (requestedLine && state.entries.has(requestedLine)) {
-      selectLine(state.entries.get(requestedLine)).catch(showError);
+    const parameters = new URLSearchParams(location.search);
+    const requestedNetwork = parameters.get('network');
+    const requestedLine = parameters.get('line');
+    if (requestedNetwork && state.networkEntries.has(requestedNetwork)) {
+      selectNetwork(state.networkEntries.get(requestedNetwork).network).catch(showError);
+    } else if (requestedLine && state.entries.has(requestedLine)) {
+      const entry = state.entries.get(requestedLine);
+      loadNetwork(entry.line.network_id)
+        .then(() => selectLine(entry)).catch(showError);
     }
+  });
+  state.map.on('zoomend', updateViewMode);
+  state.map.on('moveend', () => {
+    if (state.viewMode === 'lines') loadVisibleNetworks().catch(showError);
   });
   state.map.on('error', event => { if (event.error) console.warn('Kartenressource:', event.error.message); });
   document.querySelectorAll('.metric-tabs button').forEach(button => button.addEventListener('click', () => {
     state.metric = button.dataset.metric;
-    state.basis = 'mean';
-    updateLineColors();
-    const series = state.selected && state.series.get(state.selected.line.line_id);
+    state.lineBasis = 'mean';
+    state.networkBasis = 'mean';
+    updateColors();
+    const series = state.selected?.seriesKey && state.series.get(state.selected.seriesKey);
     if (series) renderSeries(series);
   }));
   document.querySelectorAll('.comparison-card').forEach(button => button.addEventListener('click', () => {
-    state.basis = button.dataset.basis;
-    updateLineColors();
-    const series = state.selected && state.series.get(state.selected.line.line_id);
+    state.lineBasis = button.dataset.basis;
+    state.networkBasis = button.dataset.basis;
+    updateColors();
+    const series = state.selected?.seriesKey && state.series.get(state.selected.seriesKey);
     if (series) renderSeries(series);
   }));
   $('panel-close').addEventListener('click', closePanel);

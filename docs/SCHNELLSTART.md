@@ -13,7 +13,7 @@ curl --fail-with-body https://34.7.91.18/health
 Unter Windows `curl.exe` verwenden. Erwartet wird HTTP 200:
 
 ```json
-{"status":"ok","service":"trainmaps-development","version":"0.8.0"}
+{"status":"ok","service":"trainmaps-development","version":"0.9.0"}
 ```
 
 Die [interaktive API](https://34.7.91.18/docs), der

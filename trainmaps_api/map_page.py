@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import json
 import statistics
+from functools import lru_cache
 from pathlib import Path
 from typing import Annotated, Literal
 
@@ -16,6 +17,22 @@ from .reference import LINE_ID_PATTERN
 THRESHOLDS = (2, 5, 10, 20, 40)
 DELAY_BUCKET_MIDPOINTS = (1.0, 3.5, 7.5, 15.0, 30.0, 50.0)
 MAP_ASSETS = Path(__file__).resolve().parent / "map_assets"
+NETWORK_CENTERS = {
+    "de.berlin": [13.405, 52.52],
+    "de.breisgau": [7.78, 47.86],
+    "de.dresden": [13.74, 51.05],
+    "de.hamburg": [9.99, 53.55],
+    "de.mitteldeutschland": [12.35, 51.34],
+    "de.mittelelbe": [11.63, 52.13],
+    "de.muenchen": [11.58, 48.14],
+    "de.nuernberg": [11.08, 49.45],
+    "de.rhein-main": [8.69, 50.1],
+    "de.rhein-neckar": [8.48, 49.43],
+    "de.rhein-ruhr": [7.25, 51.58],
+    "de.rheinland": [6.72, 50.77],
+    "de.rostock": [12.1, 54.1],
+    "de.stuttgart": [9.18, 48.78],
+}
 
 
 def _error(status, code, message):
@@ -67,6 +84,29 @@ def _estimated_delay_minutes(row):
     return sum(count * midpoint for count, midpoint in zip(buckets, DELAY_BUCKET_MIDPOINTS)) / total
 
 
+def _series_summary(values):
+    delay_values = [item["estimated_delay_minutes"] for item in values
+                    if item["estimated_delay_minutes"] is not None]
+    cancellation_values = [item["cancellation_percentage"] for item in values
+                           if item["cancellation_percentage"] is not None]
+    return {
+        "mean_estimated_delay_minutes": statistics.fmean(delay_values) if delay_values else None,
+        "minimum_estimated_delay_minutes": min(delay_values) if delay_values else None,
+        "maximum_estimated_delay_minutes": max(delay_values) if delay_values else None,
+        "latest_estimated_delay_minutes": delay_values[-1] if delay_values else None,
+        "mean_cancellation_percentage": (statistics.fmean(cancellation_values)
+                                         if cancellation_values else None),
+        "minimum_cancellation_percentage": (min(cancellation_values)
+                                            if cancellation_values else None),
+        "maximum_cancellation_percentage": (max(cancellation_values)
+                                            if cancellation_values else None),
+        "latest_cancellation_percentage": (cancellation_values[-1]
+                                           if cancellation_values else None),
+        "delay_months": len(delay_values),
+        "cancellation_months": len(cancellation_values),
+    }
+
+
 def _line_series(data, record):
     delay_rows = {row["month"][:7]: row for row in
                   _matching_rows(data, "delaysByNetworkLineMonth", record)}
@@ -90,25 +130,108 @@ def _line_series(data, record):
             "cancelled": cancellation["n_cancelled"] if cancellation else None,
             "cancellation_data_points": cancellation["n_data_points"] if cancellation else None,
         })
-    delay_values = [item["estimated_delay_minutes"] for item in values
-                    if item["estimated_delay_minutes"] is not None]
-    cancellation_values = [item["cancellation_percentage"] for item in values
-                           if item["cancellation_percentage"] is not None]
-    return values, {
-        "mean_estimated_delay_minutes": statistics.fmean(delay_values) if delay_values else None,
-        "minimum_estimated_delay_minutes": min(delay_values) if delay_values else None,
-        "maximum_estimated_delay_minutes": max(delay_values) if delay_values else None,
-        "latest_estimated_delay_minutes": delay_values[-1] if delay_values else None,
-        "mean_cancellation_percentage": (statistics.fmean(cancellation_values)
-                                         if cancellation_values else None),
-        "minimum_cancellation_percentage": (min(cancellation_values)
-                                            if cancellation_values else None),
-        "maximum_cancellation_percentage": (max(cancellation_values)
-                                            if cancellation_values else None),
-        "latest_cancellation_percentage": (cancellation_values[-1]
-                                           if cancellation_values else None),
-        "delay_months": len(delay_values),
-        "cancellation_months": len(cancellation_values),
+    return values, _series_summary(values)
+
+
+def _network_series(data, records):
+    line_ids = {record["line_id"] for record in records if record.get("line_id")}
+    aliases = {(item["netz"], item["line"])
+               for record in records for item in record["source_aliases"]}
+    delay_rows = {}
+    for row in data.get("delaysByNetworkLineMonth", []):
+        if (row.get("line_id") not in line_ids
+                and (row.get("netz"), row.get("line")) not in aliases):
+            continue
+        month = row["month"][:7]
+        aggregate = delay_rows.setdefault(month, {
+            "n_data_points": 0,
+            **{f"n_on_time_{threshold}": 0 for threshold in THRESHOLDS},
+        })
+        aggregate["n_data_points"] += row["n_data_points"]
+        for threshold in THRESHOLDS:
+            aggregate[f"n_on_time_{threshold}"] += row[f"n_on_time_{threshold}"]
+
+    cancellation_rows = {}
+    for row in data.get("cancellationsByNetworkLineMonth", []):
+        if (row.get("line_id") not in line_ids
+                and (row.get("netz"), row.get("line")) not in aliases):
+            continue
+        month = row["month"][:7]
+        aggregate = cancellation_rows.setdefault(month, {
+            "n_data_points": 0, "n_cancelled": 0,
+        })
+        aggregate["n_data_points"] += row["n_data_points"]
+        aggregate["n_cancelled"] += row["n_cancelled"]
+
+    values = []
+    for month in sorted(set(delay_rows) | set(cancellation_rows)):
+        delay = delay_rows.get(month)
+        cancellation = cancellation_rows.get(month)
+        estimated = _estimated_delay_minutes(delay) if delay else None
+        cancellation_ratio = (cancellation["n_cancelled"] / cancellation["n_data_points"]
+                              if cancellation and cancellation["n_data_points"] else None)
+        values.append({
+            "month": month,
+            "estimated_delay_minutes": estimated,
+            "delay_data_points": delay["n_data_points"] if delay else None,
+            "cancellation_ratio": cancellation_ratio,
+            "cancellation_percentage": (cancellation_ratio * 100
+                                         if cancellation_ratio is not None else None),
+            "cancelled": cancellation["n_cancelled"] if cancellation else None,
+            "cancellation_data_points": cancellation["n_data_points"] if cancellation else None,
+        })
+    return values, _series_summary(values)
+
+
+@lru_cache(maxsize=256)
+def _line_bounds(line_id):
+    collection = json.loads(_geometry_path(line_id).read_text(encoding="utf-8"))
+    coordinates = []
+
+    def visit(value):
+        if (isinstance(value, list) and len(value) >= 2
+                and isinstance(value[0], (int, float))
+                and isinstance(value[1], (int, float))):
+            coordinates.append((float(value[0]), float(value[1])))
+        elif isinstance(value, list):
+            for item in value:
+                visit(item)
+
+    for feature in collection.get("features", []):
+        if feature.get("properties", {}).get("feature_type") == "line":
+            visit(feature.get("geometry", {}).get("coordinates", []))
+    if not coordinates:
+        return None
+    return [min(item[0] for item in coordinates), min(item[1] for item in coordinates),
+            max(item[0] for item in coordinates), max(item[1] for item in coordinates)]
+
+
+def _network_bounds(records):
+    extents = [_line_bounds(record["line_id"]) for record in records]
+    extents = [extent for extent in extents if extent]
+    if not extents:
+        return None
+    return [min(item[0] for item in extents), min(item[1] for item in extents),
+            max(item[2] for item in extents), max(item[3] for item in extents)]
+
+
+def _network_name(records):
+    names = [alias["netz"] for record in records for alias in record["source_aliases"]]
+    return max(set(names), key=names.count) if names else records[0]["network_id"]
+
+
+def _delay_estimation():
+    return {
+        "kind": "bucket_midpoint_estimate",
+        "cumulative_thresholds_minutes": list(THRESHOLDS),
+        "bucket_midpoints_minutes": list(DELAY_BUCKET_MIDPOINTS),
+        "over_40_assumption_minutes": DELAY_BUCKET_MIDPOINTS[-1],
+        "cancellations_excluded": True,
+        "description": (
+            "Geschätzter Monatsmittelwert aus den kumulierten 2/5/10/20/40-Minuten-"
+            "Klassen. Verwendete Klassenmittelpunkte: 1/3,5/7,5/15/30/50 Minuten; "
+            "Werte über 40 Minuten werden für die Schätzung mit 50 Minuten angesetzt."
+        ),
     }
 
 
@@ -133,6 +256,7 @@ def register_map(app: FastAPI, store, *, version: str):
     def map_config():
         snapshot, data = _latest_payload(store)
         available = []
+        ready_records = []
         for record in store.list_lines():
             line_id = record["line_id"]
             if (not record["active"] or record["geometry"]["status"] != "verified"
@@ -140,6 +264,7 @@ def register_map(app: FastAPI, store, *, version: str):
                 continue
             values, summary = _line_series(data, record)
             if values:
+                ready_records.append(record)
                 available.append({
                     "line_id": line_id,
                     "display_name": record["display_name"],
@@ -149,15 +274,48 @@ def register_map(app: FastAPI, store, *, version: str):
                     "geometry_version": record["geometry"]["version"],
                     "mapping_revision": record["revision"],
                 })
+        records_by_network = {}
+        for record in ready_records:
+            records_by_network.setdefault(record["network_id"], []).append(record)
+        networks = []
+        for network_id, records in sorted(records_by_network.items()):
+            values, summary = _network_series(data, records)
+            if not values:
+                continue
+            bounds = _network_bounds(records)
+            fallback_center = ([(bounds[0] + bounds[2]) / 2, (bounds[1] + bounds[3]) / 2]
+                               if bounds else [10.45, 51.15])
+            networks.append({
+                "network_id": network_id,
+                "display_name": _network_name(records),
+                "line_count": len(records),
+                "line_ids": [record["line_id"] for record in records],
+                "center": NETWORK_CENTERS.get(network_id, fallback_center),
+                "bounds": bounds,
+                "months": [item["month"] for item in values],
+                **summary,
+            })
         receipt = json.loads(snapshot["receipt"])
         default_line = available[0] if available else None
+        default_network = networks[0] if networks else None
+        network_bounds = [network["bounds"] for network in networks if network["bounds"]]
+        map_bounds = ([min(item[0] for item in network_bounds),
+                       min(item[1] for item in network_bounds),
+                       max(item[2] for item in network_bounds),
+                       max(item[3] for item in network_bounds)]
+                      if network_bounds else [5.5, 47.2, 14.8, 54.8])
         return {
             "application_version": version,
             "data_revision": receipt["revision"],
             "data_imported_at": receipt["received_at"],
             "default_line_id": default_line["line_id"] if default_line else None,
+            "default_network_id": (default_network["network_id"]
+                                   if default_network else None),
             "default_month": default_line["months"][-1] if default_line else None,
             "selection_mode": "map",
+            "line_zoom_threshold": 7.7,
+            "map_bounds": map_bounds,
+            "networks": networks,
             "lines": available,
             "metrics": [
                 {"id": "punctuality", "label": "Verspätung"},
@@ -166,6 +324,7 @@ def register_map(app: FastAPI, store, *, version: str):
             "thresholds_minutes": list(THRESHOLDS),
             "default_threshold_minutes": 5,
             "layers": [
+                {"id": "networks", "label": "Verkehrsgebiete", "default": True},
                 {"id": "lines", "label": "S-Bahnlinien", "default": True},
                 {"id": "stations", "label": "Stationen", "default": True},
                 {"id": "sbahn", "label": "Weiteres S-Bahn-Netz", "default": True},
@@ -182,6 +341,54 @@ def register_map(app: FastAPI, store, *, version: str):
                     "MVV Gesamt-Soll-Fahrplandaten (GTFS), 06/2026"
                 ),
             },
+        }
+
+    @app.get("/api/v1/map/networks", tags=["Karte"])
+    def map_networks():
+        config = map_config()
+        return {
+            "application_version": config["application_version"],
+            "data_revision": config["data_revision"],
+            "default_month": config["default_month"],
+            "line_zoom_threshold": config["line_zoom_threshold"],
+            "map_bounds": config["map_bounds"],
+            "values": config["networks"],
+        }
+
+    @app.get("/api/v1/map/network-series", tags=["Karte"])
+    def map_network_series(
+        network_id: Annotated[str, Query(pattern=LINE_ID_PATTERN)],
+    ):
+        snapshot, data = _latest_payload(store)
+        records = [record for record in store.list_lines()
+                   if record["network_id"] == network_id and record["active"]
+                   and record["geometry"]["status"] == "verified"
+                   and _geometry_path(record["line_id"]).is_file()]
+        records = [record for record in records if _line_series(data, record)[0]]
+        if not records:
+            _error(404, "map_network_not_found",
+                    "Das Verkehrsgebiet ist nicht vorhanden oder noch nicht freigegeben.")
+        values, summary = _network_series(data, records)
+        if not values:
+            _error(404, "map_network_series_not_found",
+                   "Für dieses Verkehrsgebiet liegen keine Monatswerte vor.")
+        receipt = json.loads(snapshot["receipt"])
+        return {
+            "network_id": network_id,
+            "display_name": _network_name(records),
+            "line_count": len(records),
+            "data_revision": receipt["revision"],
+            "aggregation": {
+                "kind": "weighted_raw_counts",
+                "weight": "n_data_points",
+                "description": (
+                    "Alle Rohzähler der Linien im Verkehrsgebiet werden je Monat summiert. "
+                    "Verspätung und Ausfallquote sind dadurch nach Datenpunkten gewichtet."
+                ),
+            },
+            "summary": summary,
+            "delay_estimation": _delay_estimation(),
+            "values": values,
         }
 
     @app.get("/api/v1/map/lines.geojson", tags=["Karte"])
@@ -208,18 +415,7 @@ def register_map(app: FastAPI, store, *, version: str):
             "display_name": record["display_name"],
             "data_revision": receipt["revision"],
             "summary": summary,
-            "delay_estimation": {
-                "kind": "bucket_midpoint_estimate",
-                "cumulative_thresholds_minutes": list(THRESHOLDS),
-                "bucket_midpoints_minutes": list(DELAY_BUCKET_MIDPOINTS),
-                "over_40_assumption_minutes": DELAY_BUCKET_MIDPOINTS[-1],
-                "cancellations_excluded": True,
-                "description": (
-                    "Geschätzter Monatsmittelwert aus den kumulierten 2/5/10/20/40-Minuten-"
-                    "Klassen. Verwendete Klassenmittelpunkte: 1/3,5/7,5/15/30/50 Minuten; "
-                    "Werte über 40 Minuten werden für die Schätzung mit 50 Minuten angesetzt."
-                ),
-            },
+            "delay_estimation": _delay_estimation(),
             "values": values,
         }
 

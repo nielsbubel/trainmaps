@@ -97,7 +97,7 @@ def render_markdown(text, source):
     return renderer.renderer.render(tokens, renderer.options, {}), headings
 
 
-def page(title, content, *, selected="", headings=(), version="0.8.0"):
+def page(title, content, *, selected="", headings=(), version="0.9.0"):
     links = ['<a href="/dokumentation"' + (' aria-current="page"' if not selected else '') + '>Übersicht</a>']
     for doc in DOCUMENTS:
         current = ' aria-current="page"' if doc.slug == selected else ''
@@ -115,7 +115,7 @@ def page(title, content, *, selected="", headings=(), version="0.8.0"):
 <nav aria-label="Schnittstelle"><a href="/karte">Karte öffnen ↗</a><a href="/docs">API ausprobieren ↗</a><a href="/health">Status</a></nav></header>
 <div class="layout"><aside class="sidebar"><details open><summary>Dokumentation</summary><nav aria-label="Dokumentation">{''.join(links)}</nav></details>
 <div class="sidebar-resources"><span class="eyebrow">Für Entwickler</span><a href="/openapi.json">OpenAPI herunterladen</a><a href="/dokumentation/download.zip">Gesamte Doku als ZIP</a></div>
-<p class="version">Entwicklungs-API · v{escape(version)}<br>Erste Linie: München S1.</p></aside>
+<p class="version">Entwicklungs-API · v{escape(version)}<br>96 Linien · 14 Verkehrsgebiete.</p></aside>
 <main id="inhalt" class="{'reading' if selected else 'overview'}">{content}</main>{contents}</div>
 <footer>trainmaps · Monatsdaten zur S-Bahn-Pünktlichkeit<span>Dokumentation frei zugänglich. Datenzugriff mit Token.</span></footer>
 <div id="copy-status" class="sr-only" role="status" aria-live="polite"></div></body></html>'''

@@ -2,20 +2,26 @@
 
 Die trainmaps-Karte ist unter **[https://34.7.91.18/karte](https://34.7.91.18/karte)**
 erreichbar. Sie zeigt 96 Linien aus 14 deutschen S-Bahn-Netzen mit den jeweils
-vorhandenen Monatswerten von September 2021 bis Mai 2026. Die Kartenansicht und die vier dafür vorgesehenen
+vorhandenen Monatswerten von September 2021 bis Mai 2026. Die Kartenansicht und die sechs dafür vorgesehenen
 Leseendpunkte sind öffentlich; ein API-Token wird dafür nicht im Browser gespeichert.
 
 ## Bedienung
 
-Beim Start ist kein Datenfenster geöffnet. Jede verfügbare S-Bahn wird anhand
-ihrer über alle Monate gemittelten, geschätzten Verspätung eingefärbt. Die
-Farbskala reicht vom tatsächlich niedrigsten bis zum tatsächlich höchsten Wert
-aller verfügbaren S-Bahnlinien. Ein Klick auf die Linie oder eine ihrer Stationen
-wählt die S-Bahn aus und öffnet das Kontextfenster.
+Beim Start ist kein Datenfenster geöffnet. Für jedes Verkehrsgebiet erscheint
+eine Bubble. Ihre Farbe zeigt die geschätzte Verspätung im letzten verfügbaren
+Monat. Die Farbskala reicht vom tatsächlich niedrigsten bis zum tatsächlich
+höchsten Wert aller 14 Verkehrsgebiete. Ein Klick auf eine Bubble öffnet die
+gemeinsame Zeitreihe aller veröffentlichten Linien dieses Verkehrsgebiets.
+
+Ab Zoomstufe 7,7 blendet die Karte die Bubbles aus und zeigt einzelne
+S-Bahnlinien. Die Fahrwege werden erst dann für die sichtbaren Verkehrsgebiete
+geladen. Ein Klick auf eine Linie oder Station öffnet deren eigene Zeitreihe.
+So bleibt die deutschlandweite Startansicht klein und schnell.
 
 Ein direkter Kartenlink kann die interne Linien-ID als Parameter angeben, zum
 Beispiel `/karte?line=de.berlin.s1`. Die Karte öffnet dann sofort die gewählte
-Linie und ihre Zeitreihe.
+Linie und ihre Zeitreihe. Ein Verkehrsgebiet lässt sich entsprechend mit
+`/karte?network=de.berlin` öffnen.
 
 Das Liniendiagramm zeigt sofort alle verfügbaren Monatswerte. Zwei direkt
 sichtbare Schaltflächen wechseln zwischen:
@@ -26,16 +32,16 @@ sichtbare Schaltflächen wechseln zwischen:
 Monat und Kennzahl werden nicht über Dropdown-Menüs ausgewählt. Für jeden
 Diagrammpunkt zeigt ein Tooltip den Monat und den Wert. Das Fenster nennt außerdem
 Mittelwert, niedrigsten, höchsten und neuesten Monatswert. Diese vier Angaben sind
-Schaltflächen. Ein Klick färbt alle S-Bahnlinien nach dem jeweils eigenen Wert
-dieser Art ein. Beim Wechsel zu „Ausfälle“ wird wieder der mittlere Ausfallanteil
-verwendet; anschließend können auch dort Minimum, Maximum und letzter Monat als
-Vergleich ausgewählt werden.
+Schaltflächen. Ein Klick färbt je nach Zoomstufe alle Verkehrsgebiete oder alle
+S-Bahnlinien nach dem jeweils eigenen Wert dieser Art ein. Beim Wechsel zu
+„Ausfälle“ wird wieder der mittlere Ausfallanteil verwendet; anschließend können
+auch dort Minimum, Maximum und letzter Monat als Vergleich ausgewählt werden.
 
 Grün kennzeichnet den kleinsten und Rot den größten vorhandenen Vergleichswert;
 dazwischen wird die Farbe kontinuierlich berechnet. Die Legende zeigt die jeweils
-tatsächliche Spannweite. Gibt es nur eine verfügbare Linie oder sind alle Werte
-gleich, existiert keine Vergleichsspannweite und die Linien erscheinen neutral
-grau.
+tatsächliche Spannweite. Gibt es nur ein verfügbares Objekt oder sind alle Werte
+gleich, existiert keine Vergleichsspannweite und die Darstellung erscheint
+neutral grau.
 
 Die Werte gelten jeweils für die ganze Linie. Der gelieferte Datensatz enthält
 keine monatlichen Stationswerte.
@@ -53,7 +59,9 @@ Standardmäßig sind nur folgende Ebenen sichtbar:
 
 | Methode und Pfad | Zweck |
 | --- | --- |
-| `GET /api/v1/map/config` | Verfügbare, verifizierte Linien, Zeiträume, Vergleichswerte und Ebenen. |
+| `GET /api/v1/map/config` | Verfügbare Verkehrsgebiete und Linien, Zeiträume, Vergleichswerte, Kartengrenzen und Ebenen. |
+| `GET /api/v1/map/networks` | Zusammenfassung aller Verkehrsgebiete für die Startansicht. |
+| `GET /api/v1/map/network-series?network_id=de.muenchen` | Gewichtete Monatszeitreihe für ein Verkehrsgebiet. |
 | `GET /api/v1/map/lines.geojson?line_id=de.muenchen.s1` | Freigegebener Fahrweg und Stationen als GeoJSON. |
 | `GET /api/v1/map/series?line_id=de.muenchen.s1` | Alle Monats- und Vergleichswerte sowie die dokumentierte Verspätungsschätzung. |
 | `GET /api/v1/map/monthly?line_id=de.muenchen.s1&month=2026-05&metric=punctuality&threshold_minutes=5` | Genau ein darstellbarer Monatswert. |
@@ -122,6 +130,12 @@ Wert ist grün, der größte rot. Feste Minutengrenzen werden dafür nicht verwe
 Diese Werte sind Schätzwerte; Ausfälle sind ausgeschlossen und werden getrennt
 dargestellt. Für Ausfälle verwendet die Karte dieselbe relative Berechnung mit
 den Ausfallquoten in Prozent.
+
+Für ein Verkehrsgebiet summiert trainmaps je Monat zunächst `n_data_points`, alle
+fünf `n_on_time_*`-Zähler und die Ausfallzähler seiner veröffentlichten Linien.
+Erst aus diesen Summen werden Verspätung und Ausfallquote berechnet. Linien mit
+mehr Datenpunkten haben dadurch ein entsprechend größeres Gewicht. Der
+anfängliche Bubble-Wert ist die so berechnete Verspätung des neuesten Monats.
 
 ## Fahrwege der Münchner S-Bahnlinien
 
@@ -194,16 +208,17 @@ basemap.de-Stil erzeugt. Kartenbibliothek, JavaScript und CSS liegen auf dem
 trainmaps-Server; Vektorkacheln, Schriften und Symbole werden direkt von
 `sgx.geodatenzentrum.de` geladen.
 
-Die Seite besitzt eine restriktive Content Security Policy. Die vier öffentlichen
+Die Seite besitzt eine restriktive Content Security Policy. Die sechs öffentlichen
 Endpunkte liefern nur Daten, die die Karte benötigt. Rohimporte, Importbelege und
 der vollständige Linienkatalog werden dadurch nicht öffentlich.
 
 ## Prüfung
 
 Die Desktopansicht wurde mit 1440 × 1000 Pixeln, die Mobilansicht mit 390 × 844
-Pixeln in Microsoft Edge geprüft. Dabei wurden die bundesweite Gesamtansicht,
-Direktlinks in mehreren Netzen und die neun Münchner Linien, die Auswahl per
-Kartenlink und Kartenklick, der Wechsel zwischen
+Pixeln in Microsoft Edge geprüft. Dabei wurden die bundesweite Bubble-Ansicht,
+der Zoomwechsel und das verzögerte Laden der Linien, Direktlinks in mehreren
+Netzen und die neun Münchner Linien, die Auswahl per Kartenlink und Kartenklick,
+der Wechsel zwischen
 Verspätung und Ausfällen, alle vier Vergleichsarten sowie die Ebenensteuerung
 kontrolliert. Die API-, Stil- und Geometrietests sind Bestandteil der
 automatisierten Testsuite.
