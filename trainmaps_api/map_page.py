@@ -96,8 +96,17 @@ def _line_series(data, record):
                            if item["cancellation_percentage"] is not None]
     return values, {
         "mean_estimated_delay_minutes": statistics.fmean(delay_values) if delay_values else None,
+        "minimum_estimated_delay_minutes": min(delay_values) if delay_values else None,
+        "maximum_estimated_delay_minutes": max(delay_values) if delay_values else None,
+        "latest_estimated_delay_minutes": delay_values[-1] if delay_values else None,
         "mean_cancellation_percentage": (statistics.fmean(cancellation_values)
                                          if cancellation_values else None),
+        "minimum_cancellation_percentage": (min(cancellation_values)
+                                            if cancellation_values else None),
+        "maximum_cancellation_percentage": (max(cancellation_values)
+                                            if cancellation_values else None),
+        "latest_cancellation_percentage": (cancellation_values[-1]
+                                           if cancellation_values else None),
         "delay_months": len(delay_values),
         "cancellation_months": len(cancellation_values),
     }

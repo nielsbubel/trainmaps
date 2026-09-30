@@ -1,6 +1,6 @@
 # trainmaps: Datenlieferung und Entwicklungs-API
 
-Version 0.5.0. Öffentliche Basisadresse: **https://34.7.91.18**. Lokal läuft
+Version 0.6.0. Öffentliche Basisadresse: **https://34.7.91.18**. Lokal läuft
 die Anwendung unter **http://127.0.0.1:8787**. Die interaktive Beschreibung
 steht unter **https://34.7.91.18/docs**, der maschinenlesbare Vertrag unter
 `/openapi.json` bzw. [api/openapi.json](../api/openapi.json).
@@ -37,7 +37,7 @@ Zuordnung verändern. Alle geschützten Anfragen senden
 | GET | `/karte` | frei | Responsive Webkarte öffnen. |
 | GET | `/api/v1/map/config` | frei | Freigegebene Linien, Monate, Kennzahlen und Ebenen für die Karte. |
 | GET | `/api/v1/map/lines.geojson` | frei | Verifizierten Fahrweg und Stationen einer Linie lesen. |
-| GET | `/api/v1/map/series` | frei | Vollständige Monatszeitreihe und Mittelwerte einer verifizierten Linie lesen. |
+| GET | `/api/v1/map/series` | frei | Vollständige Monatszeitreihe und Vergleichswerte einer verifizierten Linie lesen. |
 | GET | `/api/v1/map/monthly` | frei | Einen darstellbaren Monatswert einer verifizierten Linie lesen. |
 | GET | `/api/v1/reference/lines` | read, write oder mapping | Linienkatalog filtern und seitenweise lesen. |
 | GET | `/api/v1/reference/lines/{line_id}` | read, write oder mapping | Eine Linienreferenz lesen. |
@@ -56,7 +56,8 @@ und genau angeforderte Monatswerte aus. Details und vollständige Beispielaufruf
 
 `GET /api/v1/map/series?line_id=de.muenchen.s1` ist der primäre Endpunkt der
 Webkarte. Er liefert alle Monate in chronologischer Reihenfolge, geschätzte
-Verspätungsminuten, Ausfallquoten und die Mittelwerte über den gesamten Zeitraum.
+Verspätungsminuten, Ausfallquoten sowie Mittelwert, Minimum, Maximum und letzten
+Monatswert beider Kennzahlen.
 Die Antwort enthält die verwendeten Klassenmittelpunkte, damit die aus den
 kumulierten Schwellen abgeleitete Verspätungsschätzung nachvollziehbar bleibt.
 

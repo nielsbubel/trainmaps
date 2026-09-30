@@ -31,7 +31,9 @@
     </div>
 
     <aside id="context-panel" class="context-panel" aria-label="Auswertung der ausgewählten S-Bahn" hidden>
-      <button id="panel-close" class="panel-close" type="button" aria-label="Auswertung schließen">×</button>
+      <button id="panel-close" class="panel-close" type="button" aria-label="Auswertung schließen">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7l10 10M17 7L7 17"></path></svg>
+      </button>
       <div class="panel-intro">
         <p class="eyebrow">Zeitreihe · gesamte Linie</p>
         <h1 id="panel-title">S-Bahn</h1>
@@ -43,10 +45,10 @@
         <button id="cancellation-tab" type="button" role="tab" aria-selected="false" data-metric="cancellations">Ausfälle</button>
       </div>
 
-      <section class="series-summary" aria-live="polite">
+      <button id="summary-card" class="series-summary comparison-card" type="button" data-basis="mean" aria-pressed="true">
         <span id="summary-swatch"></span>
         <div><small id="summary-label">Mittel über alle Monate</small><strong id="summary-value">–</strong></div>
-      </section>
+      </button>
 
       <section class="chart-card" aria-label="Monatliche Zeitreihe">
         <svg id="series-chart" viewBox="0 0 720 300" role="img" aria-labelledby="chart-title chart-description">
@@ -57,9 +59,9 @@
       </section>
 
       <div class="chart-stats">
-        <div><small>Niedrigster Wert</small><strong id="minimum-value">–</strong></div>
-        <div><small>Höchster Wert</small><strong id="maximum-value">–</strong></div>
-        <div><small>Letzter Monat</small><strong id="latest-value">–</strong></div>
+        <button type="button" class="comparison-card" data-basis="minimum" aria-pressed="false"><small>Niedrigster Wert</small><strong id="minimum-value">–</strong></button>
+        <button type="button" class="comparison-card" data-basis="maximum" aria-pressed="false"><small>Höchster Wert</small><strong id="maximum-value">–</strong></button>
+        <button type="button" class="comparison-card" data-basis="latest" aria-pressed="false"><small>Letzter Monat</small><strong id="latest-value">–</strong></button>
       </div>
 
       <details class="info-box">
@@ -80,10 +82,10 @@
     </aside>
 
     <section class="legend" aria-label="Farblegende der Linien">
-      <strong>Mittlere Verspätung</strong>
-      <small>Mittel über alle Monate</small>
-      <div class="legend-gradient" aria-hidden="true"></div>
-      <div class="legend-scale"><span>&lt;2 Min.</span><span>10</span><span>20</span><span>&gt;40 Min.</span></div>
+      <strong id="legend-title">Mittlere Verspätung</strong>
+      <small id="legend-note">Vergleich aller S-Bahnlinien</small>
+      <div id="legend-gradient" class="legend-gradient" aria-hidden="true"></div>
+      <div class="legend-scale"><span id="legend-min">–</span><span id="legend-max">–</span></div>
     </section>
 
     <div id="loading" class="loading" role="status"><span></span><p>Karte wird vorbereitet …</p></div>

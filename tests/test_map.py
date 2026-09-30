@@ -71,6 +71,11 @@ def test_map_page_is_public_and_uses_restrictive_csp(tmp_path):
         assert page.status_code == 200
         assert "trainmaps · S-Bahn-Pünktlichkeit" in page.text
         assert 'id="context-panel"' in page.text
+        assert 'id="panel-close"' in page.text
+        assert '<svg viewBox="0 0 24 24"' in page.text
+        assert 'data-basis="minimum"' in page.text
+        assert 'data-basis="maximum"' in page.text
+        assert 'data-basis="latest"' in page.text
         assert 'id="month-select"' not in page.text
         assert 'id="metric-select"' not in page.text
         assert "default-src 'none'" in page.headers["content-security-policy"]
@@ -87,6 +92,13 @@ def test_public_map_config_geometry_and_monthly_values(tmp_path):
         assert body["default_month"] == "2026-05"
         assert body["selection_mode"] == "map"
         assert body["lines"][0]["mean_estimated_delay_minutes"] == 2.425
+        assert body["lines"][0]["minimum_estimated_delay_minutes"] == 2.425
+        assert body["lines"][0]["maximum_estimated_delay_minutes"] == 2.425
+        assert body["lines"][0]["latest_estimated_delay_minutes"] == 2.425
+        assert body["lines"][0]["mean_cancellation_percentage"] == 4.0
+        assert body["lines"][0]["minimum_cancellation_percentage"] == 4.0
+        assert body["lines"][0]["maximum_cancellation_percentage"] == 4.0
+        assert body["lines"][0]["latest_cancellation_percentage"] == 4.0
         assert body["lines"][0]["geometry_version"].startswith("basemap.de")
         assert next(layer for layer in body["layers"] if layer["id"] == "roads")["default"] is False
 
@@ -115,7 +127,13 @@ def test_public_map_config_geometry_and_monthly_values(tmp_path):
         result = series.json()
         assert result["summary"] == {
             "mean_estimated_delay_minutes": 2.425,
+            "minimum_estimated_delay_minutes": 2.425,
+            "maximum_estimated_delay_minutes": 2.425,
+            "latest_estimated_delay_minutes": 2.425,
             "mean_cancellation_percentage": 4.0,
+            "minimum_cancellation_percentage": 4.0,
+            "maximum_cancellation_percentage": 4.0,
+            "latest_cancellation_percentage": 4.0,
             "delay_months": 1,
             "cancellation_months": 1,
         }

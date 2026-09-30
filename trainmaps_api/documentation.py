@@ -94,7 +94,7 @@ def render_markdown(text, source):
     return renderer.renderer.render(tokens, renderer.options, {}), headings
 
 
-def page(title, content, *, selected="", headings=(), version="0.5.0"):
+def page(title, content, *, selected="", headings=(), version="0.6.0"):
     links = ['<a href="/dokumentation"' + (' aria-current="page"' if not selected else '') + '>Übersicht</a>']
     for doc in DOCUMENTS:
         current = ' aria-current="page"' if doc.slug == selected else ''

@@ -10,10 +10,11 @@ const state = {
   series: new globalThis.Map(),
   selected: null,
   metric: 'delay',
+  basis: 'mean',
 };
 const SVG_NS = 'http://www.w3.org/2000/svg';
-const delayStops = [
-  [0, '#197a4b'], [2, '#2f9d57'], [10, '#d8b72c'], [20, '#eb8a2f'], [40, '#db6848'], [50, '#b7262f'],
+const comparisonStops = [
+  [0, '#197a4b'], [.5, '#d8b72c'], [.72, '#eb8a2f'], [1, '#b7262f'],
 ];
 
 function hexToRgb(hex) {
@@ -24,19 +25,38 @@ function rgbToHex(rgb) {
   return `#${rgb.map(value => Math.round(value).toString(16).padStart(2, '0')).join('')}`;
 }
 
-function colorForMinutes(value) {
-  if (value == null) return '#87918c';
-  if (value <= delayStops[0][0]) return delayStops[0][1];
-  for (let index = 1; index < delayStops.length; index += 1) {
-    const [rightValue, rightColor] = delayStops[index];
-    const [leftValue, leftColor] = delayStops[index - 1];
+function paletteColor(position) {
+  const value = Math.max(0, Math.min(1, position));
+  for (let index = 1; index < comparisonStops.length; index += 1) {
+    const [rightValue, rightColor] = comparisonStops[index];
+    const [leftValue, leftColor] = comparisonStops[index - 1];
     if (value <= rightValue) {
       const ratio = (value - leftValue) / (rightValue - leftValue);
       const left = hexToRgb(leftColor); const right = hexToRgb(rightColor);
       return rgbToHex(left.map((channel, channelIndex) => channel + (right[channelIndex] - channel) * ratio));
     }
   }
-  return delayStops.at(-1)[1];
+  return comparisonStops.at(-1)[1];
+}
+
+function comparisonField(metric = state.metric, basis = state.basis) {
+  const suffix = metric === 'delay' ? 'estimated_delay_minutes' : 'cancellation_percentage';
+  return `${basis}_${suffix}`;
+}
+
+function comparisonContext() {
+  const field = comparisonField();
+  const items = [...state.entries.values()].map(entry => ({entry, value: entry.line[field]}))
+    .filter(item => item.value != null && Number.isFinite(item.value));
+  const values = items.map(item => item.value);
+  const minimum = values.length ? Math.min(...values) : null;
+  const maximum = values.length ? Math.max(...values) : null;
+  return {field, items, minimum, maximum, neutral: items.length < 2 || minimum === maximum};
+}
+
+function comparisonColor(value, context = comparisonContext()) {
+  if (value == null || !Number.isFinite(value) || context.neutral) return '#718078';
+  return paletteColor((value - context.minimum) / (context.maximum - context.minimum));
 }
 
 function showError(error) {
@@ -93,7 +113,7 @@ function addLine(entry, index) {
   const stationLabels = layerId('station-labels', index);
   const lineFilter = ['==', ['get', 'feature_type'], 'line'];
   const stationFilter = ['==', ['get', 'feature_type'], 'station'];
-  const color = colorForMinutes(entry.line.mean_estimated_delay_minutes);
+  const color = '#718078';
 
   state.map.addSource(source, {type: 'geojson', data: entry.geometry});
   state.map.addLayer({id: shadow, type: 'line', source, filter: lineFilter,
@@ -158,6 +178,40 @@ function setSelectionStyles() {
   });
 }
 
+function comparisonTitle() {
+  const metric = state.metric === 'delay' ? 'Verspätung' : 'Ausfallquote';
+  return {
+    mean: `Mittlere ${metric}`,
+    minimum: `Niedrigste ${metric}`,
+    maximum: `Höchste ${metric}`,
+    latest: `Letzter Monatswert · ${metric}`,
+  }[state.basis];
+}
+
+function updateLineColors() {
+  const context = comparisonContext();
+  state.entries.forEach(entry => {
+    const value = entry.line[context.field];
+    const color = comparisonColor(value, context);
+    entry.currentColor = color;
+    if (state.map.getLayer(entry.ids.route)) state.map.setPaintProperty(entry.ids.route, 'line-color', color);
+  });
+  if (state.selected) $('line-badge').style.background = state.selected.currentColor;
+  $('legend-title').textContent = comparisonTitle();
+  $('legend-note').textContent = context.items.length < 2
+    ? 'Nur eine S-Bahnlinie verfügbar'
+    : context.neutral
+      ? `${context.items.length} S-Bahnlinien · gleiche Werte`
+      : `Spannweite aller ${context.items.length} S-Bahnlinien`;
+  $('legend-gradient').style.background = context.neutral
+    ? '#718078'
+    : 'linear-gradient(90deg, #197a4b 0%, #d8b72c 50%, #eb8a2f 72%, #b7262f 100%)';
+  $('legend-min').textContent = formatValue(context.minimum, state.metric);
+  $('legend-max').textContent = context.neutral
+    ? 'keine Spannweite'
+    : formatValue(context.maximum, state.metric);
+}
+
 async function selectLine(entry) {
   state.selected = entry;
   setSelectionStyles();
@@ -169,7 +223,7 @@ async function selectLine(entry) {
   const shortName = entry.line.display_name.split(' ')[0];
   $('line-badge').hidden = false;
   $('line-badge').textContent = shortName;
-  $('line-badge').style.background = colorForMinutes(entry.line.mean_estimated_delay_minutes);
+  $('line-badge').style.background = entry.currentColor || '#718078';
   $('line-title').textContent = entry.line.display_name;
   $('line-subtitle').textContent = 'Zeitreihe geöffnet';
   $('panel-title').textContent = entry.line.display_name;
@@ -227,7 +281,9 @@ function renderSeries(series) {
   const mean = metric === 'delay'
     ? series.summary.mean_estimated_delay_minutes
     : series.summary.mean_cancellation_percentage;
-  const chartColor = metric === 'delay' ? colorForMinutes(mean) : '#347d9d';
+  const context = comparisonContext();
+  const activeValue = state.selected?.line[context.field];
+  const chartColor = comparisonColor(activeValue, context);
   const label = metric === 'delay' ? 'Geschätztes Monatsmittel' : 'Ausfallanteil';
   const yMax = metric === 'delay'
     ? Math.max(2, Math.ceil(Math.max(...present) / 2) * 2)
@@ -236,6 +292,9 @@ function renderSeries(series) {
   document.querySelectorAll('.metric-tabs button').forEach(button => {
     const selected = button.dataset.metric === metric;
     button.setAttribute('aria-selected', String(selected));
+  });
+  document.querySelectorAll('.comparison-card').forEach(button => {
+    button.setAttribute('aria-pressed', String(button.dataset.basis === state.basis));
   });
   $('summary-swatch').style.background = chartColor;
   $('summary-label').textContent = metric === 'delay'
@@ -324,13 +383,23 @@ async function start() {
   state.map.addControl(new NavigationControl({showCompass: false}), 'top-right');
   state.map.once('load', () => {
     [...state.entries.values()].forEach(addLine);
+    updateLineColors();
     state.map.fitBounds(allBounds(), {padding: {top: 100, right: 80, bottom: 70, left: 80}, maxZoom: 11, duration: 0});
     $('loading').classList.add('ready');
   });
   state.map.on('error', event => { if (event.error) console.warn('Kartenressource:', event.error.message); });
   document.querySelectorAll('.metric-tabs button').forEach(button => button.addEventListener('click', () => {
     state.metric = button.dataset.metric;
-    if (state.selected) renderSeries(state.series.get(state.selected.line.line_id));
+    state.basis = 'mean';
+    updateLineColors();
+    const series = state.selected && state.series.get(state.selected.line.line_id);
+    if (series) renderSeries(series);
+  }));
+  document.querySelectorAll('.comparison-card').forEach(button => button.addEventListener('click', () => {
+    state.basis = button.dataset.basis;
+    updateLineColors();
+    const series = state.selected && state.series.get(state.selected.line.line_id);
+    if (series) renderSeries(series);
   }));
   $('panel-close').addEventListener('click', closePanel);
   $('panel-toggle').addEventListener('click', () => {

@@ -2,15 +2,16 @@
 
 Die erste trainmaps-Karte ist unter **[https://34.7.91.18/karte](https://34.7.91.18/karte)**
 erreichbar. Sie zeigt die Münchner S1 und 57 Monatswerte von September 2021 bis
-Mai 2026. Die Kartenansicht und die drei dafür vorgesehenen Leseendpunkte sind
+Mai 2026. Die Kartenansicht und die vier dafür vorgesehenen Leseendpunkte sind
 öffentlich; ein API-Token wird dafür nicht im Browser gespeichert.
 
 ## Bedienung
 
 Beim Start ist kein Datenfenster geöffnet. Jede verfügbare S-Bahn wird anhand
-ihrer über alle Monate gemittelten, geschätzten Verspätung eingefärbt. Ein Klick
-auf die farbige Linie oder eine ihrer Stationen wählt die S-Bahn aus und öffnet
-das Kontextfenster.
+ihrer über alle Monate gemittelten, geschätzten Verspätung eingefärbt. Die
+Farbskala reicht vom tatsächlich niedrigsten bis zum tatsächlich höchsten Wert
+aller verfügbaren S-Bahnlinien. Ein Klick auf die Linie oder eine ihrer Stationen
+wählt die S-Bahn aus und öffnet das Kontextfenster.
 
 Das Liniendiagramm zeigt sofort alle verfügbaren Monatswerte. Zwei direkt
 sichtbare Schaltflächen wechseln zwischen:
@@ -20,7 +21,17 @@ sichtbare Schaltflächen wechseln zwischen:
 
 Monat und Kennzahl werden nicht über Dropdown-Menüs ausgewählt. Für jeden
 Diagrammpunkt zeigt ein Tooltip den Monat und den Wert. Das Fenster nennt außerdem
-Mittelwert, niedrigsten, höchsten und neuesten Monatswert.
+Mittelwert, niedrigsten, höchsten und neuesten Monatswert. Diese vier Angaben sind
+Schaltflächen. Ein Klick färbt alle S-Bahnlinien nach dem jeweils eigenen Wert
+dieser Art ein. Beim Wechsel zu „Ausfälle“ wird wieder der mittlere Ausfallanteil
+verwendet; anschließend können auch dort Minimum, Maximum und letzter Monat als
+Vergleich ausgewählt werden.
+
+Grün kennzeichnet den kleinsten und Rot den größten vorhandenen Vergleichswert;
+dazwischen wird die Farbe kontinuierlich berechnet. Die Legende zeigt die jeweils
+tatsächliche Spannweite. Gibt es nur eine verfügbare Linie oder sind alle Werte
+gleich, existiert keine Vergleichsspannweite und die Linien erscheinen neutral
+grau.
 
 Die Werte gelten jeweils für die ganze Linie. Der gelieferte Datensatz enthält
 keine monatlichen Stationswerte.
@@ -38,9 +49,9 @@ Standardmäßig sind nur folgende Ebenen sichtbar:
 
 | Methode und Pfad | Zweck |
 | --- | --- |
-| `GET /api/v1/map/config` | Verfügbare, verifizierte Linien, Zeiträume, anfängliche Mittelwerte und Ebenen. |
+| `GET /api/v1/map/config` | Verfügbare, verifizierte Linien, Zeiträume, Vergleichswerte und Ebenen. |
 | `GET /api/v1/map/lines.geojson?line_id=de.muenchen.s1` | Freigegebener Fahrweg und Stationen als GeoJSON. |
-| `GET /api/v1/map/series?line_id=de.muenchen.s1` | Alle Monatswerte, Mittelwerte und die dokumentierte Verspätungsschätzung. |
+| `GET /api/v1/map/series?line_id=de.muenchen.s1` | Alle Monats- und Vergleichswerte sowie die dokumentierte Verspätungsschätzung. |
 | `GET /api/v1/map/monthly?line_id=de.muenchen.s1&month=2026-05&metric=punctuality&threshold_minutes=5` | Genau ein darstellbarer Monatswert. |
 
 Nur aktive Linien mit Geometriestatus `verified` werden ausgeliefert. Die
@@ -54,7 +65,13 @@ Gekürzte Beispielantwort des Zeitreihenendpunkts:
   "display_name": "S1 München",
   "summary": {
     "mean_estimated_delay_minutes": 3.833,
+    "minimum_estimated_delay_minutes": 1.997,
+    "maximum_estimated_delay_minutes": 5.349,
+    "latest_estimated_delay_minutes": 4.545,
     "mean_cancellation_percentage": 3.49,
+    "minimum_cancellation_percentage": 0.661,
+    "maximum_cancellation_percentage": 17.707,
+    "latest_cancellation_percentage": 3.164,
     "delay_months": 57,
     "cancellation_months": 57
   },
@@ -95,9 +112,12 @@ sechs Klassen und verwendet deren repräsentative Mittelpunkte:
 
 Der Monatswert ist der mit den jeweiligen Zählern gewichtete Mittelwert dieser
 Rechenwerte. Der anfängliche Farbwert einer Linie ist anschließend das einfache
-arithmetische Mittel aller vorhandenen Monatswerte. Die Skala verläuft von Grün
-unter zwei Minuten über Gelb und Orange bis Rot über 40 Minuten. Diese Werte sind
-Schätzwerte; Ausfälle sind ausgeschlossen und werden getrennt dargestellt.
+arithmetische Mittel aller vorhandenen Monatswerte. Die Kartenfarbe wird relativ
+zur aktuellen Spannweite aller verfügbaren S-Bahnlinien berechnet: Der kleinste
+Wert ist grün, der größte rot. Feste Minutengrenzen werden dafür nicht verwendet.
+Diese Werte sind Schätzwerte; Ausfälle sind ausgeschlossen und werden getrennt
+dargestellt. Für Ausfälle verwendet die Karte dieselbe relative Berechnung mit
+den Ausfallquoten in Prozent.
 
 ## Fahrweg der Münchner S1
 
@@ -141,5 +161,5 @@ der vollständige Linienkatalog werden dadurch nicht öffentlich.
 Die Desktopansicht wurde mit 1440 × 1000 Pixeln, die Mobilansicht mit 390 × 844
 Pixeln in Microsoft Edge geprüft. Dabei wurden der geschlossene Anfangszustand,
 die Auswahl per Kartenklick, 57 Diagrammpunkte, der Wechsel zwischen Verspätung
-und Ausfällen sowie die Ebenensteuerung kontrolliert. Die API-, Stil- und
-Geometrietests sind Bestandteil der automatisierten Testsuite.
+und Ausfällen, alle vier Vergleichsarten sowie die Ebenensteuerung kontrolliert.
+Die API-, Stil- und Geometrietests sind Bestandteil der automatisierten Testsuite.

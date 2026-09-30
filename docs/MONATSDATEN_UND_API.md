@@ -1,6 +1,6 @@
 # trainmaps: monatliche Pünktlichkeitskarte und API
 
-Stand 0.5.0, 30. September 2026. Entwicklungs-API und erste Webkarte sind
+Stand 0.6.0, 30. September 2026. Entwicklungs-API und erste Webkarte sind
 implementiert. Die Karte zeigt die Münchner S1; Bedienung und Kartenendpunkte
 stehen unter [Webkarte](KARTE.md). Verbindliche Anleitung der API-Endpunkte:
 [API.md](API.md). Die vollstaendige Datei `daten/frontend.json` wurde geprueft
@@ -87,7 +87,7 @@ aber ausdrücklich zugeschaltet werden.
 | --- | --- | --- |
 | S-Bahnlinien | Ein | Kräftige Linien, mit dem Zoom angepasste Strichstärke und kontrastierende Kontur. Die ausgewählte Linie wird zusätzlich betont. |
 | Linienkennungen | Ein | Lesbare Bezeichnungen wie S1 und S7; bei ausgeblendeten S-Bahnlinien ebenfalls unsichtbar. |
-| Pünktlichkeitsfarben | Ein | Farbe nach gewählter Monatskennzahl; ausgeschaltet werden die Linien neutral dargestellt. Bei ausgeblendeten Linien ist die Option inaktiv. |
+| Kennzahlenfarben | Ein | Relative Farbe nach Mittelwert, Minimum, Maximum oder letztem Monatswert der gewählten Kennzahl. Die Skala umfasst die tatsächlich vorhandenen Linienwerte. |
 | Ortsnamen | Ein | Dezente, zoomabhängige Beschriftung zur Orientierung. |
 | Gewässer | Ein | Zurückhaltende Flächen und Linien. |
 | Verwaltungsgrenzen | Aus | Optional zuschaltbare Orientierung. |
@@ -138,7 +138,7 @@ Abnahmekriterien für die spätere Oberfläche:
   übrige Straßen lassen sich unabhängig voneinander schalten.
 - Die Deutschlandansicht zeigt vereinfachte S-Bahn-Netze, beim Hineinzoomen
   detaillierte Fahrwege. Die erste Version benötigt keine Stationsdaten.
-- Monats- und Schwellenwechsel verändern Messwerte und Farben, nicht die
+- Kennzahl- und Vergleichswechsel verändern Messwerte und Farben, nicht die
   Layerauswahl. Nach Stilwechsel und Neuladen gilt die gespeicherte Auswahl;
   „Auf Minimal zurücksetzen“ stellt zuverlässig den Ausgangszustand her.
 - Stationspunkte ohne eigene Messwerte erhalten keine scheinbare Stationsquote.
@@ -223,23 +223,13 @@ Der Monatsendpunkt liefert für Linienzeilen bereits `line_id` und
 `geometry_status`. Ausfälle sind als gesonderte Kennzahl wählbar und werden
 nicht in die Pünktlichkeitsquote eingerechnet.
 
-Standardvorschlag: **Anteil außerhalb des 5-Minuten-Kriteriums im ausgewählten
-Monat**. Nach Klärung der Grenze wird die Beschriftung präzisiert.
-
-| Anteil außerhalb | Vorgeschlagene Farbe |
-| --- | --- |
-| 0 bis unter 2 % | Grün |
-| 2 bis unter 5 % | Gelb |
-| 5 bis unter 10 % | Orange |
-| ab 10 % | Rot |
-| keine Daten / keine Zuordnung | Grau mit Text |
-
-Diese Grenzen sind eine Produktentscheidung, keine amtliche Pünktlichkeitsnorm.
-Kleine Stichproben werden markiert; Vorschlag: weniger als 30 Messpunkte.
-Das Popup ergänzt Zahlen, Schwelle, Monat, Definition, Datenquelle und
-Geometriestand. Die Beispielzeile zeigt **98,86 % im Kriterium, 1,14 % außerhalb**,
-niemals „1,14 Minuten mittlere Verspätung“. Historische Werte werden nicht wie
-Live-Daten nach Minuten als veraltet markiert.
+Die Webkarte zeigt Zeitreihen für geschätzte Verspätungsminuten und Ausfallquoten.
+Für jede Kennzahl kann die Einfärbung auf Mittelwert, Minimum, Maximum oder den
+letzten Monatswert umgeschaltet werden. Grün steht für den kleinsten, Rot für den
+größten tatsächlich vorhandenen Wert aller verfügbaren S-Bahnlinien. Gleiche
+Werte oder eine einzelne Linie werden neutral grau dargestellt, weil dann keine
+Vergleichsspannweite existiert. Diese relative Skala ist eine Darstellungsregel
+und keine amtliche Pünktlichkeitsnorm.
 
 Geteilte Gleise werden mit Linienfilter oder seitlichen Darstellungs-Offsets
 lesbar. Mehrere Fahrwegvarianten dürfen denselben ausdrücklich als Linienwert
