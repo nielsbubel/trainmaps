@@ -37,7 +37,7 @@ VALIDATORS = {
     "frontend-1": Draft202012Validator(SCHEMA_V1),
     "frontend-2": Draft202012Validator(SCHEMA_V2),
 }
-VERSION = "0.7.0"
+VERSION = "0.8.0"
 LINE_COLLECTIONS = (
     "cancellationsByNetworkLineMonth",
     "delaysByNetworkLineMonth",

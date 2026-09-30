@@ -106,8 +106,8 @@ mindestens eine Linien-ID verwendet wird und jede verwendete Geometrie aktiv und
 `verified` ist. Der Monatsendpunkt verwendet den aktuellen Katalogzustand und
 liefert pro Zeile `geometry_status`.
 
-Der produktive Münchner Katalog enthält `de.muenchen.s1` bis
-`de.muenchen.s8` sowie `de.muenchen.s20`. Die Quellaliase lauten entsprechend
+Der produktive Katalog enthält 96 Linien aus 14 Netzen. Der Münchner Teil umfasst
+`de.muenchen.s1` bis `de.muenchen.s8` sowie `de.muenchen.s20`. Die Quellaliase lauten entsprechend
 `München/S1` bis `München/S8` und `München/S20`; alle neun Fahrwege sind nach
 der Desktop- und Mobilprüfung `verified`. Die Definitionen stehen gesammelt in
 [`examples/line-references-muenchen.json`](../examples/line-references-muenchen.json).
@@ -115,6 +115,14 @@ Die numerischen Quellwerte `München/1` bis `München/9` bleiben wegen abweichen
 Statistikwerte getrennt. `München/S9` besitzt nur einen historischen Monatswert
 und keine aktuelle Linie im verwendeten MVV-GTFS 06/2026. Aufbau und Prüfdaten
 der Fahrwege stehen unter [Webkarte](KARTE.md).
+
+Der bundesweite erste Durchlauf ergänzt 87 Linien. Er berücksichtigt nur
+Quellkennungen mit mindestens 40 Verspätungsmonaten und einer aktuellen,
+regional passenden DELFI-GTFS-Route. Die Definitionen stehen in
+[`examples/line-references-germany.json`](../examples/line-references-germany.json),
+die Ergebnisse und elf nicht zugeordnete historische Kennungen im
+[`Prüfbericht`](germany-first-pass-report.json). Die Fahrwege verwenden die
+basemap.de-Klassen `S-Bahn`, `Eisenbahn`, `Personenverkehr` und `Gleis`.
 
 ## Regeln für Änderungen
 

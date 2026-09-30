@@ -177,7 +177,10 @@ def register_map(app: FastAPI, store, *, version: str):
             ],
             "attribution": {
                 "basemap": "© 2026 basemap.de / BKG · Datenquellen: © GeoBasis-DE",
-                "route_reference": "MVV Gesamt-Soll-Fahrplandaten (GTFS), 06/2026 · CC BY 4.0",
+                "route_reference": (
+                    "DELFI deutschlandweite Sollfahrplandaten (GTFS), 30.09.2026 · "
+                    "MVV Gesamt-Soll-Fahrplandaten (GTFS), 06/2026"
+                ),
             },
         }
 

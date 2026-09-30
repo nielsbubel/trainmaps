@@ -1,0 +1,2351 @@
+[
+  {
+    "line_id": "de.berlin.s1",
+    "revision": 1,
+    "network_id": "de.berlin",
+    "display_name": "S1 Berlin",
+    "source_aliases": [
+      {
+        "netz": "Berlin",
+        "line": "S1"
+      }
+    ],
+    "geometry": {
+      "source": "basemap.de",
+      "source_layer": "Verkehrslinie",
+      "source_class": "S-Bahn",
+      "fallback_classes": [
+        "Eisenbahn",
+        "Personenverkehr",
+        "Gleis"
+      ],
+      "status": "verified",
+      "reference": "trainmaps:geometry:de.berlin.s1@1",
+      "version": "basemap.de 2026-08-18 / DELFI GTFS 2026-09-30"
+    },
+    "active": true,
+    "notes": "Automatischer erster Durchlauf; Fahrweg technisch gegen Stationen geprüft."
+  },
+  {
+    "line_id": "de.berlin.s2",
+    "revision": 1,
+    "network_id": "de.berlin",
+    "display_name": "S2 Berlin",
+    "source_aliases": [
+      {
+        "netz": "Berlin",
+        "line": "S2"
+      }
+    ],
+    "geometry": {
+      "source": "basemap.de",
+      "source_layer": "Verkehrslinie",
+      "source_class": "S-Bahn",
+      "fallback_classes": [
+        "Eisenbahn",
+        "Personenverkehr",
+        "Gleis"
+      ],
+      "status": "verified",
+      "reference": "trainmaps:geometry:de.berlin.s2@1",
+      "version": "basemap.de 2026-08-18 / DELFI GTFS 2026-09-30"
+    },
+    "active": true,
+    "notes": "Automatischer erster Durchlauf; Fahrweg technisch gegen Stationen geprüft."
+  },
+  {
+    "line_id": "de.berlin.s25",
+    "revision": 1,
+    "network_id": "de.berlin",
+    "display_name": "S25 Berlin",
+    "source_aliases": [
+      {
+        "netz": "Berlin",
+        "line": "S25"
+      }
+    ],
+    "geometry": {
+      "source": "basemap.de",
+      "source_layer": "Verkehrslinie",
+      "source_class": "S-Bahn",
+      "fallback_classes": [
+        "Eisenbahn",
+        "Personenverkehr",
+        "Gleis"
+      ],
+      "status": "verified",
+      "reference": "trainmaps:geometry:de.berlin.s25@1",
+      "version": "basemap.de 2026-08-18 / DELFI GTFS 2026-09-30"
+    },
+    "active": true,
+    "notes": "Automatischer erster Durchlauf; Fahrweg technisch gegen Stationen geprüft."
+  },
+  {
+    "line_id": "de.berlin.s26",
+    "revision": 1,
+    "network_id": "de.berlin",
+    "display_name": "S26 Berlin",
+    "source_aliases": [
+      {
+        "netz": "Berlin",
+        "line": "S26"
+      }
+    ],
+    "geometry": {
+      "source": "basemap.de",
+      "source_layer": "Verkehrslinie",
+      "source_class": "S-Bahn",
+      "fallback_classes": [
+        "Eisenbahn",
+        "Personenverkehr",
+        "Gleis"
+      ],
+      "status": "verified",
+      "reference": "trainmaps:geometry:de.berlin.s26@1",
+      "version": "basemap.de 2026-08-18 / DELFI GTFS 2026-09-30"
+    },
+    "active": true,
+    "notes": "Automatischer erster Durchlauf; Fahrweg technisch gegen Stationen geprüft."
+  },
+  {
+    "line_id": "de.berlin.s3",
+    "revision": 1,
+    "network_id": "de.berlin",
+    "display_name": "S3 Berlin",
+    "source_aliases": [
+      {
+        "netz": "Berlin",
+        "line": "S3"
+      }
+    ],
+    "geometry": {
+      "source": "basemap.de",
+      "source_layer": "Verkehrslinie",
+      "source_class": "S-Bahn",
+      "fallback_classes": [
+        "Eisenbahn",
+        "Personenverkehr",
+        "Gleis"
+      ],
+      "status": "verified",
+      "reference": "trainmaps:geometry:de.berlin.s3@1",
+      "version": "basemap.de 2026-08-18 / DELFI GTFS 2026-09-30"
+    },
+    "active": true,
+    "notes": "Automatischer erster Durchlauf; Fahrweg technisch gegen Stationen geprüft."
+  },
+  {
+    "line_id": "de.berlin.s41",
+    "revision": 1,
+    "network_id": "de.berlin",
+    "display_name": "S41 Berlin",
+    "source_aliases": [
+      {
+        "netz": "Berlin",
+        "line": "S41"
+      }
+    ],
+    "geometry": {
+      "source": "basemap.de",
+      "source_layer": "Verkehrslinie",
+      "source_class": "S-Bahn",
+      "fallback_classes": [
+        "Eisenbahn",
+        "Personenverkehr",
+        "Gleis"
+      ],
+      "status": "verified",
+      "reference": "trainmaps:geometry:de.berlin.s41@1",
+      "version": "basemap.de 2026-08-18 / DELFI GTFS 2026-09-30"
+    },
+    "active": true,
+    "notes": "Automatischer erster Durchlauf; Fahrweg technisch gegen Stationen geprüft."
+  },
+  {
+    "line_id": "de.berlin.s42",
+    "revision": 1,
+    "network_id": "de.berlin",
+    "display_name": "S42 Berlin",
+    "source_aliases": [
+      {
+        "netz": "Berlin",
+        "line": "S42"
+      }
+    ],
+    "geometry": {
+      "source": "basemap.de",
+      "source_layer": "Verkehrslinie",
+      "source_class": "S-Bahn",
+      "fallback_classes": [
+        "Eisenbahn",
+        "Personenverkehr",
+        "Gleis"
+      ],
+      "status": "verified",
+      "reference": "trainmaps:geometry:de.berlin.s42@1",
+      "version": "basemap.de 2026-08-18 / DELFI GTFS 2026-09-30"
+    },
+    "active": true,
+    "notes": "Automatischer erster Durchlauf; Fahrweg technisch gegen Stationen geprüft."
+  },
+  {
+    "line_id": "de.berlin.s46",
+    "revision": 1,
+    "network_id": "de.berlin",
+    "display_name": "S46 Berlin",
+    "source_aliases": [
+      {
+        "netz": "Berlin",
+        "line": "S46"
+      }
+    ],
+    "geometry": {
+      "source": "basemap.de",
+      "source_layer": "Verkehrslinie",
+      "source_class": "S-Bahn",
+      "fallback_classes": [
+        "Eisenbahn",
+        "Personenverkehr",
+        "Gleis"
+      ],
+      "status": "verified",
+      "reference": "trainmaps:geometry:de.berlin.s46@1",
+      "version": "basemap.de 2026-08-18 / DELFI GTFS 2026-09-30"
+    },
+    "active": true,
+    "notes": "Automatischer erster Durchlauf; Fahrweg technisch gegen Stationen geprüft."
+  },
+  {
+    "line_id": "de.berlin.s47",
+    "revision": 1,
+    "network_id": "de.berlin",
+    "display_name": "S47 Berlin",
+    "source_aliases": [
+      {
+        "netz": "Berlin",
+        "line": "S47"
+      }
+    ],
+    "geometry": {
+      "source": "basemap.de",
+      "source_layer": "Verkehrslinie",
+      "source_class": "S-Bahn",
+      "fallback_classes": [
+        "Eisenbahn",
+        "Personenverkehr",
+        "Gleis"
+      ],
+      "status": "verified",
+      "reference": "trainmaps:geometry:de.berlin.s47@1",
+      "version": "basemap.de 2026-08-18 / DELFI GTFS 2026-09-30"
+    },
+    "active": true,
+    "notes": "Automatischer erster Durchlauf; Fahrweg technisch gegen Stationen geprüft."
+  },
+  {
+    "line_id": "de.berlin.s5",
+    "revision": 1,
+    "network_id": "de.berlin",
+    "display_name": "S5 Berlin",
+    "source_aliases": [
+      {
+        "netz": "Berlin",
+        "line": "S5"
+      }
+    ],
+    "geometry": {
+      "source": "basemap.de",
+      "source_layer": "Verkehrslinie",
+      "source_class": "S-Bahn",
+      "fallback_classes": [
+        "Eisenbahn",
+        "Personenverkehr",
+        "Gleis"
+      ],
+      "status": "verified",
+      "reference": "trainmaps:geometry:de.berlin.s5@1",
+      "version": "basemap.de 2026-08-18 / DELFI GTFS 2026-09-30"
+    },
+    "active": true,
+    "notes": "Automatischer erster Durchlauf; Fahrweg technisch gegen Stationen geprüft."
+  },
+  {
+    "line_id": "de.berlin.s7",
+    "revision": 1,
+    "network_id": "de.berlin",
+    "display_name": "S7 Berlin",
+    "source_aliases": [
+      {
+        "netz": "Berlin",
+        "line": "S7"
+      }
+    ],
+    "geometry": {
+      "source": "basemap.de",
+      "source_layer": "Verkehrslinie",
+      "source_class": "S-Bahn",
+      "fallback_classes": [
+        "Eisenbahn",
+        "Personenverkehr",
+        "Gleis"
+      ],
+      "status": "verified",
+      "reference": "trainmaps:geometry:de.berlin.s7@1",
+      "version": "basemap.de 2026-08-18 / DELFI GTFS 2026-09-30"
+    },
+    "active": true,
+    "notes": "Automatischer erster Durchlauf; Fahrweg technisch gegen Stationen geprüft."
+  },
+  {
+    "line_id": "de.berlin.s75",
+    "revision": 1,
+    "network_id": "de.berlin",
+    "display_name": "S75 Berlin",
+    "source_aliases": [
+      {
+        "netz": "Berlin",
+        "line": "S75"
+      }
+    ],
+    "geometry": {
+      "source": "basemap.de",
+      "source_layer": "Verkehrslinie",
+      "source_class": "S-Bahn",
+      "fallback_classes": [
+        "Eisenbahn",
+        "Personenverkehr",
+        "Gleis"
+      ],
+      "status": "verified",
+      "reference": "trainmaps:geometry:de.berlin.s75@1",
+      "version": "basemap.de 2026-08-18 / DELFI GTFS 2026-09-30"
+    },
+    "active": true,
+    "notes": "Automatischer erster Durchlauf; Fahrweg technisch gegen Stationen geprüft."
+  },
+  {
+    "line_id": "de.berlin.s8",
+    "revision": 1,
+    "network_id": "de.berlin",
+    "display_name": "S8 Berlin",
+    "source_aliases": [
+      {
+        "netz": "Berlin",
+        "line": "S8"
+      }
+    ],
+    "geometry": {
+      "source": "basemap.de",
+      "source_layer": "Verkehrslinie",
+      "source_class": "S-Bahn",
+      "fallback_classes": [
+        "Eisenbahn",
+        "Personenverkehr",
+        "Gleis"
+      ],
+      "status": "verified",
+      "reference": "trainmaps:geometry:de.berlin.s8@1",
+      "version": "basemap.de 2026-08-18 / DELFI GTFS 2026-09-30"
+    },
+    "active": true,
+    "notes": "Automatischer erster Durchlauf; Fahrweg technisch gegen Stationen geprüft."
+  },
+  {
+    "line_id": "de.berlin.s85",
+    "revision": 1,
+    "network_id": "de.berlin",
+    "display_name": "S85 Berlin",
+    "source_aliases": [
+      {
+        "netz": "Berlin",
+        "line": "S85"
+      }
+    ],
+    "geometry": {
+      "source": "basemap.de",
+      "source_layer": "Verkehrslinie",
+      "source_class": "S-Bahn",
+      "fallback_classes": [
+        "Eisenbahn",
+        "Personenverkehr",
+        "Gleis"
+      ],
+      "status": "verified",
+      "reference": "trainmaps:geometry:de.berlin.s85@1",
+      "version": "basemap.de 2026-08-18 / DELFI GTFS 2026-09-30"
+    },
+    "active": true,
+    "notes": "Automatischer erster Durchlauf; Fahrweg technisch gegen Stationen geprüft."
+  },
+  {
+    "line_id": "de.berlin.s9",
+    "revision": 1,
+    "network_id": "de.berlin",
+    "display_name": "S9 Berlin",
+    "source_aliases": [
+      {
+        "netz": "Berlin",
+        "line": "S9"
+      }
+    ],
+    "geometry": {
+      "source": "basemap.de",
+      "source_layer": "Verkehrslinie",
+      "source_class": "S-Bahn",
+      "fallback_classes": [
+        "Eisenbahn",
+        "Personenverkehr",
+        "Gleis"
+      ],
+      "status": "verified",
+      "reference": "trainmaps:geometry:de.berlin.s9@1",
+      "version": "basemap.de 2026-08-18 / DELFI GTFS 2026-09-30"
+    },
+    "active": true,
+    "notes": "Automatischer erster Durchlauf; Fahrweg technisch gegen Stationen geprüft."
+  },
+  {
+    "line_id": "de.breisgau.s1",
+    "revision": 1,
+    "network_id": "de.breisgau",
+    "display_name": "S1 Breisgau",
+    "source_aliases": [
+      {
+        "netz": "Breisgau",
+        "line": "S1"
+      }
+    ],
+    "geometry": {
+      "source": "basemap.de",
+      "source_layer": "Verkehrslinie",
+      "source_class": "S-Bahn",
+      "fallback_classes": [
+        "Eisenbahn",
+        "Personenverkehr",
+        "Gleis"
+      ],
+      "status": "verified",
+      "reference": "trainmaps:geometry:de.breisgau.s1@1",
+      "version": "basemap.de 2026-08-18 / DELFI GTFS 2026-09-30"
+    },
+    "active": true,
+    "notes": "Automatischer erster Durchlauf; Fahrweg technisch gegen Stationen geprüft."
+  },
+  {
+    "line_id": "de.breisgau.s10",
+    "revision": 1,
+    "network_id": "de.breisgau",
+    "display_name": "S10 Breisgau",
+    "source_aliases": [
+      {
+        "netz": "Breisgau",
+        "line": "S10"
+      }
+    ],
+    "geometry": {
+      "source": "basemap.de",
+      "source_layer": "Verkehrslinie",
+      "source_class": "S-Bahn",
+      "fallback_classes": [
+        "Eisenbahn",
+        "Personenverkehr",
+        "Gleis"
+      ],
+      "status": "verified",
+      "reference": "trainmaps:geometry:de.breisgau.s10@1",
+      "version": "basemap.de 2026-08-18 / DELFI GTFS 2026-09-30"
+    },
+    "active": true,
+    "notes": "Automatischer erster Durchlauf; Fahrweg technisch gegen Stationen geprüft."
+  },
+  {
+    "line_id": "de.breisgau.s11",
+    "revision": 1,
+    "network_id": "de.breisgau",
+    "display_name": "S11 Breisgau",
+    "source_aliases": [
+      {
+        "netz": "Breisgau",
+        "line": "S11"
+      }
+    ],
+    "geometry": {
+      "source": "basemap.de",
+      "source_layer": "Verkehrslinie",
+      "source_class": "S-Bahn",
+      "fallback_classes": [
+        "Eisenbahn",
+        "Personenverkehr",
+        "Gleis"
+      ],
+      "status": "verified",
+      "reference": "trainmaps:geometry:de.breisgau.s11@1",
+      "version": "basemap.de 2026-08-18 / DELFI GTFS 2026-09-30"
+    },
+    "active": true,
+    "notes": "Automatischer erster Durchlauf; Fahrweg technisch gegen Stationen geprüft."
+  },
+  {
+    "line_id": "de.breisgau.s2",
+    "revision": 1,
+    "network_id": "de.breisgau",
+    "display_name": "S2 Breisgau",
+    "source_aliases": [
+      {
+        "netz": "Breisgau",
+        "line": "S2"
+      }
+    ],
+    "geometry": {
+      "source": "basemap.de",
+      "source_layer": "Verkehrslinie",
+      "source_class": "S-Bahn",
+      "fallback_classes": [
+        "Eisenbahn",
+        "Personenverkehr",
+        "Gleis"
+      ],
+      "status": "verified",
+      "reference": "trainmaps:geometry:de.breisgau.s2@1",
+      "version": "basemap.de 2026-08-18 / DELFI GTFS 2026-09-30"
+    },
+    "active": true,
+    "notes": "Automatischer erster Durchlauf; Fahrweg technisch gegen Stationen geprüft."
+  },
+  {
+    "line_id": "de.dresden.s1",
+    "revision": 1,
+    "network_id": "de.dresden",
+    "display_name": "S1 Dresden",
+    "source_aliases": [
+      {
+        "netz": "Dresden",
+        "line": "S1"
+      }
+    ],
+    "geometry": {
+      "source": "basemap.de",
+      "source_layer": "Verkehrslinie",
+      "source_class": "S-Bahn",
+      "fallback_classes": [
+        "Eisenbahn",
+        "Personenverkehr",
+        "Gleis"
+      ],
+      "status": "verified",
+      "reference": "trainmaps:geometry:de.dresden.s1@1",
+      "version": "basemap.de 2026-08-18 / DELFI GTFS 2026-09-30"
+    },
+    "active": true,
+    "notes": "Automatischer erster Durchlauf; Fahrweg technisch gegen Stationen geprüft."
+  },
+  {
+    "line_id": "de.dresden.s2",
+    "revision": 1,
+    "network_id": "de.dresden",
+    "display_name": "S2 Dresden",
+    "source_aliases": [
+      {
+        "netz": "Dresden",
+        "line": "S2"
+      }
+    ],
+    "geometry": {
+      "source": "basemap.de",
+      "source_layer": "Verkehrslinie",
+      "source_class": "S-Bahn",
+      "fallback_classes": [
+        "Eisenbahn",
+        "Personenverkehr",
+        "Gleis"
+      ],
+      "status": "verified",
+      "reference": "trainmaps:geometry:de.dresden.s2@1",
+      "version": "basemap.de 2026-08-18 / DELFI GTFS 2026-09-30"
+    },
+    "active": true,
+    "notes": "Automatischer erster Durchlauf; Fahrweg technisch gegen Stationen geprüft."
+  },
+  {
+    "line_id": "de.dresden.s3",
+    "revision": 1,
+    "network_id": "de.dresden",
+    "display_name": "S3 Dresden",
+    "source_aliases": [
+      {
+        "netz": "Dresden",
+        "line": "S3"
+      }
+    ],
+    "geometry": {
+      "source": "basemap.de",
+      "source_layer": "Verkehrslinie",
+      "source_class": "S-Bahn",
+      "fallback_classes": [
+        "Eisenbahn",
+        "Personenverkehr",
+        "Gleis"
+      ],
+      "status": "verified",
+      "reference": "trainmaps:geometry:de.dresden.s3@1",
+      "version": "basemap.de 2026-08-18 / DELFI GTFS 2026-09-30"
+    },
+    "active": true,
+    "notes": "Automatischer erster Durchlauf; Fahrweg technisch gegen Stationen geprüft."
+  },
+  {
+    "line_id": "de.dresden.s8",
+    "revision": 1,
+    "network_id": "de.dresden",
+    "display_name": "S8 Dresden",
+    "source_aliases": [
+      {
+        "netz": "Dresden",
+        "line": "S8"
+      }
+    ],
+    "geometry": {
+      "source": "basemap.de",
+      "source_layer": "Verkehrslinie",
+      "source_class": "S-Bahn",
+      "fallback_classes": [
+        "Eisenbahn",
+        "Personenverkehr",
+        "Gleis"
+      ],
+      "status": "verified",
+      "reference": "trainmaps:geometry:de.dresden.s8@1",
+      "version": "basemap.de 2026-08-18 / DELFI GTFS 2026-09-30"
+    },
+    "active": true,
+    "notes": "Automatischer erster Durchlauf; Fahrweg technisch gegen Stationen geprüft."
+  },
+  {
+    "line_id": "de.hamburg.s1",
+    "revision": 1,
+    "network_id": "de.hamburg",
+    "display_name": "S1 Hamburg",
+    "source_aliases": [
+      {
+        "netz": "Hamburg",
+        "line": "S1"
+      }
+    ],
+    "geometry": {
+      "source": "basemap.de",
+      "source_layer": "Verkehrslinie",
+      "source_class": "S-Bahn",
+      "fallback_classes": [
+        "Eisenbahn",
+        "Personenverkehr",
+        "Gleis"
+      ],
+      "status": "verified",
+      "reference": "trainmaps:geometry:de.hamburg.s1@1",
+      "version": "basemap.de 2026-08-18 / DELFI GTFS 2026-09-30"
+    },
+    "active": true,
+    "notes": "Automatischer erster Durchlauf; Fahrweg technisch gegen Stationen geprüft."
+  },
+  {
+    "line_id": "de.hamburg.s2",
+    "revision": 1,
+    "network_id": "de.hamburg",
+    "display_name": "S2 Hamburg",
+    "source_aliases": [
+      {
+        "netz": "Hamburg",
+        "line": "S2"
+      }
+    ],
+    "geometry": {
+      "source": "basemap.de",
+      "source_layer": "Verkehrslinie",
+      "source_class": "S-Bahn",
+      "fallback_classes": [
+        "Eisenbahn",
+        "Personenverkehr",
+        "Gleis"
+      ],
+      "status": "verified",
+      "reference": "trainmaps:geometry:de.hamburg.s2@1",
+      "version": "basemap.de 2026-08-18 / DELFI GTFS 2026-09-30"
+    },
+    "active": true,
+    "notes": "Automatischer erster Durchlauf; Fahrweg technisch gegen Stationen geprüft."
+  },
+  {
+    "line_id": "de.hamburg.s3",
+    "revision": 1,
+    "network_id": "de.hamburg",
+    "display_name": "S3 Hamburg",
+    "source_aliases": [
+      {
+        "netz": "Hamburg",
+        "line": "S3"
+      }
+    ],
+    "geometry": {
+      "source": "basemap.de",
+      "source_layer": "Verkehrslinie",
+      "source_class": "S-Bahn",
+      "fallback_classes": [
+        "Eisenbahn",
+        "Personenverkehr",
+        "Gleis"
+      ],
+      "status": "verified",
+      "reference": "trainmaps:geometry:de.hamburg.s3@1",
+      "version": "basemap.de 2026-08-18 / DELFI GTFS 2026-09-30"
+    },
+    "active": true,
+    "notes": "Automatischer erster Durchlauf; Fahrweg technisch gegen Stationen geprüft."
+  },
+  {
+    "line_id": "de.hamburg.s5",
+    "revision": 1,
+    "network_id": "de.hamburg",
+    "display_name": "S5 Hamburg",
+    "source_aliases": [
+      {
+        "netz": "Hamburg",
+        "line": "S5"
+      }
+    ],
+    "geometry": {
+      "source": "basemap.de",
+      "source_layer": "Verkehrslinie",
+      "source_class": "S-Bahn",
+      "fallback_classes": [
+        "Eisenbahn",
+        "Personenverkehr",
+        "Gleis"
+      ],
+      "status": "verified",
+      "reference": "trainmaps:geometry:de.hamburg.s5@1",
+      "version": "basemap.de 2026-08-18 / DELFI GTFS 2026-09-30"
+    },
+    "active": true,
+    "notes": "Automatischer erster Durchlauf; Fahrweg technisch gegen Stationen geprüft."
+  },
+  {
+    "line_id": "de.mitteldeutschland.s1",
+    "revision": 1,
+    "network_id": "de.mitteldeutschland",
+    "display_name": "S1 Mitteldeutschland",
+    "source_aliases": [
+      {
+        "netz": "Mitteldeutschland",
+        "line": "S1"
+      }
+    ],
+    "geometry": {
+      "source": "basemap.de",
+      "source_layer": "Verkehrslinie",
+      "source_class": "S-Bahn",
+      "fallback_classes": [
+        "Eisenbahn",
+        "Personenverkehr",
+        "Gleis"
+      ],
+      "status": "verified",
+      "reference": "trainmaps:geometry:de.mitteldeutschland.s1@1",
+      "version": "basemap.de 2026-08-18 / DELFI GTFS 2026-09-30"
+    },
+    "active": true,
+    "notes": "Automatischer erster Durchlauf; Fahrweg technisch gegen Stationen geprüft."
+  },
+  {
+    "line_id": "de.mitteldeutschland.s2",
+    "revision": 1,
+    "network_id": "de.mitteldeutschland",
+    "display_name": "S2 Mitteldeutschland",
+    "source_aliases": [
+      {
+        "netz": "Mitteldeutschland",
+        "line": "S2"
+      }
+    ],
+    "geometry": {
+      "source": "basemap.de",
+      "source_layer": "Verkehrslinie",
+      "source_class": "S-Bahn",
+      "fallback_classes": [
+        "Eisenbahn",
+        "Personenverkehr",
+        "Gleis"
+      ],
+      "status": "verified",
+      "reference": "trainmaps:geometry:de.mitteldeutschland.s2@1",
+      "version": "basemap.de 2026-08-18 / DELFI GTFS 2026-09-30"
+    },
+    "active": true,
+    "notes": "Automatischer erster Durchlauf; Fahrweg technisch gegen Stationen geprüft."
+  },
+  {
+    "line_id": "de.mitteldeutschland.s3",
+    "revision": 1,
+    "network_id": "de.mitteldeutschland",
+    "display_name": "S3 Mitteldeutschland",
+    "source_aliases": [
+      {
+        "netz": "Mitteldeutschland",
+        "line": "S3"
+      }
+    ],
+    "geometry": {
+      "source": "basemap.de",
+      "source_layer": "Verkehrslinie",
+      "source_class": "S-Bahn",
+      "fallback_classes": [
+        "Eisenbahn",
+        "Personenverkehr",
+        "Gleis"
+      ],
+      "status": "verified",
+      "reference": "trainmaps:geometry:de.mitteldeutschland.s3@1",
+      "version": "basemap.de 2026-08-18 / DELFI GTFS 2026-09-30"
+    },
+    "active": true,
+    "notes": "Automatischer erster Durchlauf; Fahrweg technisch gegen Stationen geprüft."
+  },
+  {
+    "line_id": "de.mitteldeutschland.s30",
+    "revision": 1,
+    "network_id": "de.mitteldeutschland",
+    "display_name": "S30 Mitteldeutschland",
+    "source_aliases": [
+      {
+        "netz": "Mitteldeutschland",
+        "line": "S30"
+      }
+    ],
+    "geometry": {
+      "source": "basemap.de",
+      "source_layer": "Verkehrslinie",
+      "source_class": "S-Bahn",
+      "fallback_classes": [
+        "Eisenbahn",
+        "Personenverkehr",
+        "Gleis"
+      ],
+      "status": "verified",
+      "reference": "trainmaps:geometry:de.mitteldeutschland.s30@1",
+      "version": "basemap.de 2026-08-18 / DELFI GTFS 2026-09-30"
+    },
+    "active": true,
+    "notes": "Automatischer erster Durchlauf; Fahrweg technisch gegen Stationen geprüft."
+  },
+  {
+    "line_id": "de.mitteldeutschland.s4",
+    "revision": 1,
+    "network_id": "de.mitteldeutschland",
+    "display_name": "S4 Mitteldeutschland",
+    "source_aliases": [
+      {
+        "netz": "Mitteldeutschland",
+        "line": "S4"
+      }
+    ],
+    "geometry": {
+      "source": "basemap.de",
+      "source_layer": "Verkehrslinie",
+      "source_class": "S-Bahn",
+      "fallback_classes": [
+        "Eisenbahn",
+        "Personenverkehr",
+        "Gleis"
+      ],
+      "status": "verified",
+      "reference": "trainmaps:geometry:de.mitteldeutschland.s4@1",
+      "version": "basemap.de 2026-08-18 / DELFI GTFS 2026-09-30"
+    },
+    "active": true,
+    "notes": "Automatischer erster Durchlauf; Fahrweg technisch gegen Stationen geprüft."
+  },
+  {
+    "line_id": "de.mitteldeutschland.s5",
+    "revision": 1,
+    "network_id": "de.mitteldeutschland",
+    "display_name": "S5 Mitteldeutschland",
+    "source_aliases": [
+      {
+        "netz": "Mitteldeutschland",
+        "line": "S5"
+      }
+    ],
+    "geometry": {
+      "source": "basemap.de",
+      "source_layer": "Verkehrslinie",
+      "source_class": "S-Bahn",
+      "fallback_classes": [
+        "Eisenbahn",
+        "Personenverkehr",
+        "Gleis"
+      ],
+      "status": "verified",
+      "reference": "trainmaps:geometry:de.mitteldeutschland.s5@1",
+      "version": "basemap.de 2026-08-18 / DELFI GTFS 2026-09-30"
+    },
+    "active": true,
+    "notes": "Automatischer erster Durchlauf; Fahrweg technisch gegen Stationen geprüft."
+  },
+  {
+    "line_id": "de.mitteldeutschland.s5x",
+    "revision": 1,
+    "network_id": "de.mitteldeutschland",
+    "display_name": "S5X Mitteldeutschland",
+    "source_aliases": [
+      {
+        "netz": "Mitteldeutschland",
+        "line": "S5X"
+      }
+    ],
+    "geometry": {
+      "source": "basemap.de",
+      "source_layer": "Verkehrslinie",
+      "source_class": "S-Bahn",
+      "fallback_classes": [
+        "Eisenbahn",
+        "Personenverkehr",
+        "Gleis"
+      ],
+      "status": "verified",
+      "reference": "trainmaps:geometry:de.mitteldeutschland.s5x@1",
+      "version": "basemap.de 2026-08-18 / DELFI GTFS 2026-09-30"
+    },
+    "active": true,
+    "notes": "Automatischer erster Durchlauf; Fahrweg technisch gegen Stationen geprüft."
+  },
+  {
+    "line_id": "de.mitteldeutschland.s6",
+    "revision": 1,
+    "network_id": "de.mitteldeutschland",
+    "display_name": "S6 Mitteldeutschland",
+    "source_aliases": [
+      {
+        "netz": "Mitteldeutschland",
+        "line": "S6"
+      }
+    ],
+    "geometry": {
+      "source": "basemap.de",
+      "source_layer": "Verkehrslinie",
+      "source_class": "S-Bahn",
+      "fallback_classes": [
+        "Eisenbahn",
+        "Personenverkehr",
+        "Gleis"
+      ],
+      "status": "verified",
+      "reference": "trainmaps:geometry:de.mitteldeutschland.s6@1",
+      "version": "basemap.de 2026-08-18 / DELFI GTFS 2026-09-30"
+    },
+    "active": true,
+    "notes": "Automatischer erster Durchlauf; Fahrweg technisch gegen Stationen geprüft."
+  },
+  {
+    "line_id": "de.mitteldeutschland.s8",
+    "revision": 1,
+    "network_id": "de.mitteldeutschland",
+    "display_name": "S8 Mitteldeutschland",
+    "source_aliases": [
+      {
+        "netz": "Mitteldeutschland",
+        "line": "S8"
+      }
+    ],
+    "geometry": {
+      "source": "basemap.de",
+      "source_layer": "Verkehrslinie",
+      "source_class": "S-Bahn",
+      "fallback_classes": [
+        "Eisenbahn",
+        "Personenverkehr",
+        "Gleis"
+      ],
+      "status": "verified",
+      "reference": "trainmaps:geometry:de.mitteldeutschland.s8@1",
+      "version": "basemap.de 2026-08-18 / DELFI GTFS 2026-09-30"
+    },
+    "active": true,
+    "notes": "Automatischer erster Durchlauf; Fahrweg technisch gegen Stationen geprüft."
+  },
+  {
+    "line_id": "de.mitteldeutschland.s9",
+    "revision": 1,
+    "network_id": "de.mitteldeutschland",
+    "display_name": "S9 Mitteldeutschland",
+    "source_aliases": [
+      {
+        "netz": "Mitteldeutschland",
+        "line": "S9"
+      }
+    ],
+    "geometry": {
+      "source": "basemap.de",
+      "source_layer": "Verkehrslinie",
+      "source_class": "S-Bahn",
+      "fallback_classes": [
+        "Eisenbahn",
+        "Personenverkehr",
+        "Gleis"
+      ],
+      "status": "verified",
+      "reference": "trainmaps:geometry:de.mitteldeutschland.s9@1",
+      "version": "basemap.de 2026-08-18 / DELFI GTFS 2026-09-30"
+    },
+    "active": true,
+    "notes": "Automatischer erster Durchlauf; Fahrweg technisch gegen Stationen geprüft."
+  },
+  {
+    "line_id": "de.mittelelbe.s1",
+    "revision": 1,
+    "network_id": "de.mittelelbe",
+    "display_name": "S1 Mittelelbe",
+    "source_aliases": [
+      {
+        "netz": "Mittelelbe",
+        "line": "S1"
+      }
+    ],
+    "geometry": {
+      "source": "basemap.de",
+      "source_layer": "Verkehrslinie",
+      "source_class": "S-Bahn",
+      "fallback_classes": [
+        "Eisenbahn",
+        "Personenverkehr",
+        "Gleis"
+      ],
+      "status": "verified",
+      "reference": "trainmaps:geometry:de.mittelelbe.s1@1",
+      "version": "basemap.de 2026-08-18 / DELFI GTFS 2026-09-30"
+    },
+    "active": true,
+    "notes": "Automatischer erster Durchlauf; Fahrweg technisch gegen Stationen geprüft."
+  },
+  {
+    "line_id": "de.nuernberg.s1",
+    "revision": 1,
+    "network_id": "de.nuernberg",
+    "display_name": "S1 Nürnberg",
+    "source_aliases": [
+      {
+        "netz": "Nürnberg",
+        "line": "S1"
+      }
+    ],
+    "geometry": {
+      "source": "basemap.de",
+      "source_layer": "Verkehrslinie",
+      "source_class": "S-Bahn",
+      "fallback_classes": [
+        "Eisenbahn",
+        "Personenverkehr",
+        "Gleis"
+      ],
+      "status": "verified",
+      "reference": "trainmaps:geometry:de.nuernberg.s1@1",
+      "version": "basemap.de 2026-08-18 / DELFI GTFS 2026-09-30"
+    },
+    "active": true,
+    "notes": "Automatischer erster Durchlauf; Fahrweg technisch gegen Stationen geprüft."
+  },
+  {
+    "line_id": "de.nuernberg.s2",
+    "revision": 1,
+    "network_id": "de.nuernberg",
+    "display_name": "S2 Nürnberg",
+    "source_aliases": [
+      {
+        "netz": "Nürnberg",
+        "line": "S2"
+      }
+    ],
+    "geometry": {
+      "source": "basemap.de",
+      "source_layer": "Verkehrslinie",
+      "source_class": "S-Bahn",
+      "fallback_classes": [
+        "Eisenbahn",
+        "Personenverkehr",
+        "Gleis"
+      ],
+      "status": "verified",
+      "reference": "trainmaps:geometry:de.nuernberg.s2@1",
+      "version": "basemap.de 2026-08-18 / DELFI GTFS 2026-09-30"
+    },
+    "active": true,
+    "notes": "Automatischer erster Durchlauf; Fahrweg technisch gegen Stationen geprüft."
+  },
+  {
+    "line_id": "de.nuernberg.s3",
+    "revision": 1,
+    "network_id": "de.nuernberg",
+    "display_name": "S3 Nürnberg",
+    "source_aliases": [
+      {
+        "netz": "Nürnberg",
+        "line": "S3"
+      }
+    ],
+    "geometry": {
+      "source": "basemap.de",
+      "source_layer": "Verkehrslinie",
+      "source_class": "S-Bahn",
+      "fallback_classes": [
+        "Eisenbahn",
+        "Personenverkehr",
+        "Gleis"
+      ],
+      "status": "verified",
+      "reference": "trainmaps:geometry:de.nuernberg.s3@1",
+      "version": "basemap.de 2026-08-18 / DELFI GTFS 2026-09-30"
+    },
+    "active": true,
+    "notes": "Automatischer erster Durchlauf; Fahrweg technisch gegen Stationen geprüft."
+  },
+  {
+    "line_id": "de.nuernberg.s4",
+    "revision": 1,
+    "network_id": "de.nuernberg",
+    "display_name": "S4 Nürnberg",
+    "source_aliases": [
+      {
+        "netz": "Nürnberg",
+        "line": "S4"
+      }
+    ],
+    "geometry": {
+      "source": "basemap.de",
+      "source_layer": "Verkehrslinie",
+      "source_class": "S-Bahn",
+      "fallback_classes": [
+        "Eisenbahn",
+        "Personenverkehr",
+        "Gleis"
+      ],
+      "status": "verified",
+      "reference": "trainmaps:geometry:de.nuernberg.s4@1",
+      "version": "basemap.de 2026-08-18 / DELFI GTFS 2026-09-30"
+    },
+    "active": true,
+    "notes": "Automatischer erster Durchlauf; Fahrweg technisch gegen Stationen geprüft."
+  },
+  {
+    "line_id": "de.nuernberg.s5",
+    "revision": 1,
+    "network_id": "de.nuernberg",
+    "display_name": "S5 Nürnberg",
+    "source_aliases": [
+      {
+        "netz": "Nürnberg",
+        "line": "S5"
+      }
+    ],
+    "geometry": {
+      "source": "basemap.de",
+      "source_layer": "Verkehrslinie",
+      "source_class": "S-Bahn",
+      "fallback_classes": [
+        "Eisenbahn",
+        "Personenverkehr",
+        "Gleis"
+      ],
+      "status": "verified",
+      "reference": "trainmaps:geometry:de.nuernberg.s5@1",
+      "version": "basemap.de 2026-08-18 / DELFI GTFS 2026-09-30"
+    },
+    "active": true,
+    "notes": "Automatischer erster Durchlauf; Fahrweg technisch gegen Stationen geprüft."
+  },
+  {
+    "line_id": "de.nuernberg.s6",
+    "revision": 1,
+    "network_id": "de.nuernberg",
+    "display_name": "S6 Nürnberg",
+    "source_aliases": [
+      {
+        "netz": "Nürnberg",
+        "line": "S6"
+      }
+    ],
+    "geometry": {
+      "source": "basemap.de",
+      "source_layer": "Verkehrslinie",
+      "source_class": "S-Bahn",
+      "fallback_classes": [
+        "Eisenbahn",
+        "Personenverkehr",
+        "Gleis"
+      ],
+      "status": "verified",
+      "reference": "trainmaps:geometry:de.nuernberg.s6@1",
+      "version": "basemap.de 2026-08-18 / DELFI GTFS 2026-09-30"
+    },
+    "active": true,
+    "notes": "Automatischer erster Durchlauf; Fahrweg technisch gegen Stationen geprüft."
+  },
+  {
+    "line_id": "de.rhein-main.s1",
+    "revision": 1,
+    "network_id": "de.rhein-main",
+    "display_name": "S1 Rhein-Main",
+    "source_aliases": [
+      {
+        "netz": "Rhein-Main",
+        "line": "S1"
+      }
+    ],
+    "geometry": {
+      "source": "basemap.de",
+      "source_layer": "Verkehrslinie",
+      "source_class": "S-Bahn",
+      "fallback_classes": [
+        "Eisenbahn",
+        "Personenverkehr",
+        "Gleis"
+      ],
+      "status": "verified",
+      "reference": "trainmaps:geometry:de.rhein-main.s1@1",
+      "version": "basemap.de 2026-08-18 / DELFI GTFS 2026-09-30"
+    },
+    "active": true,
+    "notes": "Automatischer erster Durchlauf; Fahrweg technisch gegen Stationen geprüft."
+  },
+  {
+    "line_id": "de.rhein-main.s2",
+    "revision": 1,
+    "network_id": "de.rhein-main",
+    "display_name": "S2 Rhein-Main",
+    "source_aliases": [
+      {
+        "netz": "Rhein-Main",
+        "line": "S2"
+      }
+    ],
+    "geometry": {
+      "source": "basemap.de",
+      "source_layer": "Verkehrslinie",
+      "source_class": "S-Bahn",
+      "fallback_classes": [
+        "Eisenbahn",
+        "Personenverkehr",
+        "Gleis"
+      ],
+      "status": "verified",
+      "reference": "trainmaps:geometry:de.rhein-main.s2@1",
+      "version": "basemap.de 2026-08-18 / DELFI GTFS 2026-09-30"
+    },
+    "active": true,
+    "notes": "Automatischer erster Durchlauf; Fahrweg technisch gegen Stationen geprüft."
+  },
+  {
+    "line_id": "de.rhein-main.s3",
+    "revision": 1,
+    "network_id": "de.rhein-main",
+    "display_name": "S3 Rhein-Main",
+    "source_aliases": [
+      {
+        "netz": "Rhein-Main",
+        "line": "S3"
+      }
+    ],
+    "geometry": {
+      "source": "basemap.de",
+      "source_layer": "Verkehrslinie",
+      "source_class": "S-Bahn",
+      "fallback_classes": [
+        "Eisenbahn",
+        "Personenverkehr",
+        "Gleis"
+      ],
+      "status": "verified",
+      "reference": "trainmaps:geometry:de.rhein-main.s3@1",
+      "version": "basemap.de 2026-08-18 / DELFI GTFS 2026-09-30"
+    },
+    "active": true,
+    "notes": "Automatischer erster Durchlauf; Fahrweg technisch gegen Stationen geprüft."
+  },
+  {
+    "line_id": "de.rhein-main.s4",
+    "revision": 1,
+    "network_id": "de.rhein-main",
+    "display_name": "S4 Rhein-Main",
+    "source_aliases": [
+      {
+        "netz": "Rhein-Main",
+        "line": "S4"
+      }
+    ],
+    "geometry": {
+      "source": "basemap.de",
+      "source_layer": "Verkehrslinie",
+      "source_class": "S-Bahn",
+      "fallback_classes": [
+        "Eisenbahn",
+        "Personenverkehr",
+        "Gleis"
+      ],
+      "status": "verified",
+      "reference": "trainmaps:geometry:de.rhein-main.s4@1",
+      "version": "basemap.de 2026-08-18 / DELFI GTFS 2026-09-30"
+    },
+    "active": true,
+    "notes": "Automatischer erster Durchlauf; Fahrweg technisch gegen Stationen geprüft."
+  },
+  {
+    "line_id": "de.rhein-main.s5",
+    "revision": 1,
+    "network_id": "de.rhein-main",
+    "display_name": "S5 Rhein-Main",
+    "source_aliases": [
+      {
+        "netz": "Rhein-Main",
+        "line": "S5"
+      }
+    ],
+    "geometry": {
+      "source": "basemap.de",
+      "source_layer": "Verkehrslinie",
+      "source_class": "S-Bahn",
+      "fallback_classes": [
+        "Eisenbahn",
+        "Personenverkehr",
+        "Gleis"
+      ],
+      "status": "verified",
+      "reference": "trainmaps:geometry:de.rhein-main.s5@1",
+      "version": "basemap.de 2026-08-18 / DELFI GTFS 2026-09-30"
+    },
+    "active": true,
+    "notes": "Automatischer erster Durchlauf; Fahrweg technisch gegen Stationen geprüft."
+  },
+  {
+    "line_id": "de.rhein-main.s6",
+    "revision": 1,
+    "network_id": "de.rhein-main",
+    "display_name": "S6 Rhein-Main",
+    "source_aliases": [
+      {
+        "netz": "Rhein-Main",
+        "line": "S6"
+      }
+    ],
+    "geometry": {
+      "source": "basemap.de",
+      "source_layer": "Verkehrslinie",
+      "source_class": "S-Bahn",
+      "fallback_classes": [
+        "Eisenbahn",
+        "Personenverkehr",
+        "Gleis"
+      ],
+      "status": "verified",
+      "reference": "trainmaps:geometry:de.rhein-main.s6@1",
+      "version": "basemap.de 2026-08-18 / DELFI GTFS 2026-09-30"
+    },
+    "active": true,
+    "notes": "Automatischer erster Durchlauf; Fahrweg technisch gegen Stationen geprüft."
+  },
+  {
+    "line_id": "de.rhein-main.s7",
+    "revision": 1,
+    "network_id": "de.rhein-main",
+    "display_name": "S7 Rhein-Main",
+    "source_aliases": [
+      {
+        "netz": "Rhein-Main",
+        "line": "S7"
+      }
+    ],
+    "geometry": {
+      "source": "basemap.de",
+      "source_layer": "Verkehrslinie",
+      "source_class": "S-Bahn",
+      "fallback_classes": [
+        "Eisenbahn",
+        "Personenverkehr",
+        "Gleis"
+      ],
+      "status": "verified",
+      "reference": "trainmaps:geometry:de.rhein-main.s7@1",
+      "version": "basemap.de 2026-08-18 / DELFI GTFS 2026-09-30"
+    },
+    "active": true,
+    "notes": "Automatischer erster Durchlauf; Fahrweg technisch gegen Stationen geprüft."
+  },
+  {
+    "line_id": "de.rhein-main.s8",
+    "revision": 1,
+    "network_id": "de.rhein-main",
+    "display_name": "S8 Rhein-Main",
+    "source_aliases": [
+      {
+        "netz": "Rhein-Main",
+        "line": "S8"
+      }
+    ],
+    "geometry": {
+      "source": "basemap.de",
+      "source_layer": "Verkehrslinie",
+      "source_class": "S-Bahn",
+      "fallback_classes": [
+        "Eisenbahn",
+        "Personenverkehr",
+        "Gleis"
+      ],
+      "status": "verified",
+      "reference": "trainmaps:geometry:de.rhein-main.s8@1",
+      "version": "basemap.de 2026-08-18 / DELFI GTFS 2026-09-30"
+    },
+    "active": true,
+    "notes": "Automatischer erster Durchlauf; Fahrweg technisch gegen Stationen geprüft."
+  },
+  {
+    "line_id": "de.rhein-main.s9",
+    "revision": 1,
+    "network_id": "de.rhein-main",
+    "display_name": "S9 Rhein-Main",
+    "source_aliases": [
+      {
+        "netz": "Rhein-Main",
+        "line": "S9"
+      }
+    ],
+    "geometry": {
+      "source": "basemap.de",
+      "source_layer": "Verkehrslinie",
+      "source_class": "S-Bahn",
+      "fallback_classes": [
+        "Eisenbahn",
+        "Personenverkehr",
+        "Gleis"
+      ],
+      "status": "verified",
+      "reference": "trainmaps:geometry:de.rhein-main.s9@1",
+      "version": "basemap.de 2026-08-18 / DELFI GTFS 2026-09-30"
+    },
+    "active": true,
+    "notes": "Automatischer erster Durchlauf; Fahrweg technisch gegen Stationen geprüft."
+  },
+  {
+    "line_id": "de.rhein-neckar.s1",
+    "revision": 1,
+    "network_id": "de.rhein-neckar",
+    "display_name": "S1 Rhein-Neckar",
+    "source_aliases": [
+      {
+        "netz": "Rhein-Neckar",
+        "line": "S1"
+      }
+    ],
+    "geometry": {
+      "source": "basemap.de",
+      "source_layer": "Verkehrslinie",
+      "source_class": "S-Bahn",
+      "fallback_classes": [
+        "Eisenbahn",
+        "Personenverkehr",
+        "Gleis"
+      ],
+      "status": "verified",
+      "reference": "trainmaps:geometry:de.rhein-neckar.s1@1",
+      "version": "basemap.de 2026-08-18 / DELFI GTFS 2026-09-30"
+    },
+    "active": true,
+    "notes": "Automatischer erster Durchlauf; Fahrweg technisch gegen Stationen geprüft."
+  },
+  {
+    "line_id": "de.rhein-neckar.s10",
+    "revision": 1,
+    "network_id": "de.rhein-neckar",
+    "display_name": "S10 Rhein-Neckar",
+    "source_aliases": [
+      {
+        "netz": "Rhein-Neckar",
+        "line": "S10"
+      }
+    ],
+    "geometry": {
+      "source": "basemap.de",
+      "source_layer": "Verkehrslinie",
+      "source_class": "S-Bahn",
+      "fallback_classes": [
+        "Eisenbahn",
+        "Personenverkehr",
+        "Gleis"
+      ],
+      "status": "verified",
+      "reference": "trainmaps:geometry:de.rhein-neckar.s10@1",
+      "version": "basemap.de 2026-08-18 / DELFI GTFS 2026-09-30"
+    },
+    "active": true,
+    "notes": "Automatischer erster Durchlauf; Fahrweg technisch gegen Stationen geprüft."
+  },
+  {
+    "line_id": "de.rhein-neckar.s12",
+    "revision": 1,
+    "network_id": "de.rhein-neckar",
+    "display_name": "S12 Rhein-Neckar",
+    "source_aliases": [
+      {
+        "netz": "Rhein-Neckar",
+        "line": "S12"
+      }
+    ],
+    "geometry": {
+      "source": "basemap.de",
+      "source_layer": "Verkehrslinie",
+      "source_class": "S-Bahn",
+      "fallback_classes": [
+        "Eisenbahn",
+        "Personenverkehr",
+        "Gleis"
+      ],
+      "status": "verified",
+      "reference": "trainmaps:geometry:de.rhein-neckar.s12@1",
+      "version": "basemap.de 2026-08-18 / DELFI GTFS 2026-09-30"
+    },
+    "active": true,
+    "notes": "Automatischer erster Durchlauf; Fahrweg technisch gegen Stationen geprüft."
+  },
+  {
+    "line_id": "de.rhein-neckar.s2",
+    "revision": 1,
+    "network_id": "de.rhein-neckar",
+    "display_name": "S2 Rhein-Neckar",
+    "source_aliases": [
+      {
+        "netz": "Rhein-Neckar",
+        "line": "S2"
+      }
+    ],
+    "geometry": {
+      "source": "basemap.de",
+      "source_layer": "Verkehrslinie",
+      "source_class": "S-Bahn",
+      "fallback_classes": [
+        "Eisenbahn",
+        "Personenverkehr",
+        "Gleis"
+      ],
+      "status": "verified",
+      "reference": "trainmaps:geometry:de.rhein-neckar.s2@1",
+      "version": "basemap.de 2026-08-18 / DELFI GTFS 2026-09-30"
+    },
+    "active": true,
+    "notes": "Automatischer erster Durchlauf; Fahrweg technisch gegen Stationen geprüft."
+  },
+  {
+    "line_id": "de.rhein-neckar.s3",
+    "revision": 1,
+    "network_id": "de.rhein-neckar",
+    "display_name": "S3 Rhein-Neckar",
+    "source_aliases": [
+      {
+        "netz": "Rhein-Neckar",
+        "line": "S3"
+      }
+    ],
+    "geometry": {
+      "source": "basemap.de",
+      "source_layer": "Verkehrslinie",
+      "source_class": "S-Bahn",
+      "fallback_classes": [
+        "Eisenbahn",
+        "Personenverkehr",
+        "Gleis"
+      ],
+      "status": "verified",
+      "reference": "trainmaps:geometry:de.rhein-neckar.s3@1",
+      "version": "basemap.de 2026-08-18 / DELFI GTFS 2026-09-30"
+    },
+    "active": true,
+    "notes": "Automatischer erster Durchlauf; Fahrweg technisch gegen Stationen geprüft."
+  },
+  {
+    "line_id": "de.rhein-neckar.s33",
+    "revision": 1,
+    "network_id": "de.rhein-neckar",
+    "display_name": "S33 Rhein-Neckar",
+    "source_aliases": [
+      {
+        "netz": "Rhein-Neckar",
+        "line": "S33"
+      }
+    ],
+    "geometry": {
+      "source": "basemap.de",
+      "source_layer": "Verkehrslinie",
+      "source_class": "S-Bahn",
+      "fallback_classes": [
+        "Eisenbahn",
+        "Personenverkehr",
+        "Gleis"
+      ],
+      "status": "verified",
+      "reference": "trainmaps:geometry:de.rhein-neckar.s33@1",
+      "version": "basemap.de 2026-08-18 / DELFI GTFS 2026-09-30"
+    },
+    "active": true,
+    "notes": "Automatischer erster Durchlauf; Fahrweg technisch gegen Stationen geprüft."
+  },
+  {
+    "line_id": "de.rhein-neckar.s4",
+    "revision": 1,
+    "network_id": "de.rhein-neckar",
+    "display_name": "S4 Rhein-Neckar",
+    "source_aliases": [
+      {
+        "netz": "Rhein-Neckar",
+        "line": "S4"
+      }
+    ],
+    "geometry": {
+      "source": "basemap.de",
+      "source_layer": "Verkehrslinie",
+      "source_class": "S-Bahn",
+      "fallback_classes": [
+        "Eisenbahn",
+        "Personenverkehr",
+        "Gleis"
+      ],
+      "status": "verified",
+      "reference": "trainmaps:geometry:de.rhein-neckar.s4@1",
+      "version": "basemap.de 2026-08-18 / DELFI GTFS 2026-09-30"
+    },
+    "active": true,
+    "notes": "Automatischer erster Durchlauf; Fahrweg technisch gegen Stationen geprüft."
+  },
+  {
+    "line_id": "de.rhein-neckar.s44",
+    "revision": 1,
+    "network_id": "de.rhein-neckar",
+    "display_name": "S44 Rhein-Neckar",
+    "source_aliases": [
+      {
+        "netz": "Rhein-Neckar",
+        "line": "S44"
+      }
+    ],
+    "geometry": {
+      "source": "basemap.de",
+      "source_layer": "Verkehrslinie",
+      "source_class": "S-Bahn",
+      "fallback_classes": [
+        "Eisenbahn",
+        "Personenverkehr",
+        "Gleis"
+      ],
+      "status": "verified",
+      "reference": "trainmaps:geometry:de.rhein-neckar.s44@1",
+      "version": "basemap.de 2026-08-18 / DELFI GTFS 2026-09-30"
+    },
+    "active": true,
+    "notes": "Automatischer erster Durchlauf; Fahrweg technisch gegen Stationen geprüft."
+  },
+  {
+    "line_id": "de.rhein-neckar.s5",
+    "revision": 1,
+    "network_id": "de.rhein-neckar",
+    "display_name": "S5 Rhein-Neckar",
+    "source_aliases": [
+      {
+        "netz": "Rhein-Neckar",
+        "line": "S5"
+      }
+    ],
+    "geometry": {
+      "source": "basemap.de",
+      "source_layer": "Verkehrslinie",
+      "source_class": "S-Bahn",
+      "fallback_classes": [
+        "Eisenbahn",
+        "Personenverkehr",
+        "Gleis"
+      ],
+      "status": "verified",
+      "reference": "trainmaps:geometry:de.rhein-neckar.s5@1",
+      "version": "basemap.de 2026-08-18 / DELFI GTFS 2026-09-30"
+    },
+    "active": true,
+    "notes": "Automatischer erster Durchlauf; Fahrweg technisch gegen Stationen geprüft."
+  },
+  {
+    "line_id": "de.rhein-neckar.s6",
+    "revision": 1,
+    "network_id": "de.rhein-neckar",
+    "display_name": "S6 Rhein-Neckar",
+    "source_aliases": [
+      {
+        "netz": "Rhein-Neckar",
+        "line": "S6"
+      }
+    ],
+    "geometry": {
+      "source": "basemap.de",
+      "source_layer": "Verkehrslinie",
+      "source_class": "S-Bahn",
+      "fallback_classes": [
+        "Eisenbahn",
+        "Personenverkehr",
+        "Gleis"
+      ],
+      "status": "verified",
+      "reference": "trainmaps:geometry:de.rhein-neckar.s6@1",
+      "version": "basemap.de 2026-08-18 / DELFI GTFS 2026-09-30"
+    },
+    "active": true,
+    "notes": "Automatischer erster Durchlauf; Fahrweg technisch gegen Stationen geprüft."
+  },
+  {
+    "line_id": "de.rhein-neckar.s7",
+    "revision": 1,
+    "network_id": "de.rhein-neckar",
+    "display_name": "S7 Rhein-Neckar",
+    "source_aliases": [
+      {
+        "netz": "Rhein-Neckar",
+        "line": "S7"
+      }
+    ],
+    "geometry": {
+      "source": "basemap.de",
+      "source_layer": "Verkehrslinie",
+      "source_class": "S-Bahn",
+      "fallback_classes": [
+        "Eisenbahn",
+        "Personenverkehr",
+        "Gleis"
+      ],
+      "status": "verified",
+      "reference": "trainmaps:geometry:de.rhein-neckar.s7@1",
+      "version": "basemap.de 2026-08-18 / DELFI GTFS 2026-09-30"
+    },
+    "active": true,
+    "notes": "Automatischer erster Durchlauf; Fahrweg technisch gegen Stationen geprüft."
+  },
+  {
+    "line_id": "de.rhein-neckar.s8",
+    "revision": 1,
+    "network_id": "de.rhein-neckar",
+    "display_name": "S8 Rhein-Neckar",
+    "source_aliases": [
+      {
+        "netz": "Rhein-Neckar",
+        "line": "S8"
+      }
+    ],
+    "geometry": {
+      "source": "basemap.de",
+      "source_layer": "Verkehrslinie",
+      "source_class": "S-Bahn",
+      "fallback_classes": [
+        "Eisenbahn",
+        "Personenverkehr",
+        "Gleis"
+      ],
+      "status": "verified",
+      "reference": "trainmaps:geometry:de.rhein-neckar.s8@1",
+      "version": "basemap.de 2026-08-18 / DELFI GTFS 2026-09-30"
+    },
+    "active": true,
+    "notes": "Automatischer erster Durchlauf; Fahrweg technisch gegen Stationen geprüft."
+  },
+  {
+    "line_id": "de.rhein-neckar.s9",
+    "revision": 1,
+    "network_id": "de.rhein-neckar",
+    "display_name": "S9 Rhein-Neckar",
+    "source_aliases": [
+      {
+        "netz": "Rhein-Neckar",
+        "line": "S9"
+      }
+    ],
+    "geometry": {
+      "source": "basemap.de",
+      "source_layer": "Verkehrslinie",
+      "source_class": "S-Bahn",
+      "fallback_classes": [
+        "Eisenbahn",
+        "Personenverkehr",
+        "Gleis"
+      ],
+      "status": "verified",
+      "reference": "trainmaps:geometry:de.rhein-neckar.s9@1",
+      "version": "basemap.de 2026-08-18 / DELFI GTFS 2026-09-30"
+    },
+    "active": true,
+    "notes": "Automatischer erster Durchlauf; Fahrweg technisch gegen Stationen geprüft."
+  },
+  {
+    "line_id": "de.rhein-ruhr.s1",
+    "revision": 1,
+    "network_id": "de.rhein-ruhr",
+    "display_name": "S1 Rhein-Ruhr",
+    "source_aliases": [
+      {
+        "netz": "Rhein-Ruhr",
+        "line": "S1"
+      }
+    ],
+    "geometry": {
+      "source": "basemap.de",
+      "source_layer": "Verkehrslinie",
+      "source_class": "S-Bahn",
+      "fallback_classes": [
+        "Eisenbahn",
+        "Personenverkehr",
+        "Gleis"
+      ],
+      "status": "verified",
+      "reference": "trainmaps:geometry:de.rhein-ruhr.s1@1",
+      "version": "basemap.de 2026-08-18 / DELFI GTFS 2026-09-30"
+    },
+    "active": true,
+    "notes": "Automatischer erster Durchlauf; Fahrweg technisch gegen Stationen geprüft."
+  },
+  {
+    "line_id": "de.rhein-ruhr.s2",
+    "revision": 1,
+    "network_id": "de.rhein-ruhr",
+    "display_name": "S2 Rhein-Ruhr",
+    "source_aliases": [
+      {
+        "netz": "Rhein-Ruhr",
+        "line": "S2"
+      }
+    ],
+    "geometry": {
+      "source": "basemap.de",
+      "source_layer": "Verkehrslinie",
+      "source_class": "S-Bahn",
+      "fallback_classes": [
+        "Eisenbahn",
+        "Personenverkehr",
+        "Gleis"
+      ],
+      "status": "verified",
+      "reference": "trainmaps:geometry:de.rhein-ruhr.s2@1",
+      "version": "basemap.de 2026-08-18 / DELFI GTFS 2026-09-30"
+    },
+    "active": true,
+    "notes": "Automatischer erster Durchlauf; Fahrweg technisch gegen Stationen geprüft."
+  },
+  {
+    "line_id": "de.rhein-ruhr.s3",
+    "revision": 1,
+    "network_id": "de.rhein-ruhr",
+    "display_name": "S3 Rhein-Ruhr",
+    "source_aliases": [
+      {
+        "netz": "Rhein-Ruhr",
+        "line": "S3"
+      }
+    ],
+    "geometry": {
+      "source": "basemap.de",
+      "source_layer": "Verkehrslinie",
+      "source_class": "S-Bahn",
+      "fallback_classes": [
+        "Eisenbahn",
+        "Personenverkehr",
+        "Gleis"
+      ],
+      "status": "verified",
+      "reference": "trainmaps:geometry:de.rhein-ruhr.s3@1",
+      "version": "basemap.de 2026-08-18 / DELFI GTFS 2026-09-30"
+    },
+    "active": true,
+    "notes": "Automatischer erster Durchlauf; Fahrweg technisch gegen Stationen geprüft."
+  },
+  {
+    "line_id": "de.rhein-ruhr.s4",
+    "revision": 1,
+    "network_id": "de.rhein-ruhr",
+    "display_name": "S4 Rhein-Ruhr",
+    "source_aliases": [
+      {
+        "netz": "Rhein-Ruhr",
+        "line": "S4"
+      }
+    ],
+    "geometry": {
+      "source": "basemap.de",
+      "source_layer": "Verkehrslinie",
+      "source_class": "S-Bahn",
+      "fallback_classes": [
+        "Eisenbahn",
+        "Personenverkehr",
+        "Gleis"
+      ],
+      "status": "verified",
+      "reference": "trainmaps:geometry:de.rhein-ruhr.s4@1",
+      "version": "basemap.de 2026-08-18 / DELFI GTFS 2026-09-30"
+    },
+    "active": true,
+    "notes": "Automatischer erster Durchlauf; Fahrweg technisch gegen Stationen geprüft."
+  },
+  {
+    "line_id": "de.rhein-ruhr.s5",
+    "revision": 1,
+    "network_id": "de.rhein-ruhr",
+    "display_name": "S5 Rhein-Ruhr",
+    "source_aliases": [
+      {
+        "netz": "Rhein-Ruhr",
+        "line": "S5"
+      }
+    ],
+    "geometry": {
+      "source": "basemap.de",
+      "source_layer": "Verkehrslinie",
+      "source_class": "S-Bahn",
+      "fallback_classes": [
+        "Eisenbahn",
+        "Personenverkehr",
+        "Gleis"
+      ],
+      "status": "verified",
+      "reference": "trainmaps:geometry:de.rhein-ruhr.s5@1",
+      "version": "basemap.de 2026-08-18 / DELFI GTFS 2026-09-30"
+    },
+    "active": true,
+    "notes": "Automatischer erster Durchlauf; Fahrweg technisch gegen Stationen geprüft."
+  },
+  {
+    "line_id": "de.rhein-ruhr.s8",
+    "revision": 1,
+    "network_id": "de.rhein-ruhr",
+    "display_name": "S8 Rhein-Ruhr",
+    "source_aliases": [
+      {
+        "netz": "Rhein-Ruhr",
+        "line": "S8"
+      }
+    ],
+    "geometry": {
+      "source": "basemap.de",
+      "source_layer": "Verkehrslinie",
+      "source_class": "S-Bahn",
+      "fallback_classes": [
+        "Eisenbahn",
+        "Personenverkehr",
+        "Gleis"
+      ],
+      "status": "verified",
+      "reference": "trainmaps:geometry:de.rhein-ruhr.s8@1",
+      "version": "basemap.de 2026-08-18 / DELFI GTFS 2026-09-30"
+    },
+    "active": true,
+    "notes": "Automatischer erster Durchlauf; Fahrweg technisch gegen Stationen geprüft."
+  },
+  {
+    "line_id": "de.rhein-ruhr.s9",
+    "revision": 1,
+    "network_id": "de.rhein-ruhr",
+    "display_name": "S9 Rhein-Ruhr",
+    "source_aliases": [
+      {
+        "netz": "Rhein-Ruhr",
+        "line": "S9"
+      }
+    ],
+    "geometry": {
+      "source": "basemap.de",
+      "source_layer": "Verkehrslinie",
+      "source_class": "S-Bahn",
+      "fallback_classes": [
+        "Eisenbahn",
+        "Personenverkehr",
+        "Gleis"
+      ],
+      "status": "verified",
+      "reference": "trainmaps:geometry:de.rhein-ruhr.s9@1",
+      "version": "basemap.de 2026-08-18 / DELFI GTFS 2026-09-30"
+    },
+    "active": true,
+    "notes": "Automatischer erster Durchlauf; Fahrweg technisch gegen Stationen geprüft."
+  },
+  {
+    "line_id": "de.rheinland.s11",
+    "revision": 1,
+    "network_id": "de.rheinland",
+    "display_name": "S11 Rheinland",
+    "source_aliases": [
+      {
+        "netz": "Rheinland",
+        "line": "S11"
+      }
+    ],
+    "geometry": {
+      "source": "basemap.de",
+      "source_layer": "Verkehrslinie",
+      "source_class": "S-Bahn",
+      "fallback_classes": [
+        "Eisenbahn",
+        "Personenverkehr",
+        "Gleis"
+      ],
+      "status": "verified",
+      "reference": "trainmaps:geometry:de.rheinland.s11@1",
+      "version": "basemap.de 2026-08-18 / DELFI GTFS 2026-09-30"
+    },
+    "active": true,
+    "notes": "Automatischer erster Durchlauf; Fahrweg technisch gegen Stationen geprüft."
+  },
+  {
+    "line_id": "de.rheinland.s12",
+    "revision": 1,
+    "network_id": "de.rheinland",
+    "display_name": "S12 Rheinland",
+    "source_aliases": [
+      {
+        "netz": "Rheinland",
+        "line": "S12"
+      }
+    ],
+    "geometry": {
+      "source": "basemap.de",
+      "source_layer": "Verkehrslinie",
+      "source_class": "S-Bahn",
+      "fallback_classes": [
+        "Eisenbahn",
+        "Personenverkehr",
+        "Gleis"
+      ],
+      "status": "verified",
+      "reference": "trainmaps:geometry:de.rheinland.s12@1",
+      "version": "basemap.de 2026-08-18 / DELFI GTFS 2026-09-30"
+    },
+    "active": true,
+    "notes": "Automatischer erster Durchlauf; Fahrweg technisch gegen Stationen geprüft."
+  },
+  {
+    "line_id": "de.rheinland.s19",
+    "revision": 1,
+    "network_id": "de.rheinland",
+    "display_name": "S19 Rheinland",
+    "source_aliases": [
+      {
+        "netz": "Rheinland",
+        "line": "S19"
+      }
+    ],
+    "geometry": {
+      "source": "basemap.de",
+      "source_layer": "Verkehrslinie",
+      "source_class": "S-Bahn",
+      "fallback_classes": [
+        "Eisenbahn",
+        "Personenverkehr",
+        "Gleis"
+      ],
+      "status": "verified",
+      "reference": "trainmaps:geometry:de.rheinland.s19@1",
+      "version": "basemap.de 2026-08-18 / DELFI GTFS 2026-09-30"
+    },
+    "active": true,
+    "notes": "Automatischer erster Durchlauf; Fahrweg technisch gegen Stationen geprüft."
+  },
+  {
+    "line_id": "de.rheinland.s23",
+    "revision": 1,
+    "network_id": "de.rheinland",
+    "display_name": "S23 Rheinland",
+    "source_aliases": [
+      {
+        "netz": "Rheinland",
+        "line": "S23"
+      }
+    ],
+    "geometry": {
+      "source": "basemap.de",
+      "source_layer": "Verkehrslinie",
+      "source_class": "S-Bahn",
+      "fallback_classes": [
+        "Eisenbahn",
+        "Personenverkehr",
+        "Gleis"
+      ],
+      "status": "verified",
+      "reference": "trainmaps:geometry:de.rheinland.s23@1",
+      "version": "basemap.de 2026-08-18 / DELFI GTFS 2026-09-30"
+    },
+    "active": true,
+    "notes": "Automatischer erster Durchlauf; Fahrweg technisch gegen Stationen geprüft."
+  },
+  {
+    "line_id": "de.rheinland.s6",
+    "revision": 1,
+    "network_id": "de.rheinland",
+    "display_name": "S6 Rheinland",
+    "source_aliases": [
+      {
+        "netz": "Rheinland",
+        "line": "S6"
+      }
+    ],
+    "geometry": {
+      "source": "basemap.de",
+      "source_layer": "Verkehrslinie",
+      "source_class": "S-Bahn",
+      "fallback_classes": [
+        "Eisenbahn",
+        "Personenverkehr",
+        "Gleis"
+      ],
+      "status": "verified",
+      "reference": "trainmaps:geometry:de.rheinland.s6@1",
+      "version": "basemap.de 2026-08-18 / DELFI GTFS 2026-09-30"
+    },
+    "active": true,
+    "notes": "Automatischer erster Durchlauf; Fahrweg technisch gegen Stationen geprüft."
+  },
+  {
+    "line_id": "de.rostock.s1",
+    "revision": 1,
+    "network_id": "de.rostock",
+    "display_name": "S1 Rostock",
+    "source_aliases": [
+      {
+        "netz": "Rostock",
+        "line": "S1"
+      }
+    ],
+    "geometry": {
+      "source": "basemap.de",
+      "source_layer": "Verkehrslinie",
+      "source_class": "S-Bahn",
+      "fallback_classes": [
+        "Eisenbahn",
+        "Personenverkehr",
+        "Gleis"
+      ],
+      "status": "verified",
+      "reference": "trainmaps:geometry:de.rostock.s1@1",
+      "version": "basemap.de 2026-08-18 / DELFI GTFS 2026-09-30"
+    },
+    "active": true,
+    "notes": "Automatischer erster Durchlauf; Fahrweg technisch gegen Stationen geprüft."
+  },
+  {
+    "line_id": "de.stuttgart.s1",
+    "revision": 1,
+    "network_id": "de.stuttgart",
+    "display_name": "S1 Stuttgart",
+    "source_aliases": [
+      {
+        "netz": "Stuttgart",
+        "line": "S1"
+      }
+    ],
+    "geometry": {
+      "source": "basemap.de",
+      "source_layer": "Verkehrslinie",
+      "source_class": "S-Bahn",
+      "fallback_classes": [
+        "Eisenbahn",
+        "Personenverkehr",
+        "Gleis"
+      ],
+      "status": "verified",
+      "reference": "trainmaps:geometry:de.stuttgart.s1@1",
+      "version": "basemap.de 2026-08-18 / DELFI GTFS 2026-09-30"
+    },
+    "active": true,
+    "notes": "Automatischer erster Durchlauf; Fahrweg technisch gegen Stationen geprüft."
+  },
+  {
+    "line_id": "de.stuttgart.s2",
+    "revision": 1,
+    "network_id": "de.stuttgart",
+    "display_name": "S2 Stuttgart",
+    "source_aliases": [
+      {
+        "netz": "Stuttgart",
+        "line": "S2"
+      }
+    ],
+    "geometry": {
+      "source": "basemap.de",
+      "source_layer": "Verkehrslinie",
+      "source_class": "S-Bahn",
+      "fallback_classes": [
+        "Eisenbahn",
+        "Personenverkehr",
+        "Gleis"
+      ],
+      "status": "verified",
+      "reference": "trainmaps:geometry:de.stuttgart.s2@1",
+      "version": "basemap.de 2026-08-18 / DELFI GTFS 2026-09-30"
+    },
+    "active": true,
+    "notes": "Automatischer erster Durchlauf; Fahrweg technisch gegen Stationen geprüft."
+  },
+  {
+    "line_id": "de.stuttgart.s3",
+    "revision": 1,
+    "network_id": "de.stuttgart",
+    "display_name": "S3 Stuttgart",
+    "source_aliases": [
+      {
+        "netz": "Stuttgart",
+        "line": "S3"
+      }
+    ],
+    "geometry": {
+      "source": "basemap.de",
+      "source_layer": "Verkehrslinie",
+      "source_class": "S-Bahn",
+      "fallback_classes": [
+        "Eisenbahn",
+        "Personenverkehr",
+        "Gleis"
+      ],
+      "status": "verified",
+      "reference": "trainmaps:geometry:de.stuttgart.s3@1",
+      "version": "basemap.de 2026-08-18 / DELFI GTFS 2026-09-30"
+    },
+    "active": true,
+    "notes": "Automatischer erster Durchlauf; Fahrweg technisch gegen Stationen geprüft."
+  },
+  {
+    "line_id": "de.stuttgart.s4",
+    "revision": 1,
+    "network_id": "de.stuttgart",
+    "display_name": "S4 Stuttgart",
+    "source_aliases": [
+      {
+        "netz": "Stuttgart",
+        "line": "S4"
+      }
+    ],
+    "geometry": {
+      "source": "basemap.de",
+      "source_layer": "Verkehrslinie",
+      "source_class": "S-Bahn",
+      "fallback_classes": [
+        "Eisenbahn",
+        "Personenverkehr",
+        "Gleis"
+      ],
+      "status": "verified",
+      "reference": "trainmaps:geometry:de.stuttgart.s4@1",
+      "version": "basemap.de 2026-08-18 / DELFI GTFS 2026-09-30"
+    },
+    "active": true,
+    "notes": "Automatischer erster Durchlauf; Fahrweg technisch gegen Stationen geprüft."
+  },
+  {
+    "line_id": "de.stuttgart.s5",
+    "revision": 1,
+    "network_id": "de.stuttgart",
+    "display_name": "S5 Stuttgart",
+    "source_aliases": [
+      {
+        "netz": "Stuttgart",
+        "line": "S5"
+      }
+    ],
+    "geometry": {
+      "source": "basemap.de",
+      "source_layer": "Verkehrslinie",
+      "source_class": "S-Bahn",
+      "fallback_classes": [
+        "Eisenbahn",
+        "Personenverkehr",
+        "Gleis"
+      ],
+      "status": "verified",
+      "reference": "trainmaps:geometry:de.stuttgart.s5@1",
+      "version": "basemap.de 2026-08-18 / DELFI GTFS 2026-09-30"
+    },
+    "active": true,
+    "notes": "Automatischer erster Durchlauf; Fahrweg technisch gegen Stationen geprüft."
+  },
+  {
+    "line_id": "de.stuttgart.s6",
+    "revision": 1,
+    "network_id": "de.stuttgart",
+    "display_name": "S6 Stuttgart",
+    "source_aliases": [
+      {
+        "netz": "Stuttgart",
+        "line": "S6"
+      }
+    ],
+    "geometry": {
+      "source": "basemap.de",
+      "source_layer": "Verkehrslinie",
+      "source_class": "S-Bahn",
+      "fallback_classes": [
+        "Eisenbahn",
+        "Personenverkehr",
+        "Gleis"
+      ],
+      "status": "verified",
+      "reference": "trainmaps:geometry:de.stuttgart.s6@1",
+      "version": "basemap.de 2026-08-18 / DELFI GTFS 2026-09-30"
+    },
+    "active": true,
+    "notes": "Automatischer erster Durchlauf; Fahrweg technisch gegen Stationen geprüft."
+  },
+  {
+    "line_id": "de.stuttgart.s60",
+    "revision": 1,
+    "network_id": "de.stuttgart",
+    "display_name": "S60 Stuttgart",
+    "source_aliases": [
+      {
+        "netz": "Stuttgart",
+        "line": "S60"
+      }
+    ],
+    "geometry": {
+      "source": "basemap.de",
+      "source_layer": "Verkehrslinie",
+      "source_class": "S-Bahn",
+      "fallback_classes": [
+        "Eisenbahn",
+        "Personenverkehr",
+        "Gleis"
+      ],
+      "status": "verified",
+      "reference": "trainmaps:geometry:de.stuttgart.s60@1",
+      "version": "basemap.de 2026-08-18 / DELFI GTFS 2026-09-30"
+    },
+    "active": true,
+    "notes": "Automatischer erster Durchlauf; Fahrweg technisch gegen Stationen geprüft."
+  },
+  {
+    "line_id": "de.stuttgart.s62",
+    "revision": 1,
+    "network_id": "de.stuttgart",
+    "display_name": "S62 Stuttgart",
+    "source_aliases": [
+      {
+        "netz": "Stuttgart",
+        "line": "S62"
+      }
+    ],
+    "geometry": {
+      "source": "basemap.de",
+      "source_layer": "Verkehrslinie",
+      "source_class": "S-Bahn",
+      "fallback_classes": [
+        "Eisenbahn",
+        "Personenverkehr",
+        "Gleis"
+      ],
+      "status": "verified",
+      "reference": "trainmaps:geometry:de.stuttgart.s62@1",
+      "version": "basemap.de 2026-08-18 / DELFI GTFS 2026-09-30"
+    },
+    "active": true,
+    "notes": "Automatischer erster Durchlauf; Fahrweg technisch gegen Stationen geprüft."
+  }
+]

@@ -1,8 +1,8 @@
 # Webkarte
 
-Die erste trainmaps-Karte ist unter **[https://34.7.91.18/karte](https://34.7.91.18/karte)**
-erreichbar. Sie zeigt S1 bis S8 sowie S20 in München mit jeweils 57 Monatswerten
-von September 2021 bis Mai 2026. Die Kartenansicht und die vier dafür vorgesehenen
+Die trainmaps-Karte ist unter **[https://34.7.91.18/karte](https://34.7.91.18/karte)**
+erreichbar. Sie zeigt 96 Linien aus 14 deutschen S-Bahn-Netzen mit den jeweils
+vorhandenen Monatswerten von September 2021 bis Mai 2026. Die Kartenansicht und die vier dafür vorgesehenen
 Leseendpunkte sind öffentlich; ein API-Token wird dafür nicht im Browser gespeichert.
 
 ## Bedienung
@@ -14,7 +14,7 @@ aller verfügbaren S-Bahnlinien. Ein Klick auf die Linie oder eine ihrer Station
 wählt die S-Bahn aus und öffnet das Kontextfenster.
 
 Ein direkter Kartenlink kann die interne Linien-ID als Parameter angeben, zum
-Beispiel `/karte?line=de.muenchen.s8`. Die Karte öffnet dann sofort die gewählte
+Beispiel `/karte?line=de.berlin.s1`. Die Karte öffnet dann sofort die gewählte
 Linie und ihre Zeitreihe.
 
 Das Liniendiagramm zeigt sofort alle verfügbaren Monatswerte. Zwei direkt
@@ -162,6 +162,30 @@ MVV-Umfang S1 bis S8 und S20 ist auch in den offiziellen
 [Fahrplanmedien 2026](https://www.mvv-muenchen.de/netz-plaene-medien/fahrplanmedien/download/s-bahn/)
 aufgeführt.
 
+## Bundesweiter erster Durchlauf
+
+Zusätzlich zu München enthält die Karte 87 Fahrwege aus Berlin, Breisgau,
+Dresden, Hamburg, Mitteldeutschland, Mittelelbe, Nürnberg, Rhein-Main,
+Rhein-Neckar, Rhein-Ruhr, Rheinland, Rostock und Stuttgart. Der Builder
+`scripts/build_germany_geometries.py` gleicht die Quellpaare `netz`/`line` mit
+den deutschlandweiten DELFI-Sollfahrplandaten ab, übernimmt die regulären
+Haltefolgen und routet sie auf dem basemap.de-Layer `Verkehrslinie`.
+
+Für diesen ersten Durchlauf werden nur Quelllinien mit mindestens 40 Monaten
+Verspätungsdaten und einer aktuellen regionalen GTFS-Entsprechung veröffentlicht.
+87 von 98 Kandidaten erfüllen diese Regeln; alle 87 bestehen die automatischen
+Stations-, Fahrweg- und Plausibilitätsprüfungen. Elf historische oder aktuell
+nicht eindeutig zuordenbare Kennungen bleiben aus der Karte ausgeschlossen. Der
+vollständige maschinenlesbare Stand steht im
+[Prüfbericht](germany-first-pass-report.json).
+
+Die 87 GeoJSON-Dateien enthalten insgesamt die automatisch ausgewählten regulären
+Linienäste und ihre Stationen. Der größte gemessene Abstand einer Station zum
+verwendeten Gleisgraphen beträgt 1.406,6 Meter. Der Builder akzeptiert höchstens
+3.000 Meter, lehnt unplausible Umwege ab und protokolliert verwendete technische
+Verbindungen pro Stationspaar in den Metadaten. Als Gleisklassen werden
+`S-Bahn`, `Eisenbahn`, `Personenverkehr` und `Gleis` berücksichtigt.
+
 ## Technische Umsetzung
 
 Die Oberfläche verwendet das lokal ausgelieferte MapLibre GL JS 6.11.2. Der
@@ -177,8 +201,9 @@ der vollständige Linienkatalog werden dadurch nicht öffentlich.
 ## Prüfung
 
 Die Desktopansicht wurde mit 1440 × 1000 Pixeln, die Mobilansicht mit 390 × 844
-Pixeln in Microsoft Edge geprüft. Dabei wurden alle neun Linien und jeweils 57
-Diagrammpunkte, die Auswahl per Kartenlink und Kartenklick, der Wechsel zwischen
+Pixeln in Microsoft Edge geprüft. Dabei wurden die bundesweite Gesamtansicht,
+Direktlinks in mehreren Netzen und die neun Münchner Linien, die Auswahl per
+Kartenlink und Kartenklick, der Wechsel zwischen
 Verspätung und Ausfällen, alle vier Vergleichsarten sowie die Ebenensteuerung
 kontrolliert. Die API-, Stil- und Geometrietests sind Bestandteil der
 automatisierten Testsuite.

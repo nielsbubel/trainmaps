@@ -1,6 +1,6 @@
 # trainmaps: Datenlieferung und Entwicklungs-API
 
-Version 0.7.0. Öffentliche Basisadresse: **https://34.7.91.18**. Lokal läuft
+Version 0.8.0. Öffentliche Basisadresse: **https://34.7.91.18**. Lokal läuft
 die Anwendung unter **http://127.0.0.1:8787**. Die interaktive Beschreibung
 steht unter **https://34.7.91.18/docs**, der maschinenlesbare Vertrag unter
 `/openapi.json` bzw. [api/openapi.json](../api/openapi.json).
@@ -54,10 +54,12 @@ Datenendpunkte. Sie geben nur aktive Linien im Status `verified`, deren Geometri
 und genau angeforderte Monatswerte aus. Details und vollständige Beispielaufrufe:
 [Webkarte](KARTE.md).
 
-Aktuell veröffentlicht die Karte die neun Münchner IDs `de.muenchen.s1` bis
-`de.muenchen.s8` sowie `de.muenchen.s20`. Jede Linie besitzt 57 Monatswerte von
-September 2021 bis Mai 2026. Die vollständigen Katalogdefinitionen können als
-[JSON-Datei](../examples/line-references-muenchen.json) heruntergeladen werden.
+Aktuell veröffentlicht die Karte 96 Linien aus 14 Netzen. Die neun Münchner IDs
+stehen in [line-references-muenchen.json](../examples/line-references-muenchen.json),
+die 87 Linien des bundesweiten ersten Durchlaufs in
+[line-references-germany.json](../examples/line-references-germany.json). Der
+[Prüfbericht](germany-first-pass-report.json) nennt die Auswahlregeln und die
+elf historischen oder aktuell nicht zugeordneten Quellkennungen.
 
 `GET /api/v1/map/series?line_id=de.muenchen.s1` ist der primäre Endpunkt der
 Webkarte. Er liefert alle Monate in chronologischer Reihenfolge, geschätzte

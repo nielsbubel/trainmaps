@@ -23,8 +23,9 @@ class GeometryReference(StrictModel):
     source: Literal["basemap.de"] = "basemap.de"
     source_layer: Literal["Verkehrslinie"] = "Verkehrslinie"
     source_class: Literal["S-Bahn"] = "S-Bahn"
-    fallback_classes: list[Literal["Eisenbahn", "Gleis"]] = Field(default_factory=list,
-                                                                   max_length=2)
+    fallback_classes: list[Literal["Eisenbahn", "Personenverkehr", "Gleis"]] = Field(
+        default_factory=list, max_length=3
+    )
     status: Literal["pending", "mapped", "verified"] = "pending"
     reference: str | None = Field(default=None, min_length=1, max_length=300)
     version: str | None = Field(default=None, min_length=1, max_length=100)

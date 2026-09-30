@@ -1,0 +1,1333 @@
+{
+  "format": "trainmaps-germany-first-pass-1",
+  "generated_at": "2026-09-30T18:50:24Z",
+  "rules": {
+    "minimum_delay_months": 40,
+    "current_route_source": "DELFI deutschlandweite Sollfahrplandaten (GTFS), Stand 2026-09-30",
+    "geometry_source": "basemap.de 2026-08-18",
+    "maximum_station_snap_m": 3000
+  },
+  "summary": {
+    "eligible_source_pairs": 98,
+    "current_regional_matches": 87,
+    "published": 87,
+    "geometry_failures": 0,
+    "without_current_match": 11
+  },
+  "published": [
+    {
+      "network": "Berlin",
+      "line": "S1",
+      "line_id": "de.berlin.s1",
+      "display_name": "S1 Berlin",
+      "months": 57,
+      "route_ids": [
+        "10842"
+      ],
+      "trip_count": 847,
+      "patterns": 1,
+      "stations": 35,
+      "max_station_snap_distance_m": 757.6
+    },
+    {
+      "network": "Berlin",
+      "line": "S2",
+      "line_id": "de.berlin.s2",
+      "display_name": "S2 Berlin",
+      "months": 57,
+      "route_ids": [
+        "16536"
+      ],
+      "trip_count": 857,
+      "patterns": 1,
+      "stations": 28,
+      "max_station_snap_distance_m": 165.7
+    },
+    {
+      "network": "Berlin",
+      "line": "S25",
+      "line_id": "de.berlin.s25",
+      "display_name": "S25 Berlin",
+      "months": 57,
+      "route_ids": [
+        "5855"
+      ],
+      "trip_count": 233,
+      "patterns": 1,
+      "stations": 27,
+      "max_station_snap_distance_m": 129.5
+    },
+    {
+      "network": "Berlin",
+      "line": "S26",
+      "line_id": "de.berlin.s26",
+      "display_name": "S26 Berlin",
+      "months": 57,
+      "route_ids": [
+        "6211"
+      ],
+      "trip_count": 256,
+      "patterns": 1,
+      "stations": 21,
+      "max_station_snap_distance_m": 129.5
+    },
+    {
+      "network": "Berlin",
+      "line": "S3",
+      "line_id": "de.berlin.s3",
+      "display_name": "S3 Berlin",
+      "months": 57,
+      "route_ids": [
+        "20380",
+        "8308"
+      ],
+      "trip_count": 1337,
+      "patterns": 1,
+      "stations": 30,
+      "max_station_snap_distance_m": 82.0
+    },
+    {
+      "network": "Berlin",
+      "line": "S41",
+      "line_id": "de.berlin.s41",
+      "display_name": "S41 Berlin",
+      "months": 57,
+      "route_ids": [
+        "19953"
+      ],
+      "trip_count": 1032,
+      "patterns": 3,
+      "stations": 34,
+      "max_station_snap_distance_m": 327.3
+    },
+    {
+      "network": "Berlin",
+      "line": "S42",
+      "line_id": "de.berlin.s42",
+      "display_name": "S42 Berlin",
+      "months": 57,
+      "route_ids": [
+        "6332"
+      ],
+      "trip_count": 1024,
+      "patterns": 2,
+      "stations": 33,
+      "max_station_snap_distance_m": 327.3
+    },
+    {
+      "network": "Berlin",
+      "line": "S46",
+      "line_id": "de.berlin.s46",
+      "display_name": "S46 Berlin",
+      "months": 57,
+      "route_ids": [
+        "14964"
+      ],
+      "trip_count": 926,
+      "patterns": 1,
+      "stations": 23,
+      "max_station_snap_distance_m": 208.7
+    },
+    {
+      "network": "Berlin",
+      "line": "S47",
+      "line_id": "de.berlin.s47",
+      "display_name": "S47 Berlin",
+      "months": 57,
+      "route_ids": [
+        "11533"
+      ],
+      "trip_count": 325,
+      "patterns": 1,
+      "stations": 9,
+      "max_station_snap_distance_m": 204.1
+    },
+    {
+      "network": "Berlin",
+      "line": "S5",
+      "line_id": "de.berlin.s5",
+      "display_name": "S5 Berlin",
+      "months": 57,
+      "route_ids": [
+        "17100"
+      ],
+      "trip_count": 1078,
+      "patterns": 1,
+      "stations": 33,
+      "max_station_snap_distance_m": 533.8
+    },
+    {
+      "network": "Berlin",
+      "line": "S7",
+      "line_id": "de.berlin.s7",
+      "display_name": "S7 Berlin",
+      "months": 57,
+      "route_ids": [
+        "2596"
+      ],
+      "trip_count": 850,
+      "patterns": 1,
+      "stations": 29,
+      "max_station_snap_distance_m": 294.6
+    },
+    {
+      "network": "Berlin",
+      "line": "S75",
+      "line_id": "de.berlin.s75",
+      "display_name": "S75 Berlin",
+      "months": 57,
+      "route_ids": [
+        "10201"
+      ],
+      "trip_count": 623,
+      "patterns": 1,
+      "stations": 10,
+      "max_station_snap_distance_m": 93.6
+    },
+    {
+      "network": "Berlin",
+      "line": "S8",
+      "line_id": "de.berlin.s8",
+      "display_name": "S8 Berlin",
+      "months": 57,
+      "route_ids": [
+        "14771",
+        "8172"
+      ],
+      "trip_count": 563,
+      "patterns": 2,
+      "stations": 28,
+      "max_station_snap_distance_m": 327.3
+    },
+    {
+      "network": "Berlin",
+      "line": "S85",
+      "line_id": "de.berlin.s85",
+      "display_name": "S85 Berlin",
+      "months": 49,
+      "route_ids": [
+        "20373",
+        "7709"
+      ],
+      "trip_count": 280,
+      "patterns": 3,
+      "stations": 31,
+      "max_station_snap_distance_m": 327.3
+    },
+    {
+      "network": "Berlin",
+      "line": "S9",
+      "line_id": "de.berlin.s9",
+      "display_name": "S9 Berlin",
+      "months": 57,
+      "route_ids": [
+        "20655"
+      ],
+      "trip_count": 591,
+      "patterns": 2,
+      "stations": 33,
+      "max_station_snap_distance_m": 108.1
+    },
+    {
+      "network": "Breisgau",
+      "line": "S1",
+      "line_id": "de.breisgau.s1",
+      "display_name": "S1 Breisgau",
+      "months": 57,
+      "route_ids": [
+        "12564"
+      ],
+      "trip_count": 167,
+      "patterns": 2,
+      "stations": 30,
+      "max_station_snap_distance_m": 1122.2
+    },
+    {
+      "network": "Breisgau",
+      "line": "S10",
+      "line_id": "de.breisgau.s10",
+      "display_name": "S10 Breisgau",
+      "months": 57,
+      "route_ids": [
+        "20869"
+      ],
+      "trip_count": 122,
+      "patterns": 2,
+      "stations": 22,
+      "max_station_snap_distance_m": 539.8
+    },
+    {
+      "network": "Breisgau",
+      "line": "S11",
+      "line_id": "de.breisgau.s11",
+      "display_name": "S11 Breisgau",
+      "months": 57,
+      "route_ids": [
+        "14356"
+      ],
+      "trip_count": 115,
+      "patterns": 1,
+      "stations": 21,
+      "max_station_snap_distance_m": 1122.2
+    },
+    {
+      "network": "Breisgau",
+      "line": "S2",
+      "line_id": "de.breisgau.s2",
+      "display_name": "S2 Breisgau",
+      "months": 40,
+      "route_ids": [
+        "9975"
+      ],
+      "trip_count": 118,
+      "patterns": 1,
+      "stations": 14,
+      "max_station_snap_distance_m": 308.4
+    },
+    {
+      "network": "Dresden",
+      "line": "S1",
+      "line_id": "de.dresden.s1",
+      "display_name": "S1 Dresden",
+      "months": 57,
+      "route_ids": [
+        "14979"
+      ],
+      "trip_count": 275,
+      "patterns": 2,
+      "stations": 33,
+      "max_station_snap_distance_m": 272.9
+    },
+    {
+      "network": "Dresden",
+      "line": "S2",
+      "line_id": "de.dresden.s2",
+      "display_name": "S2 Dresden",
+      "months": 57,
+      "route_ids": [
+        "691"
+      ],
+      "trip_count": 165,
+      "patterns": 1,
+      "stations": 17,
+      "max_station_snap_distance_m": 245.2
+    },
+    {
+      "network": "Dresden",
+      "line": "S3",
+      "line_id": "de.dresden.s3",
+      "display_name": "S3 Dresden",
+      "months": 57,
+      "route_ids": [
+        "9373"
+      ],
+      "trip_count": 56,
+      "patterns": 1,
+      "stations": 11,
+      "max_station_snap_distance_m": 177.3
+    },
+    {
+      "network": "Dresden",
+      "line": "S8",
+      "line_id": "de.dresden.s8",
+      "display_name": "S8 Dresden",
+      "months": 54,
+      "route_ids": [
+        "22532"
+      ],
+      "trip_count": 150,
+      "patterns": 2,
+      "stations": 14,
+      "max_station_snap_distance_m": 245.2
+    },
+    {
+      "network": "Hamburg",
+      "line": "S1",
+      "line_id": "de.hamburg.s1",
+      "display_name": "S1 Hamburg",
+      "months": 57,
+      "route_ids": [
+        "8591"
+      ],
+      "trip_count": 1871,
+      "patterns": 2,
+      "stations": 34,
+      "max_station_snap_distance_m": 330.0
+    },
+    {
+      "network": "Hamburg",
+      "line": "S2",
+      "line_id": "de.hamburg.s2",
+      "display_name": "S2 Hamburg",
+      "months": 57,
+      "route_ids": [
+        "17532"
+      ],
+      "trip_count": 296,
+      "patterns": 1,
+      "stations": 20,
+      "max_station_snap_distance_m": 190.0
+    },
+    {
+      "network": "Hamburg",
+      "line": "S3",
+      "line_id": "de.hamburg.s3",
+      "display_name": "S3 Hamburg",
+      "months": 57,
+      "route_ids": [
+        "17191"
+      ],
+      "trip_count": 1067,
+      "patterns": 3,
+      "stations": 36,
+      "max_station_snap_distance_m": 717.6
+    },
+    {
+      "network": "Hamburg",
+      "line": "S5",
+      "line_id": "de.hamburg.s5",
+      "display_name": "S5 Hamburg",
+      "months": 57,
+      "route_ids": [
+        "24519"
+      ],
+      "trip_count": 915,
+      "patterns": 3,
+      "stations": 41,
+      "max_station_snap_distance_m": 717.6
+    },
+    {
+      "network": "Mitteldeutschland",
+      "line": "S1",
+      "line_id": "de.mitteldeutschland.s1",
+      "display_name": "S1 Mitteldeutschland",
+      "months": 57,
+      "route_ids": [
+        "14979"
+      ],
+      "trip_count": 115,
+      "patterns": 1,
+      "stations": 17,
+      "max_station_snap_distance_m": 396.1
+    },
+    {
+      "network": "Mitteldeutschland",
+      "line": "S2",
+      "line_id": "de.mitteldeutschland.s2",
+      "display_name": "S2 Mitteldeutschland",
+      "months": 57,
+      "route_ids": [
+        "691"
+      ],
+      "trip_count": 109,
+      "patterns": 2,
+      "stations": 28,
+      "max_station_snap_distance_m": 1087.2
+    },
+    {
+      "network": "Mitteldeutschland",
+      "line": "S3",
+      "line_id": "de.mitteldeutschland.s3",
+      "display_name": "S3 Mitteldeutschland",
+      "months": 57,
+      "route_ids": [
+        "9373"
+      ],
+      "trip_count": 520,
+      "patterns": 1,
+      "stations": 38,
+      "max_station_snap_distance_m": 396.1
+    },
+    {
+      "network": "Mitteldeutschland",
+      "line": "S30",
+      "line_id": "de.mitteldeutschland.s30",
+      "display_name": "S30 Mitteldeutschland",
+      "months": 45,
+      "route_ids": [
+        "9093"
+      ],
+      "trip_count": 23,
+      "patterns": 1,
+      "stations": 7,
+      "max_station_snap_distance_m": 368.1
+    },
+    {
+      "network": "Mitteldeutschland",
+      "line": "S4",
+      "line_id": "de.mitteldeutschland.s4",
+      "display_name": "S4 Mitteldeutschland",
+      "months": 57,
+      "route_ids": [
+        "3526"
+      ],
+      "trip_count": 128,
+      "patterns": 2,
+      "stations": 36,
+      "max_station_snap_distance_m": 672.3
+    },
+    {
+      "network": "Mitteldeutschland",
+      "line": "S5",
+      "line_id": "de.mitteldeutschland.s5",
+      "display_name": "S5 Mitteldeutschland",
+      "months": 57,
+      "route_ids": [
+        "14950",
+        "7333"
+      ],
+      "trip_count": 120,
+      "patterns": 2,
+      "stations": 36,
+      "max_station_snap_distance_m": 396.1
+    },
+    {
+      "network": "Mitteldeutschland",
+      "line": "S5X",
+      "line_id": "de.mitteldeutschland.s5x",
+      "display_name": "S5X Mitteldeutschland",
+      "months": 57,
+      "route_ids": [
+        "12386",
+        "1355"
+      ],
+      "trip_count": 101,
+      "patterns": 1,
+      "stations": 23,
+      "max_station_snap_distance_m": 396.1
+    },
+    {
+      "network": "Mitteldeutschland",
+      "line": "S6",
+      "line_id": "de.mitteldeutschland.s6",
+      "display_name": "S6 Mitteldeutschland",
+      "months": 57,
+      "route_ids": [
+        "7410"
+      ],
+      "trip_count": 123,
+      "patterns": 2,
+      "stations": 15,
+      "max_station_snap_distance_m": 517.9
+    },
+    {
+      "network": "Mitteldeutschland",
+      "line": "S8",
+      "line_id": "de.mitteldeutschland.s8",
+      "display_name": "S8 Mitteldeutschland",
+      "months": 57,
+      "route_ids": [
+        "22532"
+      ],
+      "trip_count": 114,
+      "patterns": 2,
+      "stations": 27,
+      "max_station_snap_distance_m": 1087.2
+    },
+    {
+      "network": "Mitteldeutschland",
+      "line": "S9",
+      "line_id": "de.mitteldeutschland.s9",
+      "display_name": "S9 Mitteldeutschland",
+      "months": 57,
+      "route_ids": [
+        "14409"
+      ],
+      "trip_count": 30,
+      "patterns": 1,
+      "stations": 11,
+      "max_station_snap_distance_m": 900.6
+    },
+    {
+      "network": "Mittelelbe",
+      "line": "S1",
+      "line_id": "de.mittelelbe.s1",
+      "display_name": "S1 Mittelelbe",
+      "months": 57,
+      "route_ids": [
+        "14979"
+      ],
+      "trip_count": 122,
+      "patterns": 1,
+      "stations": 29,
+      "max_station_snap_distance_m": 750.1
+    },
+    {
+      "network": "Nürnberg",
+      "line": "S1",
+      "line_id": "de.nuernberg.s1",
+      "display_name": "S1 Nürnberg",
+      "months": 57,
+      "route_ids": [
+        "20696"
+      ],
+      "trip_count": 294,
+      "patterns": 1,
+      "stations": 37,
+      "max_station_snap_distance_m": 1119.5
+    },
+    {
+      "network": "Nürnberg",
+      "line": "S2",
+      "line_id": "de.nuernberg.s2",
+      "display_name": "S2 Nürnberg",
+      "months": 57,
+      "route_ids": [
+        "18437"
+      ],
+      "trip_count": 350,
+      "patterns": 1,
+      "stations": 23,
+      "max_station_snap_distance_m": 323.4
+    },
+    {
+      "network": "Nürnberg",
+      "line": "S3",
+      "line_id": "de.nuernberg.s3",
+      "display_name": "S3 Nürnberg",
+      "months": 57,
+      "route_ids": [
+        "9931"
+      ],
+      "trip_count": 196,
+      "patterns": 1,
+      "stations": 15,
+      "max_station_snap_distance_m": 331.7
+    },
+    {
+      "network": "Nürnberg",
+      "line": "S4",
+      "line_id": "de.nuernberg.s4",
+      "display_name": "S4 Nürnberg",
+      "months": 57,
+      "route_ids": [
+        "16466"
+      ],
+      "trip_count": 233,
+      "patterns": 1,
+      "stations": 18,
+      "max_station_snap_distance_m": 412.8
+    },
+    {
+      "network": "Nürnberg",
+      "line": "S5",
+      "line_id": "de.nuernberg.s5",
+      "display_name": "S5 Nürnberg",
+      "months": 57,
+      "route_ids": [
+        "12345"
+      ],
+      "trip_count": 41,
+      "patterns": 1,
+      "stations": 2,
+      "max_station_snap_distance_m": 130.1
+    },
+    {
+      "network": "Nürnberg",
+      "line": "S6",
+      "line_id": "de.nuernberg.s6",
+      "display_name": "S6 Nürnberg",
+      "months": 54,
+      "route_ids": [
+        "5559"
+      ],
+      "trip_count": 95,
+      "patterns": 1,
+      "stations": 10,
+      "max_station_snap_distance_m": 430.0
+    },
+    {
+      "network": "Rhein-Main",
+      "line": "S1",
+      "line_id": "de.rhein-main.s1",
+      "display_name": "S1 Rhein-Main",
+      "months": 57,
+      "route_ids": [
+        "10711"
+      ],
+      "trip_count": 629,
+      "patterns": 2,
+      "stations": 36,
+      "max_station_snap_distance_m": 454.1
+    },
+    {
+      "network": "Rhein-Main",
+      "line": "S2",
+      "line_id": "de.rhein-main.s2",
+      "display_name": "S2 Rhein-Main",
+      "months": 57,
+      "route_ids": [
+        "5838"
+      ],
+      "trip_count": 528,
+      "patterns": 1,
+      "stations": 27,
+      "max_station_snap_distance_m": 447.9
+    },
+    {
+      "network": "Rhein-Main",
+      "line": "S3",
+      "line_id": "de.rhein-main.s3",
+      "display_name": "S3 Rhein-Main",
+      "months": 57,
+      "route_ids": [
+        "15237"
+      ],
+      "trip_count": 242,
+      "patterns": 1,
+      "stations": 18,
+      "max_station_snap_distance_m": 137.1
+    },
+    {
+      "network": "Rhein-Main",
+      "line": "S4",
+      "line_id": "de.rhein-main.s4",
+      "display_name": "S4 Rhein-Main",
+      "months": 57,
+      "route_ids": [
+        "23635"
+      ],
+      "trip_count": 166,
+      "patterns": 1,
+      "stations": 16,
+      "max_station_snap_distance_m": 342.9
+    },
+    {
+      "network": "Rhein-Main",
+      "line": "S5",
+      "line_id": "de.rhein-main.s5",
+      "display_name": "S5 Rhein-Main",
+      "months": 57,
+      "route_ids": [
+        "23908"
+      ],
+      "trip_count": 495,
+      "patterns": 1,
+      "stations": 17,
+      "max_station_snap_distance_m": 293.4
+    },
+    {
+      "network": "Rhein-Main",
+      "line": "S6",
+      "line_id": "de.rhein-main.s6",
+      "display_name": "S6 Rhein-Main",
+      "months": 57,
+      "route_ids": [
+        "7665"
+      ],
+      "trip_count": 570,
+      "patterns": 4,
+      "stations": 41,
+      "max_station_snap_distance_m": 370.2
+    },
+    {
+      "network": "Rhein-Main",
+      "line": "S7",
+      "line_id": "de.rhein-main.s7",
+      "display_name": "S7 Rhein-Main",
+      "months": 53,
+      "route_ids": [
+        "9421"
+      ],
+      "trip_count": 201,
+      "patterns": 1,
+      "stations": 10,
+      "max_station_snap_distance_m": 748.5
+    },
+    {
+      "network": "Rhein-Main",
+      "line": "S8",
+      "line_id": "de.rhein-main.s8",
+      "display_name": "S8 Rhein-Main",
+      "months": 57,
+      "route_ids": [
+        "22349"
+      ],
+      "trip_count": 472,
+      "patterns": 2,
+      "stations": 33,
+      "max_station_snap_distance_m": 311.6
+    },
+    {
+      "network": "Rhein-Main",
+      "line": "S9",
+      "line_id": "de.rhein-main.s9",
+      "display_name": "S9 Rhein-Main",
+      "months": 57,
+      "route_ids": [
+        "12132"
+      ],
+      "trip_count": 251,
+      "patterns": 1,
+      "stations": 26,
+      "max_station_snap_distance_m": 311.6
+    },
+    {
+      "network": "Rhein-Neckar",
+      "line": "S1",
+      "line_id": "de.rhein-neckar.s1",
+      "display_name": "S1 Rhein-Neckar",
+      "months": 57,
+      "route_ids": [
+        "22757"
+      ],
+      "trip_count": 51,
+      "patterns": 1,
+      "stations": 56,
+      "max_station_snap_distance_m": 951.5
+    },
+    {
+      "network": "Rhein-Neckar",
+      "line": "S10",
+      "line_id": "de.rhein-neckar.s10",
+      "display_name": "S10 Rhein-Neckar",
+      "months": 57,
+      "route_ids": [
+        "6832"
+      ],
+      "trip_count": 21,
+      "patterns": 1,
+      "stations": 7,
+      "max_station_snap_distance_m": 453.3
+    },
+    {
+      "network": "Rhein-Neckar",
+      "line": "S12",
+      "line_id": "de.rhein-neckar.s12",
+      "display_name": "S12 Rhein-Neckar",
+      "months": 57,
+      "route_ids": [
+        "167"
+      ],
+      "trip_count": 65,
+      "patterns": 1,
+      "stations": 6,
+      "max_station_snap_distance_m": 158.2
+    },
+    {
+      "network": "Rhein-Neckar",
+      "line": "S2",
+      "line_id": "de.rhein-neckar.s2",
+      "display_name": "S2 Rhein-Neckar",
+      "months": 57,
+      "route_ids": [
+        "17427"
+      ],
+      "trip_count": 66,
+      "patterns": 2,
+      "stations": 68,
+      "max_station_snap_distance_m": 1030.4
+    },
+    {
+      "network": "Rhein-Neckar",
+      "line": "S3",
+      "line_id": "de.rhein-neckar.s3",
+      "display_name": "S3 Rhein-Neckar",
+      "months": 57,
+      "route_ids": [
+        "13467"
+      ],
+      "trip_count": 163,
+      "patterns": 5,
+      "stations": 55,
+      "max_station_snap_distance_m": 951.5
+    },
+    {
+      "network": "Rhein-Neckar",
+      "line": "S33",
+      "line_id": "de.rhein-neckar.s33",
+      "display_name": "S33 Rhein-Neckar",
+      "months": 57,
+      "route_ids": [
+        "19411"
+      ],
+      "trip_count": 67,
+      "patterns": 2,
+      "stations": 41,
+      "max_station_snap_distance_m": 1030.4
+    },
+    {
+      "network": "Rhein-Neckar",
+      "line": "S4",
+      "line_id": "de.rhein-neckar.s4",
+      "display_name": "S4 Rhein-Neckar",
+      "months": 57,
+      "route_ids": [
+        "12544"
+      ],
+      "trip_count": 4,
+      "patterns": 1,
+      "stations": 22,
+      "max_station_snap_distance_m": 1030.4
+    },
+    {
+      "network": "Rhein-Neckar",
+      "line": "S44",
+      "line_id": "de.rhein-neckar.s44",
+      "display_name": "S44 Rhein-Neckar",
+      "months": 57,
+      "route_ids": [
+        "7640"
+      ],
+      "trip_count": 33,
+      "patterns": 3,
+      "stations": 35,
+      "max_station_snap_distance_m": 951.5
+    },
+    {
+      "network": "Rhein-Neckar",
+      "line": "S5",
+      "line_id": "de.rhein-neckar.s5",
+      "display_name": "S5 Rhein-Neckar",
+      "months": 57,
+      "route_ids": [
+        "18884"
+      ],
+      "trip_count": 144,
+      "patterns": 2,
+      "stations": 32,
+      "max_station_snap_distance_m": 1406.6
+    },
+    {
+      "network": "Rhein-Neckar",
+      "line": "S6",
+      "line_id": "de.rhein-neckar.s6",
+      "display_name": "S6 Rhein-Neckar",
+      "months": 57,
+      "route_ids": [
+        "12597"
+      ],
+      "trip_count": 121,
+      "patterns": 1,
+      "stations": 35,
+      "max_station_snap_distance_m": 1406.6
+    },
+    {
+      "network": "Rhein-Neckar",
+      "line": "S7",
+      "line_id": "de.rhein-neckar.s7",
+      "display_name": "S7 Rhein-Neckar",
+      "months": 57,
+      "route_ids": [
+        "17712"
+      ],
+      "trip_count": 151,
+      "patterns": 2,
+      "stations": 25,
+      "max_station_snap_distance_m": 217.8
+    },
+    {
+      "network": "Rhein-Neckar",
+      "line": "S8",
+      "line_id": "de.rhein-neckar.s8",
+      "display_name": "S8 Rhein-Neckar",
+      "months": 57,
+      "route_ids": [
+        "14780"
+      ],
+      "trip_count": 68,
+      "patterns": 1,
+      "stations": 16,
+      "max_station_snap_distance_m": 186.5
+    },
+    {
+      "network": "Rhein-Neckar",
+      "line": "S9",
+      "line_id": "de.rhein-neckar.s9",
+      "display_name": "S9 Rhein-Neckar",
+      "months": 57,
+      "route_ids": [
+        "2709"
+      ],
+      "trip_count": 114,
+      "patterns": 2,
+      "stations": 26,
+      "max_station_snap_distance_m": 822.1
+    },
+    {
+      "network": "Rhein-Ruhr",
+      "line": "S1",
+      "line_id": "de.rhein-ruhr.s1",
+      "display_name": "S1 Rhein-Ruhr",
+      "months": 57,
+      "route_ids": [
+        "20417"
+      ],
+      "trip_count": 514,
+      "patterns": 2,
+      "stations": 39,
+      "max_station_snap_distance_m": 376.4
+    },
+    {
+      "network": "Rhein-Ruhr",
+      "line": "S2",
+      "line_id": "de.rhein-ruhr.s2",
+      "display_name": "S2 Rhein-Ruhr",
+      "months": 57,
+      "route_ids": [
+        "24274"
+      ],
+      "trip_count": 246,
+      "patterns": 2,
+      "stations": 16,
+      "max_station_snap_distance_m": 127.8
+    },
+    {
+      "network": "Rhein-Ruhr",
+      "line": "S3",
+      "line_id": "de.rhein-ruhr.s3",
+      "display_name": "S3 Rhein-Ruhr",
+      "months": 57,
+      "route_ids": [
+        "19057"
+      ],
+      "trip_count": 227,
+      "patterns": 1,
+      "stations": 13,
+      "max_station_snap_distance_m": 234.7
+    },
+    {
+      "network": "Rhein-Ruhr",
+      "line": "S4",
+      "line_id": "de.rhein-ruhr.s4",
+      "display_name": "S4 Rhein-Ruhr",
+      "months": 57,
+      "route_ids": [
+        "9825"
+      ],
+      "trip_count": 125,
+      "patterns": 1,
+      "stations": 19,
+      "max_station_snap_distance_m": 756.0
+    },
+    {
+      "network": "Rhein-Ruhr",
+      "line": "S5",
+      "line_id": "de.rhein-ruhr.s5",
+      "display_name": "S5 Rhein-Ruhr",
+      "months": 57,
+      "route_ids": [
+        "21470"
+      ],
+      "trip_count": 95,
+      "patterns": 1,
+      "stations": 8,
+      "max_station_snap_distance_m": 485.2
+    },
+    {
+      "network": "Rhein-Ruhr",
+      "line": "S8",
+      "line_id": "de.rhein-ruhr.s8",
+      "display_name": "S8 Rhein-Ruhr",
+      "months": 57,
+      "route_ids": [
+        "8630"
+      ],
+      "trip_count": 416,
+      "patterns": 2,
+      "stations": 38,
+      "max_station_snap_distance_m": 930.4
+    },
+    {
+      "network": "Rhein-Ruhr",
+      "line": "S9",
+      "line_id": "de.rhein-ruhr.s9",
+      "display_name": "S9 Rhein-Ruhr",
+      "months": 57,
+      "route_ids": [
+        "16042"
+      ],
+      "trip_count": 321,
+      "patterns": 2,
+      "stations": 45,
+      "max_station_snap_distance_m": 234.4
+    },
+    {
+      "network": "Rheinland",
+      "line": "S11",
+      "line_id": "de.rheinland.s11",
+      "display_name": "S11 Rheinland",
+      "months": 57,
+      "route_ids": [
+        "4329"
+      ],
+      "trip_count": 503,
+      "patterns": 3,
+      "stations": 36,
+      "max_station_snap_distance_m": 484.4
+    },
+    {
+      "network": "Rheinland",
+      "line": "S12",
+      "line_id": "de.rheinland.s12",
+      "display_name": "S12 Rheinland",
+      "months": 57,
+      "route_ids": [
+        "28"
+      ],
+      "trip_count": 280,
+      "patterns": 1,
+      "stations": 27,
+      "max_station_snap_distance_m": 337.5
+    },
+    {
+      "network": "Rheinland",
+      "line": "S19",
+      "line_id": "de.rheinland.s19",
+      "display_name": "S19 Rheinland",
+      "months": 42,
+      "route_ids": [
+        "18782"
+      ],
+      "trip_count": 485,
+      "patterns": 2,
+      "stations": 36,
+      "max_station_snap_distance_m": 337.5
+    },
+    {
+      "network": "Rheinland",
+      "line": "S23",
+      "line_id": "de.rheinland.s23",
+      "display_name": "S23 Rheinland",
+      "months": 57,
+      "route_ids": [
+        "6402"
+      ],
+      "trip_count": 200,
+      "patterns": 1,
+      "stations": 19,
+      "max_station_snap_distance_m": 294.3
+    },
+    {
+      "network": "Rheinland",
+      "line": "S6",
+      "line_id": "de.rheinland.s6",
+      "display_name": "S6 Rheinland",
+      "months": 57,
+      "route_ids": [
+        "21075"
+      ],
+      "trip_count": 434,
+      "patterns": 2,
+      "stations": 30,
+      "max_station_snap_distance_m": 479.0
+    },
+    {
+      "network": "Rostock",
+      "line": "S1",
+      "line_id": "de.rostock.s1",
+      "display_name": "S1 Rostock",
+      "months": 57,
+      "route_ids": [
+        "12590"
+      ],
+      "trip_count": 199,
+      "patterns": 1,
+      "stations": 10,
+      "max_station_snap_distance_m": 384.0
+    },
+    {
+      "network": "Stuttgart",
+      "line": "S1",
+      "line_id": "de.stuttgart.s1",
+      "display_name": "S1 Stuttgart",
+      "months": 57,
+      "route_ids": [
+        "20345"
+      ],
+      "trip_count": 664,
+      "patterns": 2,
+      "stations": 29,
+      "max_station_snap_distance_m": 374.1
+    },
+    {
+      "network": "Stuttgart",
+      "line": "S2",
+      "line_id": "de.stuttgart.s2",
+      "display_name": "S2 Stuttgart",
+      "months": 57,
+      "route_ids": [
+        "11615"
+      ],
+      "trip_count": 331,
+      "patterns": 1,
+      "stations": 27,
+      "max_station_snap_distance_m": 374.1
+    },
+    {
+      "network": "Stuttgart",
+      "line": "S3",
+      "line_id": "de.stuttgart.s3",
+      "display_name": "S3 Stuttgart",
+      "months": 57,
+      "route_ids": [
+        "8152"
+      ],
+      "trip_count": 374,
+      "patterns": 1,
+      "stations": 23,
+      "max_station_snap_distance_m": 412.7
+    },
+    {
+      "network": "Stuttgart",
+      "line": "S4",
+      "line_id": "de.stuttgart.s4",
+      "display_name": "S4 Stuttgart",
+      "months": 57,
+      "route_ids": [
+        "9762"
+      ],
+      "trip_count": 245,
+      "patterns": 1,
+      "stations": 17,
+      "max_station_snap_distance_m": 374.1
+    },
+    {
+      "network": "Stuttgart",
+      "line": "S5",
+      "line_id": "de.stuttgart.s5",
+      "display_name": "S5 Stuttgart",
+      "months": 57,
+      "route_ids": [
+        "24564"
+      ],
+      "trip_count": 314,
+      "patterns": 1,
+      "stations": 12,
+      "max_station_snap_distance_m": 374.1
+    },
+    {
+      "network": "Stuttgart",
+      "line": "S6",
+      "line_id": "de.stuttgart.s6",
+      "display_name": "S6 Stuttgart",
+      "months": 57,
+      "route_ids": [
+        "20000"
+      ],
+      "trip_count": 179,
+      "patterns": 1,
+      "stations": 17,
+      "max_station_snap_distance_m": 435.1
+    },
+    {
+      "network": "Stuttgart",
+      "line": "S60",
+      "line_id": "de.stuttgart.s60",
+      "display_name": "S60 Stuttgart",
+      "months": 57,
+      "route_ids": [
+        "17318"
+      ],
+      "trip_count": 151,
+      "patterns": 1,
+      "stations": 21,
+      "max_station_snap_distance_m": 435.1
+    },
+    {
+      "network": "Stuttgart",
+      "line": "S62",
+      "line_id": "de.stuttgart.s62",
+      "display_name": "S62 Stuttgart",
+      "months": 43,
+      "route_ids": [
+        "15941"
+      ],
+      "trip_count": 26,
+      "patterns": 1,
+      "stations": 7,
+      "max_station_snap_distance_m": 221.7
+    }
+  ],
+  "geometry_failures": [],
+  "without_current_match": [
+    {
+      "network": "Berlin",
+      "line": "S11",
+      "months": 52,
+      "first_month": "2021-10",
+      "last_month": "2026-05",
+      "reason": "no_current_regional_gtfs_route"
+    },
+    {
+      "network": "Berlin",
+      "line": "S20",
+      "months": 54,
+      "first_month": "2021-10",
+      "last_month": "2026-05",
+      "reason": "no_current_regional_gtfs_route"
+    },
+    {
+      "network": "Berlin",
+      "line": "S4",
+      "months": 57,
+      "first_month": "2021-09",
+      "last_month": "2026-05",
+      "reason": "no_current_regional_gtfs_route"
+    },
+    {
+      "network": "Berlin",
+      "line": "S6",
+      "months": 52,
+      "first_month": "2021-09",
+      "last_month": "2026-05",
+      "reason": "no_current_regional_gtfs_route"
+    },
+    {
+      "network": "Berlin",
+      "line": "S60",
+      "months": 57,
+      "first_month": "2021-09",
+      "last_month": "2026-05",
+      "reason": "no_current_regional_gtfs_route"
+    },
+    {
+      "network": "Breisgau",
+      "line": "S6",
+      "months": 40,
+      "first_month": "2021-09",
+      "last_month": "2024-12",
+      "reason": "no_current_regional_gtfs_route"
+    },
+    {
+      "network": "Breisgau",
+      "line": "S8",
+      "months": 40,
+      "first_month": "2021-09",
+      "last_month": "2024-12",
+      "reason": "no_current_regional_gtfs_route"
+    },
+    {
+      "network": "Hamburg",
+      "line": "S9",
+      "months": 57,
+      "first_month": "2021-09",
+      "last_month": "2026-05",
+      "reason": "no_current_regional_gtfs_route"
+    },
+    {
+      "network": "Rostock",
+      "line": "S2",
+      "months": 57,
+      "first_month": "2021-09",
+      "last_month": "2026-05",
+      "reason": "no_current_regional_gtfs_route"
+    },
+    {
+      "network": "Rostock",
+      "line": "S3",
+      "months": 57,
+      "first_month": "2021-09",
+      "last_month": "2026-05",
+      "reason": "no_current_regional_gtfs_route"
+    },
+    {
+      "network": "Stuttgart",
+      "line": "S7",
+      "months": 57,
+      "first_month": "2021-09",
+      "last_month": "2026-05",
+      "reason": "no_current_regional_gtfs_route"
+    }
+  ]
+}

@@ -3,11 +3,14 @@ from __future__ import annotations
 
 import argparse
 import collections
+import concurrent.futures
 import csv
 import hashlib
 import io
 import json
 import math
+import time
+import urllib.error
 import urllib.request
 import zipfile
 from pathlib import Path
@@ -119,7 +122,7 @@ def load_gtfs_reference(gtfs_path):
     return normalized, reference_stops, len(trips), len(patterns)
 
 
-def download_tracks(stops, cache_dir, zoom=TILE_ZOOM):
+def download_tracks(stops, cache_dir, zoom=TILE_ZOOM, track_classes=TRACK_CLASSES):
     margin = 0.025
     lons = [stop["lon"] for stop in stops.values()]
     lats = [stop["lat"] for stop in stops.values()]
@@ -129,42 +132,73 @@ def download_tracks(stops, cache_dir, zoom=TILE_ZOOM):
     max_x, max_y = tile_number(east, south, zoom)
     cache_dir.mkdir(parents=True, exist_ok=True)
 
+    tiles = [(tile_x, tile_y)
+             for tile_x in range(min_x, max_x + 1)
+             for tile_y in range(min_y, max_y + 1)]
+
+    def download_tile(tile):
+        tile_x, tile_y = tile
+        path = cache_dir / f"{zoom}-{tile_x}-{tile_y}.pbf"
+        if not path.exists():
+            url = BASEMAP_TILE_URL.format(z=zoom, x=tile_x, y=tile_y)
+            payload = None
+            for attempt in range(3):
+                try:
+                    with urllib.request.urlopen(url, timeout=30) as response:
+                        payload = response.read()
+                    break
+                except urllib.error.HTTPError as exc:
+                    if exc.code == 404:
+                        payload = b""
+                        break
+                    if attempt == 2:
+                        raise
+                    time.sleep(attempt + 1)
+                except (TimeoutError, urllib.error.URLError):
+                    if attempt == 2:
+                        raise
+                    time.sleep(attempt + 1)
+            temporary = path.with_suffix(".pbf.part")
+            temporary.write_bytes(payload)
+            temporary.replace(path)
+        return path
+
+    # basemap.de tiles are independent.  Bounded concurrency shortens the
+    # nationwide first build substantially while keeping retries cacheable.
+    with concurrent.futures.ThreadPoolExecutor(max_workers=12) as executor:
+        paths = list(executor.map(download_tile, tiles))
+
     lines_by_geometry = {}
     tile_count = 0
-    for tile_x in range(min_x, max_x + 1):
-        for tile_y in range(min_y, max_y + 1):
-            path = cache_dir / f"{zoom}-{tile_x}-{tile_y}.pbf"
-            if not path.exists():
-                url = BASEMAP_TILE_URL.format(z=zoom, x=tile_x, y=tile_y)
-                with urllib.request.urlopen(url, timeout=30) as response:
-                    path.write_bytes(response.read())
-            tile_count += 1
-            decoded = mapbox_vector_tile.decode(
-                path.read_bytes(),
-                per_layer_options={"Verkehrslinie": {
-                    "transformer": tile_transform(tile_x, tile_y, zoom),
-                }},
-            )
-            layer = decoded.get("Verkehrslinie", {"features": []})
-            for feature in layer["features"]:
-                track_class = feature["properties"].get("klasse")
-                if track_class not in TRACK_CLASSES:
+    for (tile_x, tile_y), path in zip(tiles, paths):
+        tile_count += 1
+        if path.stat().st_size == 0:
+            continue
+        decoded = mapbox_vector_tile.decode(
+            path.read_bytes(),
+            per_layer_options={"Verkehrslinie": {
+                "transformer": tile_transform(tile_x, tile_y, zoom),
+            }},
+        )
+        layer = decoded.get("Verkehrslinie", {"features": []})
+        for feature in layer["features"]:
+            track_class = feature["properties"].get("klasse")
+            if track_class not in track_classes:
+                continue
+            geometry = feature["geometry"]
+            collections_to_add = ([geometry["coordinates"]]
+                                  if geometry["type"] == "LineString"
+                                  else geometry["coordinates"])
+            for coordinates in collections_to_add:
+                line = tuple((round(float(lon), 7), round(float(lat), 7))
+                             for lon, lat in coordinates)
+                if len(line) < 2:
                     continue
-                geometry = feature["geometry"]
-                collections_to_add = ([geometry["coordinates"]]
-                                      if geometry["type"] == "LineString"
-                                      else geometry["coordinates"])
-                for coordinates in collections_to_add:
-                    line = tuple((round(float(lon), 7), round(float(lat), 7))
-                                 for lon, lat in coordinates)
-                    if len(line) < 2:
-                        continue
-                    canonical = min(line, tuple(reversed(line)))
-                    # Prefer the more specific S-Bahn classification when the
-                    # same clipped geometry occurs twice.
-                    if (canonical not in lines_by_geometry
-                            or track_class == "S-Bahn"):
-                        lines_by_geometry[canonical] = (line, track_class)
+                canonical = min(line, tuple(reversed(line)))
+                # Prefer the more specific S-Bahn classification when the
+                # same clipped geometry occurs twice.
+                if canonical not in lines_by_geometry or track_class == "S-Bahn":
+                    lines_by_geometry[canonical] = (line, track_class)
     return list(lines_by_geometry.values()), tile_count, [west, south, east, north]
 
 

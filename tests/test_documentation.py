@@ -71,8 +71,9 @@ def test_sources_and_bundle_contain_complete_docs_but_no_private_files(client):
             'api/openapi.json', 'docs/frontend-inspection.json',
             'examples/frontend-minimal.json', 'examples/frontend-v2-minimal.json',
             'examples/line-reference.json', 'examples/line-reference-muenchen-s1.json',
-            'examples/line-references-muenchen.json', 'examples/monthly-line.json',
-            'docs/line-candidates.json',
+            'examples/line-references-muenchen.json',
+            'examples/line-references-germany.json', 'examples/monthly-line.json',
+            'docs/line-candidates.json', 'docs/germany-first-pass-report.json',
         }
         assert set(bundle.namelist()) == expected
         assert json.loads(bundle.read('api/openapi.json')) == client.get('/openapi.json').json()

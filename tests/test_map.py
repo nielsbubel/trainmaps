@@ -250,3 +250,44 @@ def test_all_current_munich_lines_have_geometry_and_catalog_entries():
         assert line_feature["properties"]["line_id"] == line_id
         assert line_feature["geometry"]["type"] == "MultiLineString"
         assert line_feature["geometry"]["coordinates"]
+
+
+def test_germany_first_pass_catalog_report_and_geometries_are_consistent():
+    references = json.loads((ROOT / "examples/line-references-germany.json")
+                            .read_text(encoding="utf-8"))
+    report = json.loads((ROOT / "docs/germany-first-pass-report.json")
+                        .read_text(encoding="utf-8"))
+    line_ids = {reference["line_id"] for reference in references}
+
+    assert len(references) == len(line_ids) == 87
+    assert report["summary"] == {
+        "eligible_source_pairs": 98,
+        "current_regional_matches": 87,
+        "published": 87,
+        "geometry_failures": 0,
+        "without_current_match": 11,
+    }
+    assert {item["line_id"] for item in report["published"]} == line_ids
+    assert report["geometry_failures"] == []
+    assert len({reference["network_id"] for reference in references}) == 13
+    assert all(reference["geometry"]["status"] == "verified" for reference in references)
+    assert all(reference["geometry"]["fallback_classes"] == [
+        "Eisenbahn", "Personenverkehr", "Gleis"
+    ] for reference in references)
+
+    for reference in references:
+        line_id = reference["line_id"]
+        geometry = json.loads((ROOT / "trainmaps_api/map_data" / f"{line_id}.geojson")
+                              .read_text(encoding="utf-8"))
+        metadata = geometry["metadata"]
+        assert metadata["line_id"] == line_id
+        assert metadata["basemap_tile_zoom"] == 13
+        assert metadata["basemap_fallback_classes"] == [
+            "Eisenbahn", "Personenverkehr", "Gleis"
+        ]
+        assert metadata["stations"] >= 2
+        assert metadata["max_station_snap_distance_m"] <= 3_000
+        assert metadata["max_stitched_gap_m"] <= metadata["route_bridge_limit_m"]
+        assert geometry["features"][0]["properties"]["line_id"] == line_id
+        assert geometry["features"][0]["geometry"]["type"] == "MultiLineString"
+        assert geometry["features"][0]["geometry"]["coordinates"]
