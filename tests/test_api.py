@@ -137,3 +137,9 @@ def test_openapi_exposes_actual_body_and_bearer_auth(client):
     endpoint_v2 = spec["paths"]["/api/v2/imports/frontend"]["post"]
     assert endpoint_v2["requestBody"]["content"]["application/json"]["schema"]["$ref"].endswith("FrontendExportV2")
     assert "line_id" in spec["components"]["schemas"]["FrontendExportV2"]["properties"]["delaysByNetworkLineMonth"]["items"]["required"]
+    endpoint_v3 = spec["paths"]["/api/v3/imports/frontend"]["post"]
+    assert endpoint_v3["requestBody"]["content"]["application/json"]["schema"]["$ref"].endswith("FrontendExportV3")
+    station_schema = spec["components"]["schemas"]["FrontendExportV3"]["properties"]["mostCancelledStops"]["items"]
+    assert {"stop_id", "stop_name", "line_id"} <= set(station_schema["required"])
+    assert station_schema["properties"]["stop_id"]["pattern"] == "^80[0-9]{5}$"
+    assert "/api/v1/data/stops/{stop_id}" in spec["paths"]

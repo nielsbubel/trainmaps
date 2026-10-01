@@ -70,6 +70,7 @@ def test_sources_and_bundle_contain_complete_docs_but_no_private_files(client):
         expected = {doc.file for doc in DOCUMENTS} | {
             'api/openapi.json', 'docs/frontend-inspection.json',
             'examples/frontend-minimal.json', 'examples/frontend-v2-minimal.json',
+            'examples/frontend-v3-minimal.json',
             'examples/line-reference.json', 'examples/line-reference-muenchen-s1.json',
             'examples/line-references-muenchen.json',
             'examples/line-references-germany.json', 'examples/monthly-line.json',
@@ -123,6 +124,28 @@ def test_downloadable_v2_example_matches_line_reference_example(client):
     })
     assert response.status_code == 200, response.text
     assert response.json()['contract_version'] == 'frontend-2'
+
+
+def test_downloadable_v3_example_imports_and_reads_munich_station(client):
+    mapping = client.get('/dokumentation/dateien/line-reference-muenchen-s1.json')
+    created = client.put('/api/v1/reference/lines/de.muenchen.s1', content=mapping.content,
+                         headers={'Authorization': 'Bearer ' + 'm' * 40,
+                                  'Content-Type': 'application/json'})
+    assert created.status_code == 201
+    example = client.get('/dokumentation/dateien/frontend-v3-minimal.json')
+    response = client.post('/api/v3/imports/frontend', content=example.content, headers={
+        'Authorization': 'Bearer ' + 'w' * 40,
+        'Content-Type': 'application/json',
+        'Idempotency-Key': '307ed6ae-a822-48f6-a546-36f61dbfda7e',
+        'X-Dataset-Revision': '1',
+    })
+    assert response.status_code == 201, response.text
+    station = client.get('/api/v1/data/stops/8004128', headers={
+        'Authorization': 'Bearer ' + 'r' * 40,
+    })
+    assert station.status_code == 200
+    assert station.json()['station_id'] == 'de.eva.8004128'
+    assert station.json()['values'][0]['line_id'] == 'de.muenchen.s1'
 
 
 def test_renderer_escapes_html_and_keeps_distinct_section_anchors():

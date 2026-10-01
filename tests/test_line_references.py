@@ -156,6 +156,49 @@ def test_v2_roundtrip_mapping_state_and_monthly_line_filter(client):
     assert monthly["values"][0]["geometry_status"] == "verified"
 
 
+def test_v3_imports_and_reads_one_eva_station(client):
+    client.put("/api/v1/reference/lines/" + LINE_ID,
+               json=reference(status="verified"), headers=auth(MAPPING))
+    data = export()
+    station = {
+        "stop_id": "8004128",
+        "stop_name": "München Donnersbergerbrücke",
+        "netz": "Testnetz",
+        "line": "S1",
+        "line_id": LINE_ID,
+        "n_data_points": 51338,
+        "p_cancelled": 1279 / 51338,
+        "n_cancelled": 1279,
+    }
+    data["mostCancelledStops"] = [station]
+
+    invalid = copy.deepcopy(data)
+    invalid["mostCancelledStops"][0]["stop_id"] = "mvv:de:09162:8"
+    rejected = client.post("/api/v3/imports/frontend?validate_only=true",
+                           json=invalid, headers=import_headers())
+    assert rejected.status_code == 422
+    assert rejected.json()["code"] == "schema_error"
+    assert rejected.json()["errors"][0]["path"] == "/mostCancelledStops/0/stop_id"
+
+    saved = client.post("/api/v3/imports/frontend", json=data, headers=import_headers())
+    assert saved.status_code == 201, saved.text
+    assert saved.json()["contract_version"] == "frontend-3"
+    assert saved.json()["station_count"] == 1
+
+    response = client.get("/api/v1/data/stops/8004128", headers=auth(READ))
+    assert response.status_code == 200, response.text
+    body = response.json()
+    assert body["station_id"] == "de.eva.8004128"
+    assert body["id_type"] == "eva"
+    assert body["stop_name"] == "München Donnersbergerbrücke"
+    assert body["ranking_period"] is None
+    assert body["total"] == 1
+    assert body["values"][0]["line_id"] == LINE_ID
+    assert body["values"][0]["geometry_status"] == "verified"
+    assert body["values"][0]["p_cancelled"] == pytest.approx(1279 / 51338)
+    assert client.get("/api/v1/data/stops/8004129", headers=auth(READ)).status_code == 404
+
+
 def test_v1_rows_are_enriched_from_current_catalog(client):
     client.put("/api/v1/reference/lines/" + LINE_ID,
                json=reference(status="verified"), headers=auth(MAPPING))

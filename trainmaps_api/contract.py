@@ -4,9 +4,10 @@ from scripts.inspect_frontend import DIMENSIONS, THRESHOLDS
 MAX_BYTES = 32 * 1024 * 1024
 MAX_ROWS = 100_000
 MONTH_PATTERN = r"^[0-9]{4}-(0[1-9]|1[0-2])-01T00:00:00(?:\.[0-9]{1,6})?(?:Z|\+00:?00)$"
+EVA_ID_PATTERN = r"^80[0-9]{5}$"
 
 
-def export_schema(*, require_line_ids=False):
+def export_schema(*, require_line_ids=False, require_eva_stations=False):
     properties = {}
     for name, dims in DIMENSIONS.items():
         counts = ["cancelled"] if not name.startswith("delays") else [
@@ -18,6 +19,18 @@ def export_schema(*, require_line_ids=False):
                 "type": "string", "pattern": r"^[a-z0-9]+(?:[._-][a-z0-9]+)*$",
                 "minLength": 1, "maxLength": 120,
                 "description": "Stable trainmaps line identifier from the reference catalog.",
+            }
+        if require_eva_stations and name == "mostCancelledStops":
+            fields["stop_id"] = {
+                "type": "string", "pattern": EVA_ID_PATTERN,
+                "description": "Seven-digit German DB EVA station number.",
+                "examples": ["8004128"],
+            }
+            fields["stop_name"] = {
+                "type": "string", "minLength": 1, "maxLength": 200,
+                "pattern": r"\S",
+                "description": "Human-readable station name belonging to stop_id.",
+                "examples": ["München Donnersbergerbrücke"],
             }
         if "month" in fields:
             fields["month"] = {"type": "string", "pattern": MONTH_PATTERN,
@@ -36,4 +49,6 @@ def export_schema(*, require_line_ids=False):
                             "decompressed. Counts, ratios, duplicates and aggregate sums are "
                             "additionally checked by the server."
                             + (" Every row with a source line requires a registered line_id."
-                               if require_line_ids else ""))}
+                               if require_line_ids else "")
+                            + (" Station rows require a German EVA number and station name."
+                               if require_eva_stations else ""))}

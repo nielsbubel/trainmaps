@@ -1,6 +1,6 @@
 # trainmaps: Datenlieferung und Entwicklungs-API
 
-Version 0.9.0. Öffentliche Basisadresse: **https://34.7.91.18**. Lokal läuft
+Version 0.10.0. Öffentliche Basisadresse: **https://34.7.91.18**. Lokal läuft
 die Anwendung unter **http://127.0.0.1:8787**. Die interaktive Beschreibung
 steht unter **https://34.7.91.18/docs**, der maschinenlesbare Vertrag unter
 `/openapi.json` bzw. [api/openapi.json](../api/openapi.json).
@@ -44,12 +44,14 @@ Zuordnung verändern. Alle geschützten Anfragen senden
 | GET | `/api/v1/reference/lines` | read, write oder mapping | Linienkatalog filtern und seitenweise lesen. |
 | GET | `/api/v1/reference/lines/{line_id}` | read, write oder mapping | Eine Linienreferenz lesen. |
 | PUT | `/api/v1/reference/lines/{line_id}` | mapping | Linienreferenz anlegen oder revidieren. |
-| POST | `/api/v2/imports/frontend` | write | Bevorzugter Import mit stabilen Linien-IDs. |
-| POST | `/api/v2/imports/frontend?validate_only=true` | write | v2 prüfen, ohne zu speichern. |
+| POST | `/api/v3/imports/frontend` | write | Bevorzugter Import mit Linien-IDs, EVA-Nummern und Stationsnamen. |
+| POST | `/api/v3/imports/frontend?validate_only=true` | write | v3 prüfen, ohne zu speichern. |
+| POST | `/api/v2/imports/frontend` | write | Bestehender Import mit stabilen Linien-IDs. |
 | POST | `/api/v1/imports/frontend` | write | Alter Import ohne Linien-IDs; weiterhin unterstützt. |
 | GET | `/api/v1/imports/{import_id}` | read oder write | Importbeleg abrufen. |
 | GET | `/api/v1/data/frontend` | read oder write | Exakte Bytes eines gespeicherten Imports abrufen. |
 | GET | `/api/v1/data/monthly` | read oder write | Monatswerte filtern und Mappingstatus anzeigen. |
+| GET | `/api/v1/data/stops/{stop_id}` | read oder write | Ausfallwerte einer Haltestelle anhand ihrer EVA-Nummer lesen. |
 
 Die öffentlichen Kartenendpunkte sind absichtlich enger als die geschützten
 Datenendpunkte. Sie geben nur aktive Linien im Status `verified`, deren Geometrie
@@ -137,10 +139,10 @@ Der Katalog unterstützt `netz`, `line`, `network_id`, `geometry_status`,
 `active`, `offset` und `limit` als Filter. Mit `netz` und `line` löst ein
 Lieferant ein exaktes Quellpaar auf. `limit` liegt zwischen 1 und 5.000.
 
-## Importformat frontend-2
+## Importformat frontend-3
 
-Der Body besteht weiterhin unmittelbar aus den sieben Arrays des vorhandenen
-Exports. Die v2-Erweiterung verlangt in jeder Zeile mit `line` zusätzlich
+Der bevorzugte Body besteht unmittelbar aus den sieben Arrays des vorhandenen
+Exports. `frontend-3` verlangt in jeder Zeile mit `line` zusätzlich
 `line_id`. Das betrifft:
 
 - `cancellationsByNetworkLineMonth`;
@@ -174,10 +176,47 @@ Paar `netz`/`line` gehört. Er speichert die verwendeten Katalogrevisionen im
 Importbeleg. Unbekannte, inaktive oder falsch zugeordnete IDs liefern HTTP 422
 mit `code: "line_reference_error"`.
 
+Für jede Zeile in `mostCancelledStops` gelten zusätzlich:
+
+| Feld | Regel |
+| --- | --- |
+| `stop_id` | Pflichtfeld: siebenstellige deutsche DB-EVA-Nummer, beginnend mit `80`. |
+| `stop_name` | Pflichtfeld: lesbarer Stationsname, 1 bis 200 Zeichen. |
+| `line_id` | Pflichtfeld: aktive Trainmaps-Linie, passend zu `netz` und `line`. |
+
+Eine EVA-Nummer darf innerhalb einer Lieferung nur einen Stationsnamen haben.
+Die API verwendet dafür das von der Deutschen Bahn als `evaNumber` bezeichnete
+Stationsmerkmal ([DB RIS::Stations](https://developer-docs.deutschebahn.com/doku/apis/ris-stations-10686906)).
+Die abgeleitete kanonische ID `de.eva.<stop_id>` wird nicht angeliefert, sondern
+von der API beim Lesen als `station_id` ausgegeben. Quellspezifische Kennungen
+wie `delfi:*` oder `mvv:*` gehören nicht in den Statistikimport.
+
+Beispiel aus der bereitgestellten Haltestellendatei:
+
+```json
+{
+  "stop_id": "8004128",
+  "stop_name": "München Donnersbergerbrücke",
+  "netz": "München",
+  "line": "S1",
+  "line_id": "de.muenchen.s1",
+  "n_data_points": 51338,
+  "p_cancelled": 0.02491331956835093,
+  "n_cancelled": 1279
+}
+```
+
 Der vollständige Beispielkörper steht in
-[frontend-v2-minimal.json](../examples/frontend-v2-minimal.json). Er lässt sich
-erst gegen v2 prüfen, nachdem der synthetische Katalogeintrag `de.test.s1`
-angelegt wurde. Die produktive Instanz startet bewusst mit leerem Katalog.
+[frontend-v3-minimal.json](../examples/frontend-v3-minimal.json). Er verwendet
+die vorhandene Linienreferenz
+[line-reference-muenchen-s1.json](../examples/line-reference-muenchen-s1.json).
+
+## Weiterhin unterstützter Vertrag frontend-2
+
+`POST /api/v2/imports/frontend` bleibt unverändert verfügbar. Er verlangt
+`line_id`, behandelt `stop_id` aber weiterhin als nicht näher bezeichneten
+Quellwert und kennt kein `stop_name`. Neue Lieferungen mit Haltestellendaten
+sollen deshalb v3 verwenden.
 
 ## Alter Vertrag frontend-1
 
@@ -203,14 +242,14 @@ von 0,000001 zu den Zählern passen. Bei Nenner 0 sind die Zähler 0 und Quoten
 ## Header, Revisionen und Wiederholungen
 
 ```http
-POST /api/v2/imports/frontend HTTP/1.1
+POST /api/v3/imports/frontend HTTP/1.1
 Authorization: Bearer <WRITE_TOKEN>
 Content-Type: application/json
 Idempotency-Key: <UUID>
 X-Dataset-Revision: 2
 ```
 
-v1 und v2 verwenden gemeinsam dieselbe steigende Revisionsfolge. Jede neue
+v1, v2 und v3 verwenden gemeinsam dieselbe steigende Revisionsfolge. Jede neue
 Lieferung erhält eine neue UUID und eine höhere positive Revision. Eine
 Wiederholung nach einem Timeout verwendet dieselbe UUID, Revision und dieselben
 entpackten Bytes. Der erste gespeicherte Import antwortet mit 201, eine
@@ -231,19 +270,20 @@ $headers = @{
   'X-Dataset-Revision' = '2'
 }
 Invoke-RestMethod -Method Post `
-  -Uri "$base/api/v2/imports/frontend?validate_only=true" `
+  -Uri "$base/api/v3/imports/frontend?validate_only=true" `
   -Headers $headers -ContentType 'application/json' `
-  -InFile 'examples/frontend-v2-minimal.json'
+  -InFile 'examples/frontend-v3-minimal.json'
 ```
 
 ## Antworten und Kartenfreigabe
 
 Ein Importbeleg enthält `contract_version`, `import_id`, `revision`,
+`station_count`,
 `line_reference_revisions`, Prüfsummen, Zeilenzahlen, Monate, Netze,
 `map_ready` und Warnungen. Bei einem Dry Run lauten die zusätzlichen Felder
 `status: "validated"` und `stored: false`.
 
-Für v2 ist `map_ready` genau dann `true`, wenn mindestens eine Linienreferenz
+Für v2 und v3 ist `map_ready` genau dann `true`, wenn mindestens eine Linienreferenz
 verwendet wurde und alle verwendeten Geometrien aktiv und `verified` sind. Für
 v1 bleibt der Importbeleg `false`, weil im gelieferten Snapshot keine stabilen
 IDs stehen. Der Monatsendpunkt bewertet den aktuellen Katalogzustand und kann
@@ -271,6 +311,34 @@ Zeilen mit `scope=line` enthalten zusätzlich `line_id` oder `null` und
 `geometry_status` mit `pending`, `mapped`, `verified` oder `unmapped`.
 Stationsranglisten sind nicht Teil dieses Monatsendpunkts, weil im gelieferten
 Export ihr Zeitraum fehlt.
+
+`GET /api/v1/data/stops/8004128` liest alle Zeilen einer Haltestelle aus dem
+neuesten Snapshot. Optional begrenzen `line_id` und `import_id` die Abfrage.
+Die Antwort enthält unter anderem:
+
+```json
+{
+  "stop_id": "8004128",
+  "station_id": "de.eva.8004128",
+  "id_type": "eva",
+  "stop_name": "München Donnersbergerbrücke",
+  "ranking_period": null,
+  "total": 1,
+  "values": [
+    {
+      "line_id": "de.muenchen.s1",
+      "geometry_status": "verified",
+      "n_data_points": 51338,
+      "n_cancelled": 1279,
+      "p_cancelled": 0.02491331956835093
+    }
+  ]
+}
+```
+
+`ranking_period` bleibt `null`, bis die Quelle einen verbindlichen Zeitraum für
+die Rangliste liefert. Eine unbekannte EVA-Nummer antwortet mit HTTP 404 und
+`code: "stop_not_found"`.
 
 ## Fehler und Betriebsgrenzen
 

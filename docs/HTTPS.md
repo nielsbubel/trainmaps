@@ -15,8 +15,8 @@ werden nicht eingecheckt. Cloudflare ist nicht beteiligt.
 | Interaktive Dokumentation | `GET https://34.7.91.18/docs` | Ohne Token |
 | API-Vertrag | `GET https://34.7.91.18/openapi.json` | Ohne Token |
 | Linienkatalog lesen | `GET https://34.7.91.18/api/v1/reference/lines` | Lese- oder Schreibtoken |
-| JSON mit Linien-IDs prüfen | `POST https://34.7.91.18/api/v2/imports/frontend?validate_only=true` | Schreibtoken |
-| JSON mit Linien-IDs speichern | `POST https://34.7.91.18/api/v2/imports/frontend` | Schreibtoken |
+| JSON mit Linien- und EVA-IDs prüfen | `POST https://34.7.91.18/api/v3/imports/frontend?validate_only=true` | Schreibtoken |
+| JSON mit Linien- und EVA-IDs speichern | `POST https://34.7.91.18/api/v3/imports/frontend` | Schreibtoken |
 | Alten Export ohne IDs prüfen | `POST https://34.7.91.18/api/v1/imports/frontend?validate_only=true` | Schreibtoken |
 | Monatsdaten lesen | `GET https://34.7.91.18/api/v1/data/monthly?metric=punctuality&month=2021-09&netz=Berlin&line=1` | Lesetoken oder Schreibtoken |
 
@@ -25,7 +25,7 @@ curl.exe --fail-with-body https://34.7.91.18/health
 ```
 
 Erwartet: HTTP 200 und
-`{"status":"ok","service":"trainmaps-development","version":"0.9.0"}`.
+`{"status":"ok","service":"trainmaps-development","version":"0.10.0"}`.
 Die Zertifikatsprüfung bleibt eingeschaltet; `--insecure` ist nicht nötig.
 Weitere HTTP-Pfade werden auf HTTPS umgeleitet. Tokens und JSON-Lieferungen
 immer direkt an die HTTPS-Adresse senden, nicht erst an die HTTP-Weiterleitung.

@@ -10,9 +10,10 @@ sind standardmäßig ausgeschaltet.
 
 Für die erste Kartenversion stehen Linienstatistiken im Mittelpunkt. Der Export
 `daten/frontend.json` enthält 33.108 Zeilen mit Monatswerten und einer separaten
-Stations-Ausfallrangliste; Stationsnamen, Koordinaten und deren Zeitraum fehlen.
+Stations-Ausfallrangliste. Die ergänzende Datei `daten/most_cancelled_stops.csv`
+liefert dazu Stationsnamen und siebenstellige EVA-Nummern; der Zeitraum fehlt.
 
-Stand 0.9.0: Import, Prüfmodus, Tokenzugriff, dauerhafte Entwicklungs-Snapshots,
+Stand 0.10.0: Import, Prüfmodus, Tokenzugriff, dauerhafte Entwicklungs-Snapshots,
 Leseendpunkte, Linienkatalog und die erste responsive Webkarte sind implementiert
 und getestet. 96 S-Bahnlinien aus 14 Netzen werden auf basemap.de-Gleisen mit
 ihren vorhandenen Monatswerten dargestellt. Ein Verkehrsgebiet oder eine Linie
@@ -43,16 +44,16 @@ Prozesse müssen laufen; nach einem Neustart sind sie erneut zu starten.
 - [OpenAPI 3.1](api/openapi.json)
 - [Interaktive API-Dokumentation](https://34.7.91.18/docs)
 
-Die bevorzugte API `POST /api/v2/imports/frontend` ergänzt den vollständigen
-Export auf Linienebene um stabile `line_id`-Werte aus dem Linienkatalog. Der
+Die bevorzugte API `POST /api/v3/imports/frontend` ergänzt den vollständigen
+Export um stabile `line_id`-Werte, geprüfte EVA-Nummern und Stationsnamen. Der
 bisherige Originalexport ohne IDs bleibt über `POST /api/v1/imports/frontend`
-nutzbar. Zugriffstoken stehen ausschließlich in der ignorierten Datei
+nutzbar; v2 bleibt kompatibel. Zugriffstoken stehen ausschließlich in der ignorierten Datei
 `.local/access.local.json`. Die vollständige Ausgangsdatei wurde bereits als
 Entwicklungsrevision 1 importiert und bytegenau zurückgelesen.
 
 Der produktive Linienkatalog enthält 96 verifizierte Linien aus 14 Netzen:
 87 Fahrwege aus dem bundesweiten ersten Durchlauf sowie die neun Münchner Linien.
-`map_ready` wird für v2-Daten erst mit ausschließlich verifizierten
+`map_ready` wird für v2-/v3-Daten erst mit ausschließlich verifizierten
 Fahrwegzuordnungen `true`. Ausfälle sind aus den Pünktlichkeitswerten ausgeschlossen
 und als eigene Datenserie vorhanden. Der bisherige
 `examples/monthly-line.json` ist nur der frühere Planungsentwurf und kein Body

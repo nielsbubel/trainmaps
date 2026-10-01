@@ -42,10 +42,12 @@ ueberein. Es wurden keine doppelten Zeilenschluessel gefunden.
   aber 10.303 Puenktlichkeits-Messpunkte.
 - Ausfaelle sind laut Nutzer aus den Puenktlichkeitswerten ausgeschlossen.
   Der neue Export liefert sie zusaetzlich als eigenstaendige Kennzahl.
-- Die Stationsrangliste enthaelt 1.501 verschiedene `stop_id`. Es fehlen jedoch
-  Zeitraum, erklaertes ID-System, Namen, Koordinaten und Vollstaendigkeitsangabe.
-  Sie wird separat erhalten, nicht einem Monat zugeordnet und nicht automatisch
-  als vollstaendiger Stationsbestand betrachtet.
+- Die Stationsrangliste enthaelt 1.501 verschiedene `stop_id`. Die ergänzende
+  Datei `daten/most_cancelled_stops.csv` weist sie als siebenstellige deutsche
+  EVA-Nummern aus und liefert Stationsnamen. Zeitraum, Koordinaten und
+  Vollstaendigkeitsangabe fehlen weiterhin. Die Rangliste wird separat erhalten,
+  nicht einem Monat zugeordnet und nicht automatisch als vollstaendiger
+  Stationsbestand betrachtet.
 - Das letzte Monatslabel 2026-05 beweist keinen vollstaendigen Monat. Stand der
   Datenerzeugung, Erfassungsende und Monat-Vollstaendigkeit fehlen im Export.
 - Schwellenvergleich (`<` oder `<=`), Zaehleinheit, Ankunft/Abfahrt und fachliche

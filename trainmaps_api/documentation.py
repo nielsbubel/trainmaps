@@ -40,6 +40,7 @@ DOCUMENTS = (
 ATTACHMENTS = {
     "frontend-minimal.json": "examples/frontend-minimal.json",
     "frontend-v2-minimal.json": "examples/frontend-v2-minimal.json",
+    "frontend-v3-minimal.json": "examples/frontend-v3-minimal.json",
     "line-reference.json": "examples/line-reference.json",
     "line-reference-muenchen-s1.json": "examples/line-reference-muenchen-s1.json",
     "line-references-muenchen.json": "examples/line-references-muenchen.json",
@@ -97,7 +98,7 @@ def render_markdown(text, source):
     return renderer.renderer.render(tokens, renderer.options, {}), headings
 
 
-def page(title, content, *, selected="", headings=(), version="0.9.0"):
+def page(title, content, *, selected="", headings=(), version="0.10.0"):
     links = ['<a href="/dokumentation"' + (' aria-current="page"' if not selected else '') + '>Übersicht</a>']
     for doc in DOCUMENTS:
         current = ' aria-current="page"' if doc.slug == selected else ''
@@ -137,7 +138,8 @@ def register_documentation(app, root: Path):
 <section class="downloads"><h2>Vertrag, Beispiele und Prüfbericht</h2>
 <p>Die Dokumente werden aus den Projektdateien angezeigt. Das ZIP enthält alle Anleitungen, den API-Vertrag und die folgenden Begleitdateien.</p>
 <ul><li><a href="/openapi.json">OpenAPI 3.1 – aktueller Schnittstellenvertrag</a></li>
-<li><a href="/dokumentation/dateien/frontend-v2-minimal.json">JSON-Testbeispiel für frontend-2</a> – mit stabiler Linien-ID</li>
+<li><a href="/dokumentation/dateien/frontend-v3-minimal.json">JSON-Testbeispiel für frontend-3</a> – mit Linien-ID und EVA-Haltestelle</li>
+<li><a href="/dokumentation/dateien/frontend-v2-minimal.json">Altes JSON-Testbeispiel für frontend-2</a> – weiterhin kompatibel</li>
 <li><a href="/dokumentation/dateien/line-reference.json">Beispiel einer Linienreferenz</a> – für die getrennte Mapping-Verwaltung</li>
 <li><a href="/dokumentation/dateien/line-reference-muenchen-s1.json">Erste verifizierte Linienreferenz</a> – München/S1 mit basemap.de-Fahrweg</li>
 <li><a href="/dokumentation/dateien/line-candidates.json">Kandidatenliste aus dem aktuellen Export</a> – 361 Quellpaare mit Prüfhinweisen</li>

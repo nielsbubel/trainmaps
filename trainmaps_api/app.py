@@ -24,7 +24,7 @@ from jsonschema import Draft202012Validator
 from starlette.concurrency import run_in_threadpool
 
 from scripts.inspect_frontend import inspect_bytes, reject_constant, unique_object
-from .contract import MAX_BYTES, export_schema
+from .contract import EVA_ID_PATTERN, MAX_BYTES, export_schema
 from .documentation import register_documentation
 from .map_page import register_map
 from .reference import LINE_ID_PATTERN, LineDefinition, LineList, LineRecord
@@ -33,11 +33,13 @@ from .storage import Conflict, ReferenceConflict, StorageFull, Store
 ROOT = Path(__file__).resolve().parents[1]
 SCHEMA_V1 = export_schema()
 SCHEMA_V2 = export_schema(require_line_ids=True)
+SCHEMA_V3 = export_schema(require_line_ids=True, require_eva_stations=True)
 VALIDATORS = {
     "frontend-1": Draft202012Validator(SCHEMA_V1),
     "frontend-2": Draft202012Validator(SCHEMA_V2),
+    "frontend-3": Draft202012Validator(SCHEMA_V3),
 }
-VERSION = "0.9.0"
+VERSION = "0.10.0"
 LINE_COLLECTIONS = (
     "cancellationsByNetworkLineMonth",
     "delaysByNetworkLineMonth",
@@ -75,9 +77,9 @@ def validate_raw(raw, *, contract_version="frontend-1", store=None):
 
     references = {}
     audit_raw = raw
-    if contract_version == "frontend-2":
+    if contract_version in ("frontend-2", "frontend-3"):
         if store is None:
-            raise RuntimeError("frontend-2 validation requires a reference store")
+            raise RuntimeError("frontend-2/3 validation requires a reference store")
         occurrences = [
             (name, index, row)
             for name in LINE_COLLECTIONS
@@ -109,12 +111,34 @@ def validate_raw(raw, *, contract_version="frontend-1", store=None):
             fail(422, "line_reference_error",
                  "Linien-IDs oder Quellalias-Zuordnungen sind ungueltig.", reference_errors)
 
+        if contract_version == "frontend-3":
+            names_by_stop = {}
+            station_errors = []
+            for index, row in enumerate(parsed["mostCancelledStops"]):
+                existing = names_by_stop.setdefault(row["stop_id"], row["stop_name"])
+                if existing != row["stop_name"]:
+                    station_errors.append({
+                        "path": f"/mostCancelledStops/{index}/stop_name",
+                        "code": "station_name_mismatch",
+                        "message": (f"EVA {row['stop_id']} wurde bereits mit dem Namen "
+                                    f"{existing!r} geliefert."),
+                    })
+                if len(station_errors) == 20:
+                    break
+            if station_errors:
+                fail(422, "station_reference_error",
+                     "Eine EVA-Nummer muss innerhalb eines Exports genau einen Namen haben.",
+                     station_errors)
+
         # The established inspector validates the numerical relationships. It expects
         # frontend-1 fields, so only the added line_id is removed from an audit copy.
         audit_data = copy.deepcopy(parsed)
         for name in LINE_COLLECTIONS:
             for row in audit_data[name]:
                 row.pop("line_id")
+        if contract_version == "frontend-3":
+            for row in audit_data["mostCancelledStops"]:
+                row.pop("stop_name")
         audit_raw = json.dumps(audit_data, ensure_ascii=False, allow_nan=False,
                                separators=(",", ":")).encode("utf-8")
 
@@ -149,7 +173,7 @@ def validate_raw(raw, *, contract_version="frontend-1", store=None):
     if audit["collections"]["mostCancelledStops"]["rows"]:
         warnings.append({
             "code": "ranking_period_unknown",
-            "message": "Stationsrangliste hat keinen Zeitraum und keine Koordinaten; sie bleibt getrennt vom Monatsfilter.",
+            "message": "Stationsrangliste hat keinen Zeitraum; sie bleibt getrennt vom Monatsfilter.",
         })
     if audit["unequal_non_cancelled_and_delay_denominators"]:
         warnings.append({
@@ -162,6 +186,7 @@ def validate_raw(raw, *, contract_version="frontend-1", store=None):
         "total_rows": audit["total_rows"],
         "collection_counts": {key: value["rows"] for key, value in audit["collections"].items()},
         "months": audit["months"], "networks": audit["networks"],
+        "station_count": audit["unique_stop_ids_in_ranking"],
         "line_reference_revisions": used_references,
         "map_ready": map_ready, "warnings": warnings,
     }
@@ -188,7 +213,7 @@ def create_app(*, data_dir=None, write_token=None, read_token=None, mapping_toke
                      "[Schnellstart](/dokumentation/schnellstart) · "
                      "[API-Anleitung](/dokumentation/api)\n\n"
                      "Versioned data imports and a separately managed line-reference catalog. "
-                     "Use frontend-2 for stable trainmaps line IDs and basemap.de geometry mappings."),
+                     "Use frontend-3 for stable line IDs and canonical German EVA station IDs."),
         swagger_ui_parameters={"persistAuthorization": False},
     )
     origins = [value.strip() for value in os.getenv("TRAINMAPS_CORS_ORIGINS", "").split(",")
@@ -282,7 +307,7 @@ def create_app(*, data_dir=None, write_token=None, read_token=None, mapping_toke
         offset: Annotated[int, Query(ge=0)] = 0,
         limit: Annotated[int, Query(ge=1, le=5000)] = 1000,
     ):
-        """Catalog of stable line IDs. Data suppliers use these IDs in frontend-2."""
+        """Catalog of stable line IDs. Data suppliers use these IDs in frontend-2/3."""
         values = [record for record in store.list_lines()
                   if ((netz is None and line is None) or any(
                       (netz is None or alias["netz"] == netz)
@@ -405,6 +430,19 @@ def create_app(*, data_dir=None, write_token=None, read_token=None, mapping_toke
         return await ingest_export(request, idempotency_key, x_dataset_revision,
                                    validate_only, "frontend-2")
 
+    @app.post("/api/v3/imports/frontend", tags=["Import"], dependencies=[Depends(can_write)],
+              status_code=201,
+              openapi_extra={"requestBody": {"required": True, "content": {
+                  "application/json": {"schema": {"$ref": "#/components/schemas/FrontendExportV3"}}}}},
+              responses=common_import_responses)
+    async def ingest_v3(request: Request,
+                        idempotency_key: Annotated[uuid.UUID, Header()],
+                        x_dataset_revision: Annotated[int, Header(ge=1, le=2_147_483_647)],
+                        validate_only: bool = False):
+        """Preferred import with line IDs, German EVA station IDs and station names."""
+        return await ingest_export(request, idempotency_key, x_dataset_revision,
+                                   validate_only, "frontend-3")
+
     def lookup(import_id=None, payload=False):
         result = store.get(str(import_id) if import_id else None, include_payload=payload)
         if result is None:
@@ -484,6 +522,54 @@ def create_app(*, data_dir=None, write_token=None, read_token=None, mapping_toke
             "map_ready": map_ready, "values": output,
         }
 
+    @app.get("/api/v1/data/stops/{stop_id}", tags=["Daten"],
+             dependencies=[Depends(can_read)])
+    def stop(
+        stop_id: Annotated[str, ApiPath(pattern=EVA_ID_PATTERN)],
+        line_id: Annotated[str | None, Query(pattern=LINE_ID_PATTERN)] = None,
+        import_id: uuid.UUID | None = None,
+    ):
+        """Return all cancellation-ranking rows for one German DB EVA station."""
+        stored = lookup(import_id, True)
+        receipt_data = json.loads(stored["receipt"])
+        data = json.loads(stored["payload"])
+        aliases = store.alias_map()
+        values = []
+        for source_row in data["mostCancelledStops"]:
+            if source_row["stop_id"] != stop_id:
+                continue
+            resolved_id = source_row.get("line_id") or aliases.get(
+                (source_row["netz"], source_row["line"]))
+            if line_id is not None and resolved_id != line_id:
+                continue
+            reference = store.get_line(resolved_id) if resolved_id else None
+            value = dict(source_row)
+            value["line_id"] = resolved_id
+            value["geometry_status"] = (
+                reference["geometry"]["status"] if reference and reference["active"]
+                else "unmapped")
+            value["p_cancelled"] = (
+                value["n_cancelled"] / value["n_data_points"]
+                if value["n_data_points"] else None)
+            values.append(value)
+        if not values:
+            fail(404, "stop_not_found",
+                 "Haltestelle oder angeforderte Linienzuordnung nicht gefunden.")
+        values.sort(key=lambda row: (row.get("line_id") or "", row["netz"], row["line"]))
+        names = sorted({row["stop_name"] for row in values if row.get("stop_name")})
+        return {
+            "import_id": receipt_data["import_id"],
+            "revision": receipt_data["revision"],
+            "contract_version": receipt_data.get("contract_version", "frontend-1"),
+            "stop_id": stop_id,
+            "station_id": f"de.eva.{stop_id}",
+            "id_type": "eva",
+            "stop_name": names[0] if len(names) == 1 else None,
+            "ranking_period": None,
+            "total": len(values),
+            "values": values,
+        }
+
     def openapi():
         if app.openapi_schema is None:
             spec = get_openapi(title=app.title, version=app.version,
@@ -492,6 +578,7 @@ def create_app(*, data_dir=None, write_token=None, read_token=None, mapping_toke
             schemas["FrontendExport"] = SCHEMA_V1  # Compatibility alias.
             schemas["FrontendExportV1"] = SCHEMA_V1
             schemas["FrontendExportV2"] = SCHEMA_V2
+            schemas["FrontendExportV3"] = SCHEMA_V3
             app.openapi_schema = spec
         return app.openapi_schema
 

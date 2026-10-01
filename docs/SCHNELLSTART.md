@@ -1,7 +1,8 @@
 # Schnellstart: Daten an trainmaps liefern
 
 Die öffentliche Basisadresse lautet **https://34.7.91.18**. Die bevorzugte
-Schnittstelle ist `frontend-2` mit stabilen Linien-IDs. Bestehende Exporte ohne
+Schnittstelle ist `frontend-3` mit stabilen Linien-IDs, deutschen EVA-Nummern
+und Stationsnamen. Bestehende Exporte ohne
 IDs können weiterhin über v1 geprüft und geliefert werden.
 
 ## 1. Verbindung prüfen
@@ -13,7 +14,7 @@ curl --fail-with-body https://34.7.91.18/health
 Unter Windows `curl.exe` verwenden. Erwartet wird HTTP 200:
 
 ```json
-{"status":"ok","service":"trainmaps-development","version":"0.9.0"}
+{"status":"ok","service":"trainmaps-development","version":"0.10.0"}
 ```
 
 Die [interaktive API](https://34.7.91.18/docs), der
@@ -35,7 +36,7 @@ Geheimnisverwaltung verwenden.
 
 ## 3. Verfügbare Linien-IDs lesen
 
-Vor einem v2-Export den aktuellen Katalog abrufen:
+Vor einem v3-Export den aktuellen Katalog abrufen:
 
 ```powershell
 $base = 'https://34.7.91.18'
@@ -52,12 +53,12 @@ Der Lieferant setzt für jedes gelieferte Paar `netz`/`line` die dort
 veröffentlichte `line_id`. Fehlt eine Zuordnung, wird sie zuerst vom Betreiber
 geprüft und im Katalog angelegt. Es werden keine IDs aus Namen geraten.
 
-## 4. v2-Prüflauf
+## 4. v3-Prüflauf
 
-Der Download [frontend-v2-minimal.json](../examples/frontend-v2-minimal.json)
-zeigt das Format. Das synthetische Beispiel verwendet `de.test.s1` und
-funktioniert nur auf einer Instanz, auf der der zugehörige
-[Beispiel-Katalogeintrag](../examples/line-reference.json) angelegt wurde.
+Der Download [frontend-v3-minimal.json](../examples/frontend-v3-minimal.json)
+zeigt das Format anhand der Münchner S1 und der EVA-Nummer `8004128`. Er setzt
+den zugehörigen [Katalogeintrag](../examples/line-reference-muenchen-s1.json)
+voraus.
 
 Für eine reale Prüfung den vollständigen Export mit den IDs aus Schritt 3
 verwenden:
@@ -73,9 +74,9 @@ $headers = @{
   'X-Dataset-Revision' = '2'
 }
 Invoke-RestMethod -Method Post `
-  -Uri "$base/api/v2/imports/frontend?validate_only=true" `
+  -Uri "$base/api/v3/imports/frontend?validate_only=true" `
   -Headers $headers -ContentType 'application/json' `
-  -InFile 'frontend-v2.json'
+  -InFile 'frontend-v3.json'
 ```
 
 Erfolg bedeutet HTTP 200, `status: "validated"` und `stored: false`. Der
@@ -104,19 +105,30 @@ und einer höheren globalen Revision ohne `validate_only` senden:
 
 ```powershell
 Invoke-RestMethod -Method Post `
-  -Uri "$base/api/v2/imports/frontend" `
+  -Uri "$base/api/v3/imports/frontend" `
   -Headers $headers -ContentType 'application/json' `
-  -InFile 'frontend-v2.json'
+  -InFile 'frontend-v3.json'
 ```
 
 Ein neuer Import liefert HTTP 201. Bei einem Netzfehler dieselbe UUID, Revision
-und dieselben Bytes erneut senden; die Wiederholung liefert HTTP 200. v1 und v2
-teilen eine Revisionsfolge.
+und dieselben Bytes erneut senden; die Wiederholung liefert HTTP 200. v1, v2
+und v3 teilen eine Revisionsfolge.
 
 Jeder Import ist ein vollständiger Snapshot. Das kleine Beispiel deshalb nur im
 Prüfmodus verwenden.
 
-## 7. Monatswerte lesen
+## 7. Haltestelle und Monatswerte lesen
+
+Eine importierte Haltestelle wird über ihre EVA-Nummer gelesen:
+
+```powershell
+$readHeaders = @{ Authorization = "Bearer $env:TRAINMAPS_READ_TOKEN" }
+Invoke-RestMethod -Headers $readHeaders `
+  -Uri "$base/api/v1/data/stops/8004128"
+```
+
+Die Antwort nennt die abgeleitete `station_id` `de.eva.8004128`, den
+Stationsnamen und alle zugehörigen Linienwerte.
 
 ```sh
 curl --fail-with-body \
@@ -138,6 +150,7 @@ abrufbar.
 | 409 | Importrevision und UUID prüfen; Mappingänderungen brauchen eine höhere Revision. |
 | 413 | JSON ist komprimiert oder entpackt größer als 32 MiB. |
 | 422 `line_reference_error` | `line_id`, Aktivstatus und das exakte Paar `netz`/`line` mit dem Katalog abgleichen. |
+| 422 `station_reference_error` | Für dieselbe EVA-Nummer überall denselben Stationsnamen verwenden. |
 | 422 sonst | Felder, Zähler, Quoten und Aggregationen anhand von `errors` korrigieren. |
 | 429 | `Retry-After` beachten und später wiederholen. |
 

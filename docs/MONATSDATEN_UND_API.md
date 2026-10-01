@@ -1,6 +1,6 @@
 # trainmaps: monatliche Pünktlichkeitskarte und API
 
-Stand 0.9.0, 30. September 2026. Entwicklungs-API und bundesweite Webkarte sind
+Stand 0.10.0, 1. Oktober 2026. Entwicklungs-API und bundesweite Webkarte sind
 implementiert. Die Karte zeigt S1 bis S8 und S20 in München; Bedienung und Kartenendpunkte
 stehen unter [Webkarte](KARTE.md). Verbindliche Anleitung der API-Endpunkte:
 [API.md](API.md). Die vollstaendige Datei `daten/frontend.json` wurde geprueft
@@ -10,9 +10,9 @@ Die gesamte Dokumentation steht unter [Dokumentation](https://34.7.91.18/dokumen
 
 Der Export enthaelt 33.108 Zeilen mit Puenktlichkeits- und Ausfallstatistiken
 fuer 57 Monatslabels, 18 Netzbezeichnungen und 361 noch zu pruefende
-Netz-/Linienkennungen. Eine separate Stations-Ausfallrangliste ist enthalten;
-Zeitraum, Koordinaten und Stationsnamen fehlen. Die erste Kartenversion bleibt
-auf Linienebene. Details: [Datenpruefung](DATENPRUEFUNG.md).
+Netz-/Linienkennungen. Eine separate Stations-Ausfallrangliste ist enthalten.
+Die ergänzende CSV liefert Stationsnamen und EVA-Nummern; Zeitraum und eigene
+Koordinaten fehlen weiterhin. Details: [Datenpruefung](DATENPRUEFUNG.md).
 
 ## Aussagekraft der vorhandenen Daten
 
@@ -180,8 +180,9 @@ Wert als Tabelle samt Hinweis angeboten.
 
 ## Implementierte Entwicklungs-API
 
-Der bevorzugte Vertrag `frontend-2` verlangt für jede Linienzeile eine stabile
-`line_id` und wird an `POST /api/v2/imports/frontend` gesendet. Der bisherige
+Der bevorzugte Vertrag `frontend-3` verlangt für jede Linienzeile eine stabile
+`line_id` sowie für Stationszeilen eine siebenstellige EVA-Nummer und einen
+Stationsnamen. Er wird an `POST /api/v3/imports/frontend` gesendet. Der bisherige
 Originalexport bleibt unverändert über `POST /api/v1/imports/frontend` nutzbar.
 Ein Bearer-Token, `Idempotency-Key` und `X-Dataset-Revision` begleiten die
 Lieferung als Header. Der Prüfmodus `?validate_only=true` schreibt keine Daten.

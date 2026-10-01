@@ -101,7 +101,7 @@ Content-Type: application/json
 | `verified` | Verlauf geprüft und freigegeben. | Monatswert darf auf der Karte erscheinen. |
 | `active: false` | Zuordnung stillgelegt. | Neue v2-Importe werden abgewiesen. |
 
-`map_ready` in einem v2-Prüf- oder Importbeleg wird nur dann `true`, wenn
+`map_ready` in einem v2-/v3-Prüf- oder Importbeleg wird nur dann `true`, wenn
 mindestens eine Linien-ID verwendet wird und jede verwendete Geometrie aktiv und
 `verified` ist. Der Monatsendpunkt verwendet den aktuellen Katalogzustand und
 liefert pro Zeile `geometry_status`.
